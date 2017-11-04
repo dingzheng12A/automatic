@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Login Page</title>
+<style type='text/css'>
+	#background {
+	width: 100%;
+	position: absolute;
+	height:100%;
+	top: 0;
+	left: 0;
+	}
+	#login_area {
+	width: 363px;
+	position: absolute;
+	height:auto;
+	top: 60%;
+	left: ;
+	left: 673px;		
+	}
+	
+</style>
+<script language="JavaScript" type="text/javascript"src="/assets/js/jquery-3.2.1.min.js"></script>
+<script>
+$(document).ready(function(){
+	$("#Login").click(function(){
+		var username=$("#username").val();
+		var pwd=$("#pwd").val();
+		if (username.length==0|| pwd.length==0){
+			alert("用户名和密码不能为空!");
+			$("#Login").attr("disabled",true);
+		}else{
+			$("#Login").attr("disabled",false);
+		};
+		
+		 $.ajax({
+                                type: 'post',
+                                url:'/logincheck',
+                                data:{'username':username,'pwd':pwd},
+                                cache:false,
+                                dataType: 'json',
+                                success: function(data){
+										if (data['result']==1){
+											window.location.href = "/main";
+										}else {
+											alert("账号或密码不正确");
+											$("#username").val('');
+											$("#pwd").val('');
+											$("#username").focus();
+											$("#Login").attr("disabled",true);
+										}
+                                        //window.location.href = msg.url;
+
+                                }
+		});
+	});
+	$("#username").bind("input propertychange change",function(event){
+        if ($("#username").val().length>0 && $("#pwd").val().length>0 ){
+			$("#Login").attr("disabled",false);
+		}else{
+				$("#Login").attr("disabled",true);
+		};
+	});
+	
+	
+	$("#pwd").bind("input propertychange change",function(event){
+        if ($("#username").val().length>0 && $("#pwd").val().length>0 ){
+			$("#Login").attr("disabled",false);
+		}else{
+				$("#Login").attr("disabled",true);
+		};
+	});
+})
+
+
+
+</script>
+</head>
+
+<body style="height:auto">
+<div><img src="/images/login.jpg" name="background" width="276" height="271" id="background" />
+<div id="login_area" align="center">
+<h1></h1>
+<hr />
+  <table width="73%" border="1" bordercolor="#999999">
+    <tr>
+      <td width="34%">用户名：</td>
+      <td width="51%"><form id="form1" name="form1" method="post" action="">
+        <label>
+        <input type="text" name="username" id="username"  />
+          </label>
+      </form>
+      </td>
+      </tr>
+    <tr>
+      <td>密码：</td>
+      <td><label>
+        <input type="password" name="pwd" id="pwd" />
+      </label></td>
+      </tr>
+    <tr>
+      <td><label>
+        <input type="button" name="Login" id="Login" value="登录" disabled/>
+      </label></td>
+      <td><label>
+        <input type="button" name="Cancle" id="Cancle" value="取消" />
+      </label></td>
+      </tr>
+  </table>
+<hr />
+</div>
+</div>
+</body>
+</html>
