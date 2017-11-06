@@ -43,6 +43,13 @@ $(document).ready(function(){
                                 success: function(data){
 										if (data['result']==1){
 											window.location.href = "/main";
+										}else if (data['result']==2){
+											alert("该账号已经被禁止，请联系管理员处理！");
+											$("#username").val('');
+											$("#pwd").val('');
+											$("#username").focus();
+											$("#Login").attr("disabled",true);
+											
 										}else {
 											alert("账号或密码不正确");
 											$("#username").val('');

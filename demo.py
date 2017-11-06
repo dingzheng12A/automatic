@@ -28,6 +28,7 @@ def logi_check():
 		result=USER.Auth()
 		if result['result'] == 1:
 			session['username']=user
+		print "result:%s" % result
 		return jsonify(result)
 	else:
 		print '- * '*10
@@ -62,12 +63,33 @@ def adduser():
 	else:
 		return ''
 
+@app.route('/setpass',methods=['POST','GET'])
+def setpass():
+	if request.method == 'POST':
+		print 'x - '*10
+                username=request.form['username']
+		password=''
+		if 'pwd' in request.form:
+                	password=request.form['pwd']
+		enable=request.form['status']
+		USER=User(username)
+		if password !='':		
+			USER.SetPass(password=password,status=enable)
+		else:
+			USER.SetPass(status=enable)
+		print 'status:%s' % enable
+		result={'result':1}
+		return jsonify(result)
+        else:
+                return ''
+
 @app.route('/resetpass',methods=['POST','GET'])
 def resetpass():
 	if request.method == 'POST':
 		print 'x - '*10
                 username=request.form['username']
-                oldpass=request.form['oldpass']
+		if 'oldpass' in request.form:
+                	oldpass=request.form['oldpass']
                 password=request.form['password']
 		USER=User(username,oldpass)
 		result=USER.Auth()

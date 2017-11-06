@@ -16,12 +16,13 @@ metadata = MetaData(bind=engine)
 users = Table('users', metadata, autoload=True)
 
 class User:
-	def __init__(self,username='',pwd='',nickname='',email='',db=None):
+	def __init__(self,username='',pwd='',nickname='',email='',db=None,status=''):
 		self.username=username
 		self.nickname=nickname
 		self.pwd=pwd
 		self.email=email
 		self.db=db
+		self.status=status
 	def encrypt(self,password):
 		m=hashlib.md5()
 		m.update(password)
@@ -48,8 +49,12 @@ class User:
 		user=Users.query.filter_by(username=self.username,password=password).first()
 	#	if self.username=='admin' and self.pwd=='admin':
 		if user is not None:
-			result={'result':1}
-			return result
+			if user.status == 1:
+				result={'result':1}
+				return result
+			else:
+				result={'result':2}
+				return result
 		else:
 			result={'result':0}
 			return result
@@ -63,6 +68,23 @@ class User:
 	    	db.session.commit()
 	    except Exception,e:
 		raise ("has error",e)
+
+	def SetPass(self,**kwargs):
+	    if 'password' in kwargs:
+	    	hash_password=self.encrypt(kwargs['password'])
+	    else:
+		hash_password=''
+	    if 'status' in kwargs:
+		self.status=kwargs['status']
+		
+            user=Users.query.filter_by(username=self.username).first()
+	    if len(hash_password)!=0: 
+	    	user.password=hash_password
+	    user.status=self.status
+	    try:
+                db.session.commit()
+            except Exception,e:
+                raise ('has error',e)
 		
 			
 
