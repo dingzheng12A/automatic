@@ -55,6 +55,14 @@
 				width:1247px;
 				display:none;
 				}
+				
+			div .deluser {
+				position:related;	
+				left: 0;
+				top:0;
+				width:1247px;
+				display:none;
+				}
 			
 			.top {
 				position:absolute;
@@ -201,6 +209,16 @@ $(document).ready(function(){
 	
 	
 	});
+	//删除用户
+	$("#deluser").click(function(){
+		// $(".col-xs-12").html("添加用户");
+		var index=$("div .row #deluser").index(this);
+		$("div #deluser").eq(index).show()
+		.siblings().hide();
+	
+	});
+	
+	//添加用户
 	$("#adduser").click(function(){
 		// $(".col-xs-12").html("添加用户");
 		var index=$("div .row #adduser").index(this);
@@ -365,8 +383,97 @@ $(document).ready(function(){
 			})
 		});
 */
+		//删除用户
 		
-		$("table tr").click(function(){
+		$("#deluser table tr").click(function(){
+			var $siblings = $(this).siblings('tr');
+			$siblings.removeClass("selected").find('input[id="del_single"]').prop('disabled', true);
+			$(this).addClass('selected').find('input[id="del_single"]').prop('disabled', false);
+			
+			
+		})
+		
+		$("#deluser table tr").find("#del_single").click(function(){
+			var request=confirm("是否删除用户?");
+			var $position=$(this).parent().parent();
+			var userId=$(this).parent().siblings().find("#id").val();
+			if(request==true){
+				$.ajax({
+                        type: 'post',
+                        url:'/deluser',
+                        data:{'userlist':userId},
+                        cache:false,
+                        dataType: 'json',
+						success: function(data){
+							$position.hide();
+							alert("用户已经删除!");
+						
+                        }
+                     
+				});
+			};
+			
+			
+		});
+		var num=0;
+		var userarray=new Array();
+		$("#deluser table tr").each(function(){
+			var $id=$(this).children("td:eq(0)").find("input");
+			$(this).click(function(){
+			if ($id.is(":checked")){
+				num+=1;
+				userarray[num]=$id.val();
+				
+				
+			
+			}else{
+				num-=1;
+				userarray.splice(num,1);
+						
+			}
+			if(num>0){
+				$("#deluser #del_btn").attr("disabled",false);
+			}else{
+				$("#deluser #del_btn").attr("disabled",true);
+			}
+			
+				
+			});
+			
+			
+		})
+		//批量删除用户
+		$("#deluser #del_btn").click(function(){
+			console.log(userarray);
+			$.ajax({
+                type: 'post',
+                url:'/deluser',
+                data:{'userlist':userarray.join(',')},
+                cache:false,
+                dataType: 'json',
+				success: function(data){
+				//	$position.hide();
+					alert("用户已经删除!");
+					$("#deluser table tr").each(function(){
+						var $id=$(this).children("td:eq(0)").find("input");
+						if ($id.is(":checked")){
+							$id.parent().parent().hide();
+						}
+			
+					
+			
+			
+					})
+				
+                }
+                     
+			});
+			
+		});
+		
+		
+		//添加用户
+		$("#adduser table tr").click(function(){
 			var $siblings = $(this).siblings('tr');
 			$siblings.removeClass("selected").find('input').prop('disabled', true);
 			$(this).addClass('selected').find('input').prop('disabled', false);
@@ -375,7 +482,8 @@ $(document).ready(function(){
 		})
 		
 		
-		$("table tr").find("#commit").click(function(){
+		
+		$("#adduser table tr").find("#commit").click(function(){
 			var $position=$(this).parent().parent();
 			var $newpass=$(this).parent().find("#resetpass").val();
 			var $status=$(this).parent().find("#enable");
@@ -969,6 +1077,19 @@ $(document).ready(function(){
 						</div><!-- /.page-header -->
 
 						<div class="row">
+							<!-- 删除用户 -->
+							<div id='deluser' class="deluser">
+								<div id='add'><input name='del_btn' type='button' id='del_btn' value='批量删除用户' disabled/></div>
+								<table  id='userlist' width='1661' border='1'>
+								<tr><td width='6%' align='center' bgcolor='#66b3ff'>id</td><td width='6%' align='center' bgcolor='#66b3ff'>用户名</td><td width='14%' align='center' bgcolor='#66b3ff'>邮箱地址</td><td width='21%' align='center' bgcolor='#66b3ff'>用户状态</td><td width='53%' align='center' bgcolor='#66b3ff'>修改</td></tr>
+								{%if userlist %}
+								{% for user in userlist%}
+								<tr border='1'><td width='6%' align='center'><input type='checkbox' id='id' value='{{user.id}}'></td><td width='6%' align='center'>{{user.username}}</td><td width='14%' align='center' >{{user.email}}</td><td width='21%' align='center' >{% if user.status == 1%}启用{%else%}禁用{% endif %}</td><td width='53%' align='center' ><input type='button' id='del_single' name='del_single' value='删除' disabled></td></tr>
+								{% endfor %}
+								{%endif%}
+								</table>
+								</div>
+							
 							<!-- 设置页面 -->
 							<!-- 添加用户界面 -->
 							<div id='adduser' class="adduser">

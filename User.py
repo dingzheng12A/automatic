@@ -38,6 +38,15 @@ class User:
 		#	print "failure,reson:%s" % e
 		#	result={'result':0}
 		return result
+	def DropUser(self,**kwargs):
+		if 'userid' in kwargs:
+			userid=kwargs['userid']
+			user=Users.query.filter_by(id=userid)
+			user.delete()
+			db.session.commit()
+			result={'result':1}
+		else:
+			result={'result':0}
 	def ListUser(self):
 		
 		userlist=engine.execute('select * from users').fetchall()

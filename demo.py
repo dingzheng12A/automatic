@@ -104,6 +104,23 @@ def resetpass():
         else:
                 return ''
 
+
+@app.route('/deluser',methods=['POST','GET'])
+def deluser():
+	if request.method == 'POST':
+		userid=request.form['userlist']
+		USER=User()
+		if len(userid.split(","))==1:
+			result=USER.DropUser(userid=userid)
+			return jsonify(result)
+		else:
+			userlist=userid.split(",")
+			for userid in userlist:
+				result=USER.DropUser(userid=userid)
+                	return jsonify(result)
+	else:
+		return ''
+
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 
 if __name__=='__main__':
