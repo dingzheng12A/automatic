@@ -72,6 +72,15 @@
 				width:1247px;
 				display:none;
 				}
+				
+				
+			div .delrole {
+				position:related;	
+				left: 0;
+				top:0;
+				width:1247px;
+				display:none;
+				}
 			.top {
 				position:absolute;
 				width:100%;
@@ -496,12 +505,13 @@ $(document).ready(function(){
 			if ($id.is(":checked")){
 				num+=1;
 				userarray[num]=$id.val();
-				
+				console.log('点击次数:'+num);
 				
 			
 			}else{
 				num-=1;
 				userarray.splice(num,1);
+				console.log('点击次数:'+num);
 						
 			}
 			if(num>0){
@@ -518,6 +528,7 @@ $(document).ready(function(){
 		//批量删除用户
 		$("#deluser #del_btn").click(function(){
 			console.log(userarray);
+			console.log('点击次数:'+num);
 			var request=confirm("是否删除用户?");
 			if(request==true){
 			$.ajax({
@@ -546,6 +557,110 @@ $(document).ready(function(){
 			}
 			
 		});
+		
+		//删除角色
+		
+		$("#delrole table tr").click(function(){
+			var $siblings = $(this).siblings('tr');
+			$siblings.removeClass("selected").find('input[id="delrole_commit"]').prop('disabled', true);
+			$(this).addClass('selected').find('input[id="delrole_commit"]').prop('disabled', false);
+			
+			
+		})
+		
+		$("#delrole table tr").find("#delrole_commit").click(function(){
+			var container_users=$(this).parent().parent().children("td:eq(3)").text();
+			var $position=$(this).parent().parent();
+			var roleId=$(this).parent().siblings().find("#role_id").val();
+			if(container_users.length>0){
+				alert("角色中包含用户，不能删除!");}
+			else{	
+			var request=confirm("是否删除角色?");
+			
+			
+			if(request==true){
+					$.ajax({
+                        type: 'post',
+                        url:'/delrole',
+                        data:{'rolelist':roleId},
+                        cache:false,
+                        dataType: 'json',
+						success: function(data){
+							$position.hide();
+							alert("角色已经删除!");
+						
+                        }
+                     
+					});
+			};
+			};
+			
+			
+		});
+		var click_num=0;
+		var rolearray=new Array();
+		$("#delrole table tr").each(function(){
+		
+			var $id=$(this).children("td:eq(0)").find("input");
+			$(this).click(function(){
+			if ($id.is(":checked")){
+				click_num+=1;
+				rolearray[click_num]=$id.val();
+				console.log('点击次数:'+click_num);
+				
+				
+			
+			}else{
+				click_num-=1;
+				userarray.splice(click_num,1);
+				console.log('点击次数:'+click_num);
+						
+			}
+			if(click_num>0){
+				$("#delrole #del_btn").attr("disabled",false);
+			}else{
+				$("#delrole #del_btn").attr("disabled",true);
+			}
+			
+				
+			});
+			
+			
+		})
+		//批量删除角色
+		$("#delrole #del_btn").click(function(){
+			console.log(rolearray);
+			console.log('点击次数:'+click_num);
+			var request=confirm("是否删除角色?");
+			if(request==true){
+			$.ajax({
+                type: 'post',
+                url:'/delrole',
+                data:{'rolelist':rolearray.join(',')},
+                cache:false,
+                dataType: 'json',
+				success: function(data){
+				//	$position.hide();
+					alert("角色已经删除!");
+					$("#delrole table tr").each(function(){
+						var $id=$(this).children("td:eq(0)").find("input");
+						if ($id.is(":checked")){
+							$id.parent().parent().hide();
+						}
+						click_num=0;
+			
+					
+			
+			
+					})
+				
+                }
+                     
+			});
+			}
+			
+		});
+		
 		
 		
 		//添加用户
@@ -873,6 +988,15 @@ $(document).ready(function(){
 			
 	});
 	
+	
+	//删除角色
+	$("#delrole").click(function(){
+		// $(".col-xs-12").html("添加用户");
+		var index=$("div .row #delrole").index(this);
+		$("div #delrole").eq(index).show()
+		.siblings().hide();
+	
+	});
 
 
 })
@@ -1345,17 +1469,17 @@ $(document).ready(function(){
 								<li>
 									<a href="#">
 										<i class="icon-double-angle-right"></i>
-										删除角色									</a>								</li>
-
+										<span id="delrole">删除角色</span>									</a>								</li>
+<!--
 								<li>
 									<a href="#">
 										<i class="icon-double-angle-right"></i>
-										关联到用户									</a>								</li>
+										关联到用户									</a>								</li> -->
 
 									<li>
 									<a href="#">
 										<i class="icon-double-angle-right"></i>
-										分配权限									</a>								</li>
+										分配权限									</a>								</li> 
 
 						
 						
@@ -1547,6 +1671,21 @@ $(document).ready(function(){
 								{%if rolelist %}
 								{% for role in rolelist%}
 								<tr border='1'><td width='6%' align='center'>{{role.id}}</td><td width='6%' align='center'>{{role.name}}</td><td width='14%' align='center' >{{role.desc}}</td><td width='21%' align='center' >{% if role.userlist %}{{role.userlist}}{%endif%}</td><td width='53%' align='center' ><img  src='/images/add_btn.jpg' id='assign' name='assign' height='20' width='20'>&nbsp;&nbsp;&nbsp;<img src='/images/remove.jpg' id='remove' name='remove' height='20' width='20'></td></td></tr>
+								{% endfor %}
+								{%endif%}
+								</table>
+								</div>
+								
+								
+								
+							<!-- 删除角色界面 -->
+							<div id='delrole' class="delrole">
+								<div id='add'><input name='del_btn' type='button' id='del_btn' value='批量删除角色' disabled/></div>
+								<table  id='rolelist' width='1661' border='1'>
+								<tr><td width='6%' align='center' bgcolor='#66b3ff'>id</td><td width='6%' align='center' bgcolor='#66b3ff'>角色</td><td width='14%' align='center' bgcolor='#66b3ff'>描述信息</td><td width='21%' align='center' bgcolor='#66b3ff'>所有用户</td><td width='53%' align='center' bgcolor='#66b3ff'>删除</td></tr>
+								{%if rolelist %}
+								{% for role in rolelist%}
+								<tr border='1'><td width='6%' align='center'><input type='checkbox' id='role_id' value='{{role.id}}' {%if role.userlist %}disabled{%endif%}></td><td width='6%' align='center'>{{role.name}}</td><td width='14%' align='center' >{{role.desc}}</td><td width='21%' align='center' >{% if role.userlist %}{{role.userlist}}{%endif%}</td><td width='53%' align='center' >&nbsp;&nbsp;&nbsp;&nbsp;<input type='button' id='delrole_commit' name='delrole_commit' value='删除' disabled></td></td></tr>
 								{% endfor %}
 								{%endif%}
 								</table>

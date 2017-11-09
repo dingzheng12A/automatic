@@ -134,6 +134,29 @@ def addrole():
 	else:
 		return ''
 
+@app.route('/delrole',methods=['POST','GET'])
+def delrole():
+	if request.method == 'POST':
+		roleid=request.form['rolelist']
+		print 'roleid:%s' % roleid
+		ROLE=Role()
+
+		if len(roleid.split(","))==1:
+			result=ROLE.DropRole(roleid=roleid)
+			return jsonify(result)
+		else:
+			rolelist=roleid.split(",")
+			for role in rolelist:
+				if len(role)==0:
+					pass
+				else:
+					print 'del role:%s' % role
+					ROLE.DropRole(roleid=role)
+			result={'result':1}
+                	return jsonify(result)
+	else:
+		return ''
+
 
 @app.route('/assign',methods=['POST','GET'])
 def assign():
@@ -146,7 +169,7 @@ def assign():
 			if user!='':
 				USER=User(username=user)
 				uid=USER.GetUid()
-				print 'usernmae:%s uid:%s' %(user,uid)
+				#print 'usernmae:%s uid:%s' %(user,uid)
 				role_user=RoleUser(rid=roleid,rname=rolename,uid=uid,uname=user,db=db)
 				role_user.assign()
 		result={'result':1}

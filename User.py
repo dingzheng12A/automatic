@@ -124,6 +124,14 @@ class Role:
 		role=engine.execute('insert into role(`name`,`desc`)values("%s","%s")' %(self.name,self.desc))
 		result={'result':1}
 		return result
+	def DropRole(self,**kwargs):
+		if 'roleid' in kwargs:
+			roleid=kwargs['roleid']
+			print 'roleid is:%s' %roleid
+			role=engine.execute('delete from role where id=%s' %(roleid))
+			result={'result':1}
+		else:
+			result={'result':0}
 
 
 class RoleUser:
