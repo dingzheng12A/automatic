@@ -3,7 +3,7 @@
 from flask import Flask,render_template,redirect
 from flask import request,jsonify,session,url_for
 from flask_sqlalchemy import SQLAlchemy
-from User import User
+from User import User,Role,RoleUser
 from database import Users
 app=Flask(__name__,static_folder='templates', static_url_path='')
 app.config['SECRET_KEY']='automatic system'
@@ -45,8 +45,9 @@ def main_page():
 	if 'username' in session:	
 		USER=User()
 		userlist=USER.ListUser()
+		rolelist=USER.ListRole()
 		#userlist=UserList()
-		return render_template('index.html',username=session['username'].upper(),userlist=userlist)
+		return render_template('index.html',username=session['username'].upper(),userlist=userlist,rolelist=rolelist)
 	else:
 		return redirect(url_for('index_page'))
 
@@ -120,6 +121,51 @@ def deluser():
                 	return jsonify(result)
 	else:
 		return ''
+
+
+@app.route('/addrole',methods=['POST','GET'])
+def addrole():
+	if request.method == 'POST':
+		rolename=request.form['rolename']
+		role_desc=request.form['role_desc']
+		ROLE=Role(name=rolename,desc=role_desc,db=db)
+		result=ROLE.AddRole()
+		return jsonify(result)
+	else:
+		return ''
+
+
+@app.route('/assign',methods=['POST','GET'])
+def assign():
+	if request.method == 'POST':
+		roleid=request.form['roleid']
+		rolename=request.form['rolename']
+		userlist=request.form['userlist']
+		for user in userlist.split(','):
+			print "user is:%s" % user
+			if user!='':
+				USER=User(username=user)
+				uid=USER.GetUid()
+				print 'usernmae:%s uid:%s' %(user,uid)
+				role_user=RoleUser(rid=roleid,rname=rolename,uid=uid,uname=user,db=db)
+				role_user.assign()
+		result={'result':1}
+		return jsonify(result)
+	else:
+		return ''
+
+
+@app.route('/remove_assign',methods=['POST','GET'])
+def remove_assign():
+        if request.method == 'POST':
+                roleid=request.form['roleid']
+                current_user=request.form['current_user']
+		role_user=RoleUser(rid=roleid)
+		result=role_user.remove_assign(current_user=current_user)
+                return jsonify(result)
+        else:
+                return ''
+		
 
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 

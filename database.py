@@ -38,6 +38,20 @@ class Users(db.Model):
 	def text_password(self,text_password):
 		self.password=generate_password_hash(text_password)
 
+
+class Role_User(db.Model):
+        __tablename__='role_user'
+        id=db.Column(db.Integer,primary_key=True)
+        roleid=db.Column(db.Integer,index=True)
+        rolename=db.Column(db.String(64))
+        uid=db.Column(db.Integer,index=True)
+        username=db.Column(db.String(64))
+        create_time=db.Column(db.DateTime,default=datetime.datetime.now())
+
+
+	def __repr__(self):
+		return '<Role_User {}>'.format(self.name)
+
 #if __name__=='__main__':
 	#db.create_all()
 	#admin_role=Role(name='admin')
