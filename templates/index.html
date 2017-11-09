@@ -857,9 +857,14 @@ $(document).ready(function(){
 			//	$(".top").hide();
 			//	$("#userassign tbody").children("tr:eq(0)").children("td:eq(1)").text($rolename);
 				var select_user=$("#userassign tbody").find("#select_user").val();
+				//if(current_user.indexOf(select_user)<0){
+				//	current_user+=select_user+',';
+				//}
 				if(current_user.indexOf(select_user)<0){
-					current_user+=select_user+',';
+					current_user+=select_user;
+					current_user+=',';
 				}
+				
 				$("#userassign tbody").find("#current_user").val(current_user);
 				//$("#Layer_assign").hide(current_user);
 			});

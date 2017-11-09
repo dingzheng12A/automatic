@@ -155,11 +155,11 @@ class RoleUser:
 			engine.execute(sql)
 		else:
 			sql="delete from role_user where roleid=%s and username not in (%s);" % (self.rid,'"'+current_user.replace(',','","').strip()+'"' )
-			print "Execute SQL:%s" % sql
+			#print "Execute SQL:%s" % sql
 			engine.execute(sql)
 		try:
 			res=engine.execute(sql)
-			print res
+			#print res
 			result={'result':1}
 		except Exception,e:
 			print 'has error:%s' % e
