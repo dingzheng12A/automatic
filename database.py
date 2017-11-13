@@ -52,8 +52,38 @@ class Role_User(db.Model):
 	def __repr__(self):
 		return '<Role_User {}>'.format(self.name)
 
-#if __name__=='__main__':
-	#db.create_all()
+
+class Menu(db.Model):
+	__tablename__='sys_menu'
+	id=db.Column(db.Integer,primary_key=True)
+        name=db.Column(db.String(64))
+        parent_id=db.Column(db.Integer,index=True)
+        url=db.Column(db.String(64))
+	sort=db.Column(db.Integer)
+        create_time=db.Column(db.DateTime,default=datetime.datetime.now())
+
+	def __repr__(self):
+		return '<Menu {}>'.format(self.name)
+
+class Auth(db.Model):
+	__tablename__='sys_auth'
+	id=db.Column(db.Integer,primary_key=True)
+	name=db.Column(db.String(64))
+	menu_id=db.Column(db.Integer)
+	url=db.Column(db.String(200))
+	code=db.Column(db.String(64))
+
+class Role_Auth(db.Model):
+	__tablename__='sys_role_auth'
+	id=db.Column(db.Integer,primary_key=True)
+	roleid=db.Column(db.Integer)
+	ids=db.Column(db.String(200))
+	
+	
+	
+
+if __name__=='__main__':
+	db.create_all()
 	#admin_role=Role(name='admin')
 	#db.session.add_all([admin_role])
 	#db.session.commit()

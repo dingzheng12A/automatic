@@ -5,6 +5,7 @@ from flask import request,jsonify,session,url_for
 from flask_sqlalchemy import SQLAlchemy
 from User import User,Role,RoleUser
 from database import Users
+from Menu import MenuInfo
 app=Flask(__name__,static_folder='templates', static_url_path='')
 app.config['SECRET_KEY']='automatic system'
 app.config['SQLALCHEMY_DATABASE_URI']='mysql://automatic:automatic@localhost:3306/automatic'
@@ -46,8 +47,10 @@ def main_page():
 		USER=User()
 		userlist=USER.ListUser()
 		rolelist=USER.ListRole()
+		menu=MenuInfo()
+		menulist,menulist1=menu.GetMenu()
 		#userlist=UserList()
-		return render_template('index.html',username=session['username'].upper(),userlist=userlist,rolelist=rolelist)
+		return render_template('index.html',username=session['username'].upper(),userlist=userlist,rolelist=rolelist,menulist=menulist,menulist1=menulist1)
 	else:
 		return redirect(url_for('index_page'))
 
@@ -188,6 +191,42 @@ def remove_assign():
                 return jsonify(result)
         else:
                 return ''
+
+@app.route('/addmenu',methods=['POST','GET'])
+def addmenu():
+	if request.method == 'POST':
+		parent_menu=request.form['parent_menu']
+		menu_name=request.form['menu_name']
+		menu=MenuInfo()
+		menu.AddMenu(menu_name=menu_name,parent_menu=parent_menu)
+		result={'result':1}
+		return jsonify(result)
+	else:
+		return ''
+
+@app.route('/submenu',methods=['POST','GET'])
+def submenu():
+	if request.method == 'POST':
+		menuid=request.form['menuid']
+		menu=MenuInfo()
+		result=menu.SubMenu(menuid=menuid)
+		print result
+		return jsonify(result)
+	else:
+		return ''
+		
+		
+@app.route('/delmenu',methods=['POST','GET'])
+def delmenu():
+	if request.method == 'POST':
+		menuid=request.form['menuid']
+		pid=request.form['pid']
+		menu=MenuInfo()
+		result=menu.DelMenu(menuid=menuid,pid=pid)
+		print result
+		return jsonify(result)
+	else:
+		return ''
 		
 
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'

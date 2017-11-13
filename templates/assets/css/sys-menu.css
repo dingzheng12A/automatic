@@ -1,0 +1,38 @@
+#add_menu {
+	position:absolute;
+	width:756px;
+	height:auto;
+	border:2px solid;
+	z-index:1;
+	display:none;
+}
+
+#Layer_DelMenu {
+	position:absolute;
+	width:449px;
+	height:115px;
+	z-index:1;
+	display:none;
+	
+}
+#Layer_auth {
+	position:absolute;
+	width:449px;
+	height:115px;
+	z-index:1;
+	display:none;
+	
+}
+
+#authlist {
+	position:absolute;
+	left:30%;
+	top:20%;
+	border:2px solid #3366CC;
+	width:449px;
+	height:auto;
+	z-index:55;
+	display:none;
+	text-align:center;
+	background-color:#D2E9FF;
+}

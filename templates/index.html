@@ -25,7 +25,8 @@
 		<link rel="stylesheet" href="assets/css/ace.min.css" />
 		<link rel="stylesheet" href="assets/css/ace-rtl.min.css" />
 		<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
-
+		<link rel="stylesheet" href="assets/css/user-role.css" />
+		<link rel="stylesheet" href="assets/css/sys-menu.css" />
 		<!--[if lte IE 8]>
 		  <link rel="stylesheet" href="assets/css/ace-ie.min.css" />
 		<![endif]-->
@@ -35,982 +36,36 @@
 		<!-- ace settings handler -->
 
 		<script src="assets/js/ace-extra.min.js"></script>
-
+		<script src="assets/js/jquery-3.2.1.min.js"></script>
+		<script src="assets/js/sys_operation.js"></script>
 		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 
 		<!--[if lt IE 9]>
 		<script src="assets/js/html5shiv.js"></script>
 		<script src="assets/js/respond.min.js"></script>
 		<![endif]-->
-		<style type='text/css'>
-			div #add {
-				position:related;	
-				left:30;
-				top:0;
-			}
-			div .adduser {
-				position:related;	
-				left: 0;
-				top:0;
-				width:1247px;
-				display:none;
-				}
-				
-			div .deluser {
-				position:related;	
-				left: 0;
-				top:0;
-				width:1247px;
-				display:none;
-				}
-			
-			
-			div .addrole {
-				position:related;	
-				left: 0;
-				top:0;
-				width:1247px;
-				display:none;
-				}
-				
-				
-			div .delrole {
-				position:related;	
-				left: 0;
-				top:0;
-				width:1247px;
-				display:none;
-				}
-			.top {
-				position:absolute;
-				width:100%;
-				height:3000px;
-				top:0;
-				background-color:#000000;
-				filter:alpha(Opacity=50);
-				-moz-opacity:0.5;
-				opacity:0.5;
-				display:none;
-				z-index:50;
-			}
-			#Layer2 {
-				position:absolute;
-				width:526px;
-				height:auto;
-				background-color: #FFFFFF;
-				left: 30%;
-				top: 30%;
-				border:2px solid;
-				display:none;
-				z-index:55;
-			}
-		
-			#Layer_role {
-				position:absolute;
-				width:526px;
-				height:auto;
-				background-color: #FFFFFF;
-				left: 30%;
-				top: 30%;
-				border:2px solid;
-				display:none;
-				z-index:55;
-			}
-			
-			#Layer_assign {
-				position:absolute;
-				width:300px;
-				height:auto;
-				background-color: #FFFFFF;
-				left: 30%;
-				top: 30%;
-				border:2px solid;
-				display:none;
-				z-index:55;
-			}
-			
-			#Layer_remove {
-				position:absolute;
-				width:300px;
-				height:auto;
-				background-color: #FFFFFF;
-				left: 30%;
-				top: 30%;
-				border:2px solid;
-				display:none;
-				z-index:55;
-			}
-			
-			.resetpass {
-				position:absolute;
-				text-align:center;
-				top:20%;
-				left:30%;
-				width:auto;
-				height:auto;
-				background-color: #FFFFFF;
-				border:2px solid #ABF000;
-				display:none;
-				z-index:55;
-			}
-			.selected {
-				background-color:#c0ffd4;
-			}
-			
-			#tooltip{
-				position:absolute;
-				height:70px;
-				width:60px;
-				border:1px solid;
-				background-color:#FAFAFA;
-				filter:alpha(Opacity=70);
-				-moz-opacity:0.7;
-				opacity:0.7;
-				display:none;
-				
-			}
-			
-			
-			
-			#tooltip1{
-				position:absolute;
-				height:70px;
-				width:60px;
-				border:1px solid;
-				background-color:#FAFAFA;
-				filter:alpha(Opacity=70);
-				-moz-opacity:0.7;
-				opacity:0.7;
-				display:none;
-				
-			}
-</style>
-		<script language="JavaScript" type="text/javascript"src="/assets/js/jquery-3.2.1.min.js"></script>
-<script>
-$(document).ready(function(){
-	$("#quit").click(function(){
-		 $.ajax({
-                                type: 'get',
-                                url:'/logout',
-                                //data:{'username':username,'pwd':pwd},
-                                //cache:false,
-                                //dataType: 'json',
-								success: function(data){
-								window.location.href = "/";
-                                }
-                             
-		});
-	});
-	$("#settings").click(function(){
-		$(".top").css({"display":"block","opacity":"0.5"});
-		$(".resetpass").css("display","block");
-		$(".resetpass #oldpass").bind("input propertychange change",function(event){
-				var oldpass=$(".resetpass #oldpass").val();
-				var newpass=$(".resetpass #newpass").val();
-				var reptpass=$(".resetpass #reptpass").val();
-						
-				if (oldpass.length!=0&&newpass.length!=0&&(newpass==reptpass)){
-					$(".resetpass #modify").attr("disabled",false);
-				}else{
-					//	alert('xxxx');
-						$(".resetpass #modify").attr("disabled",true);
-				};
-		});
-		
-		$(".resetpass #newpass").bind("input propertychange change",function(event){
-				var oldpass=$(".resetpass #oldpass").val();
-				var newpass=$(".resetpass #newpass").val();
-				var reptpass=$(".resetpass #reptpass").val();
-						
-				if (oldpass.length!=0&&newpass.length!=0&&(newpass==reptpass)){
-					$(".resetpass #modify").attr("disabled",false);
-				}else{
-					//	alert('xxxx');
-						$(".resetpass #modify").attr("disabled",true);
-				};
-		});
-		
-		
-		$(".resetpass #reptpass").bind("input propertychange change",function(event){
-				var oldpass=$(".resetpass #oldpass").val();
-				var newpass=$(".resetpass #newpass").val();
-				var reptpass=$(".resetpass #reptpass").val();
-						
-				if (reptpass.length!=0){
-					$(".resetpass #modify").attr("disabled",false);
-				}else{
-					//	alert('xxxx');
-						$(".resetpass #modify").attr("disabled",true);
-				};
-		});
-		
-		$(".resetpass #reptpass").blur(function(event){
-				var oldpass=$(".resetpass #oldpass").val();
-				var newpass=$(".resetpass #newpass").val();
-				var reptpass=$(".resetpass #reptpass").val();
-						
-				if (newpass==reptpass){
-					$(".resetpass #modify").attr("disabled",false);
-				}else{
-						alert('两次输入的密码不一致！');
-						$(".resetpass #reptpass").val('');
-						$(".reptpass #reptpass").focus();
-						$(".resetpass #modify").attr("disabled",true);
-				};
-		});
-		
-		$(".resetpass #modify").click(function(event){
-				var username=$("#username").val();
-				var oldpass=$(".resetpass #oldpass").val();
-				var newpass=$(".resetpass #newpass").val();
-				$.ajax({
-                                type: 'post',
-                                url:'/resetpass',
-                                data:{'username':username,'oldpass':oldpass,'password':newpass},
-                                cache:false,
-                                dataType: 'json',
-								success: function(data){
-									if (data.result==0){
-										alert("原始密码不正确!");
-										$(".resetpass #oldpass").val('');
-										$(".resetpass #oldpass").focus();
-										$(".resetpass #modify").attr("disabled",true);
-									}else{
-										alert("密码修改成功,请重新登录.");
-										window.location.href='/';
-									}
-                                }
-                             
-				});	
-		});
-		$(".resetpass #cancle").click(function(event){
-				$(".top").hide();
-				$(".resetpass").hide();
-		});
-	
-	
-	});
-	//删除用户
-	$("#deluser").click(function(){
-		// $(".col-xs-12").html("添加用户");
-		var index=$("div .row #deluser").index(this);
-		$("div #deluser").eq(index).show()
-		.siblings().hide();
-	
-	});
-	
-	//添加用户
-	$("#adduser").click(function(){
-		// $(".col-xs-12").html("添加用户");
-		var index=$("div .row #adduser").index(this);
-		$("div #adduser").eq(index).show()
-		.siblings().hide();
-	
-	});
-
-	$("#add_btn").click(function(){
-		$(".top").css({"display":"block","opacity":"0.5"});
-		$("#Layer2").css("display","block");
-		$("#Layer2 #cancle").click(function(){
-			$(".top").hide();
-			$("#Layer2").hide();
-		});
-		
-		$("#Layer2 #username").bind("input propertychange change",function(event){
-				var username=$("#Layer2 #username").val();
-				var nicename=$("#Layer2 #nicename").val();
-				var passwd=$("#Layer2 #passwd").val();
-				var reptpass=$("#Layer2 #reptpass").val();
-				var email=$("#Layer2 #email").val();
-		
-				if (username.length!=0&& nicename.length!=0&&passwd.length!=0&&reptpass.length!=0&&email.length!=0&&(passwd==reptpass)){
-					$("#Layer2 #add").attr("disabled",false);
-				}else{
-					//	alert('xxxx');
-						$("#Layer2 #add").attr("disabled",true);
-				};
-		});
-		$("#Layer2 #nicename").bind("input propertychange change",function(event){
-				var username=$("#Layer2 #username").val();
-				var nicename=$("#Layer2 #nicename").val();
-				var passwd=$("#Layer2 #passwd").val();
-				var reptpass=$("#Layer2 #reptpass").val();
-				var email=$("#Layer2 #email").val();
-		
-				if (username.length!=0&& nicename.length!=0&&passwd.length!=0&&reptpass.length!=0&&email.length!=0&&(passwd==reptpass)){
-					$("#Layer2 #add").attr("disabled",false);
-				}else{
-					//	alert('xxxx');
-						$("#Layer2 #add").attr("disabled",true);
-				};
-		});
-		$("#Layer2 #passwd").bind("input propertychange change",function(event){
-				var username=$("#Layer2 #username").val();
-				var nicename=$("#Layer2 #nicename").val();
-				var passwd=$("#Layer2 #passwd").val();
-				var reptpass=$("#Layer2 #reptpass").val();
-				var email=$("#Layer2 #email").val();
-		
-				if (username.length!=0&& nicename.length!=0&&passwd.length!=0&&reptpass.length!=0&&email.length!=0&&(passwd==reptpass)){
-					$("#Layer2 #add").attr("disabled",false);
-				}else{
-					//	alert('xxxx');
-						$("#Layer2 #add").attr("disabled",true);
-				};
-		});
-		
-		$("#Layer2 #reptpass").blur(function(event){
-					var username=$("#Layer2 #username").val();
-					var nicename=$("#Layer2 #nicename").val();
-					var passwd=$("#Layer2 #passwd").val();
-					var reptpass=$("#Layer2 #reptpass").val();
-					var email=$("#Layer2 #email").val();
-		
-					/* if (username.length!=0&& nicename.length!=0&&passwd.length!=0&&reptpass.length!=0&&email.length!=0&&(passwd==reptpass)){
-						$("#Layer2 #add").attr("disabled",false);
-					}else{
-							alert("两次输入的密码不一致!");
-							$("#Layer2 #reptpass").focus();
-							$("#Layer2 #add").attr("disabled",true);
-					}; */
-					if(reptpass!=passwd){
-						alert("两次输入的密码不一致!");
-						$("#Layer2 #reptpass").focus();
-						
-						$("#Layer2 #add").attr("disabled",true);
-					}else{
-						$("#Layer2 #add").attr("disabled",false);
-					}
-			
-		});
-		
-		$("#Layer2 #email").bind("input propertychange change",function(event){
-				var username=$("#Layer2 #username").val();
-				var nicename=$("#Layer2 #nicename").val();
-				var passwd=$("#Layer2 #passwd").val();
-				var reptpass=$("#Layer2 #reptpass").val();
-				var email=$("#Layer2 #email").val();
-		
-				if (username.length!=0&& nicename.length!=0&&passwd.length!=0&&reptpass.length!=0&&email.length!=0&&(passwd==reptpass)){
-					$("#Layer2 #add").attr("disabled",false);
-				}else{
-					//	alert('xxxx');
-						$("#Layer2 #add").attr("disabled",true);
-				};
-		});
-		$("#Layer2 #add").click(function(){
-			var username=$("#Layer2 #username").val();
-			var nicename=$("#Layer2 #nicename").val();
-			var passwd=$("#Layer2 #passwd").val();
-			var reptpass=$("#Layer2 #reptpass").val();
-			var email=$("#Layer2 #email").val();
-			if (username.length==0|| nicename.length==0||passwd.length==0||reptpass.length==0||email.length==0){
-				alert("用户名和密码不能为空!");
-				$("#Layer2 #add").attr("disabled",true);
-			}else{
-				if(passwd!=reptpass)
-				{alert("两次输入的密码不一致");$("#reptpass").focus();$("#Layer2 #add").attr("disabled",true);}
-				else{$("#Layer2 #add").attr("disabled",false);}
-			};
-			
-			
-		
-			$.ajax({
-                                type: 'post',
-                                url:'/adduser',
-                                data:{'username':username,'nickname':nicename,'passwd':passwd,'email':email,},
-                                cache:false,
-                                dataType: 'json',
-                                success: function(data){
-										if (data['result']==1){
-											alert("添加用户成功！");
-											$(".top").hide();
-											$("#Layer2").hide();
-											$("#userarea").append("<tr border='1'><td width='6%' align='center' bgcolor='#F0F0F0'></td><td width='6%' align='center' bgcolor='#F0F0F0'>"+username+"</td><td width='14%' align='center' bgcolor='#F0F0F0'>"+email+"</td><td width='21%' align='center' bgcolor='#F0F0F0'>启用</td><td width='53%' align='center' bgcolor='#F0F0F0'>修改密码:<input type='password' id='resetpass' name='resetpass' placeholder='重置密码'/>启用/禁用:<input type='checkbox' checked id='enable'>&nbsp;&nbsp;&nbsp;&nbsp;<input type='button' id='commit' name='commit' value='修改'></td></tr>");
-											//window.location.href='/main';
-											
-											
-										}else {
-											alert("用户已经存在！");
-											$("#username").val('');
-											$("#nickname").val('');
-											$("#passwd").val('');
-											$("#reptpass").val('');
-											$("#email").val('');
-											$("#username").focus();
-											$("#Login").attr("disabled",true);
-										}
-                                        //window.location.href = msg.url;
-
-                                }
-			});
-		});
-		
-	
-	
-		});
-		
-		
-		
-		// 表格处理
-/*		 $("table tr").each(function(){
-			var id=$(this).children('td:eq(0)').text();
-			$(this).click(function(){
-				 $(this).addClass("selected")
-				 .siblings().removeClass('selected');
-				 $(this).find("#commit").attr("disabled",false)
-				 .siblings().find("#resetpass").attr("disabled",true);
-				 $(this).siblings().attr("disabled","disabled");
-				 console.log($(this).html());
-			})
-		});
-*/
-		//删除用户
-		
-		$("#deluser table tr").click(function(){
-			var $siblings = $(this).siblings('tr');
-			$siblings.removeClass("selected").find('input[id="del_single"]').prop('disabled', true);
-			$(this).addClass('selected').find('input[id="del_single"]').prop('disabled', false);
-			
-			
-		})
-		
-		$("#deluser table tr").find("#del_single").click(function(){
-			var request=confirm("是否删除用户?");
-			var $position=$(this).parent().parent();
-			var userId=$(this).parent().siblings().find("#id").val();
-			if(request==true){
-				$.ajax({
-                        type: 'post',
-                        url:'/deluser',
-                        data:{'userlist':userId},
-                        cache:false,
-                        dataType: 'json',
-						success: function(data){
-							$position.hide();
-							alert("用户已经删除!");
-						
-                        }
-                     
-				});
-			};
-			
-			
-		});
-		var num=0;
-		var userarray=new Array();
-		$("#deluser table tr").each(function(){
-			var $id=$(this).children("td:eq(0)").find("input");
-			$(this).click(function(){
-			if ($id.is(":checked")){
-				num+=1;
-				userarray[num]=$id.val();
-				console.log('点击次数:'+num);
-				
-			
-			}else{
-				num-=1;
-				userarray.splice(num,1);
-				console.log('点击次数:'+num);
-						
-			}
-			if(num>0){
-				$("#deluser #del_btn").attr("disabled",false);
-			}else{
-				$("#deluser #del_btn").attr("disabled",true);
-			}
-			
-				
-			});
-			
-			
-		})
-		//批量删除用户
-		$("#deluser #del_btn").click(function(){
-			console.log(userarray);
-			console.log('点击次数:'+num);
-			var request=confirm("是否删除用户?");
-			if(request==true){
-			$.ajax({
-                type: 'post',
-                url:'/deluser',
-                data:{'userlist':userarray.join(',')},
-                cache:false,
-                dataType: 'json',
-				success: function(data){
-				//	$position.hide();
-					alert("用户已经删除!");
-					$("#deluser table tr").each(function(){
-						var $id=$(this).children("td:eq(0)").find("input");
-						if ($id.is(":checked")){
-							$id.parent().parent().hide();
-						}
-			
-					
-			
-			
-					})
-				
-                }
-                     
-			});
-			}
-			
-		});
-		
-		//删除角色
-		
-		$("#delrole table tr").click(function(){
-			var $siblings = $(this).siblings('tr');
-			$siblings.removeClass("selected").find('input[id="delrole_commit"]').prop('disabled', true);
-			$(this).addClass('selected').find('input[id="delrole_commit"]').prop('disabled', false);
-			
-			
-		})
-		
-		$("#delrole table tr").find("#delrole_commit").click(function(){
-			var container_users=$(this).parent().parent().children("td:eq(3)").text();
-			var $position=$(this).parent().parent();
-			var roleId=$(this).parent().siblings().find("#role_id").val();
-			if(container_users.length>0){
-				alert("角色中包含用户，不能删除!");}
-			else{	
-			var request=confirm("是否删除角色?");
-			
-			
-			if(request==true){
-					$.ajax({
-                        type: 'post',
-                        url:'/delrole',
-                        data:{'rolelist':roleId},
-                        cache:false,
-                        dataType: 'json',
-						success: function(data){
-							$position.hide();
-							alert("角色已经删除!");
-						
-                        }
-                     
-					});
-			};
-			};
-			
-			
-		});
-		var click_num=0;
-		var rolearray=new Array();
-		$("#delrole table tr").each(function(){
-		
-			var $id=$(this).children("td:eq(0)").find("input");
-			$(this).click(function(){
-			if ($id.is(":checked")){
-				click_num+=1;
-				rolearray[click_num]=$id.val();
-				console.log('点击次数:'+click_num);
-				
-				
-			
-			}else{
-				click_num-=1;
-				userarray.splice(click_num,1);
-				console.log('点击次数:'+click_num);
-						
-			}
-			if(click_num>0){
-				$("#delrole #del_btn").attr("disabled",false);
-			}else{
-				$("#delrole #del_btn").attr("disabled",true);
-			}
-			
-				
-			});
-			
-			
-		})
-		//批量删除角色
-		$("#delrole #del_btn").click(function(){
-			console.log(rolearray);
-			console.log('点击次数:'+click_num);
-			var request=confirm("是否删除角色?");
-			if(request==true){
-			$.ajax({
-                type: 'post',
-                url:'/delrole',
-                data:{'rolelist':rolearray.join(',')},
-                cache:false,
-                dataType: 'json',
-				success: function(data){
-				//	$position.hide();
-					alert("角色已经删除!");
-					$("#delrole table tr").each(function(){
-						var $id=$(this).children("td:eq(0)").find("input");
-						if ($id.is(":checked")){
-							$id.parent().parent().hide();
-						}
-						click_num=0;
-			
-					
-			
-			
-					})
-				
-                }
-                     
-			});
-			}
-			
-		});
-		
-		
-		
-		//添加用户
-		$("#adduser table tr").click(function(){
-			var $siblings = $(this).siblings('tr');
-			$siblings.removeClass("selected").find('input').prop('disabled', true);
-			$(this).addClass('selected').find('input').prop('disabled', false);
-	
-			
-		})
-		
-		
-		
-		$("#adduser table tr").find("#commit").click(function(){
-			var $position=$(this).parent().parent();
-			var $newpass=$(this).parent().find("#resetpass").val();
-			var $status=$(this).parent().find("#enable");
-			var $username=$(this).parent().parent().children("td:eq(1)").text();
-			console.log("username:"+$username);
-			if($status.is(":checked")){
-				var enable=1;
-				var status="启用";
-			}else{
-				var enable=0;
-				var status="禁用";
-			}
-			if($newpass.length==0){
-					$.ajax({
-                        type: 'post',
-                        url:'/setpass',
-                        data:{'username':$username,'status':enable},
-                        cache:false,
-                        dataType: 'json',
-						success: function(data){
-							alert("用户修改成功!");
-							
-							$position.children("td:eq(3)").text(status);
-                        }
-                     
-					});
-			
-			}else{
-			
-				$.ajax({
-                        type: 'post',
-                        url:'/setpass',
-                        data:{'username':$username,'pwd':$newpass,'status':enable},
-                        cache:false,
-                        dataType: 'json',
-						success: function(data){
-							alert("用户修改成功!");
-							$position.children("td:eq(3)").text(status);
-                        }
-                     
-				});
-		
-					
-			}
-		});
-		
-	//添加角色
-	$("#addrole").click(function(){
-		// $(".col-xs-12").html("添加用户");
-		var index=$("div .row #addrole").index(this);
-		$("div #addrole").eq(index).show()
-		.siblings().hide();
-	
-	});
-	$("#addrole_btn").click(function(){
-		$(".top").css({"display":"block","opacity":"0.5"});
-		$("#Layer_role").css("display","block");
-		$("#Layer_role #cancle").click(function(){
-			$(".top").hide();
-			$("#Layer_role").hide();
-		});
-		$("#Layer_role #rolename").bind("input propertychange change",function(event){
-				var rolename=$("#Layer_role #rolename").val();
-				var role_desc=$("#Layer_role #role_desc").val();
-			
-		
-				if (rolename.length!=0&& role_desc.length!=0){
-					$("#Layer_role #add").attr("disabled",false);
-				}else{
-					//	alert('xxxx');
-					$("#Layer_role #add").attr("disabled",true);
-				};
-		});
-		
-		$("#Layer_role #role_desc").bind("input propertychange change",function(event){
-				var rolename=$("#Layer_role #rolename").val();
-				var role_desc=$("#Layer_role #role_desc").val();
-			
-		
-				if (rolename.length!=0&& role_desc.length!=0){
-					$("#Layer_role #add").attr("disabled",false);
-				}else{
-					//	alert('xxxx');
-					$("#Layer_role #add").attr("disabled",true);
-				};
-		});
-		$("#Layer_role #add").click(function(){
-			var rolename=$("#Layer_role #rolename").val();
-			var role_desc=$("#Layer_role #role_desc").val();
-			if (rolename.length==0||role_desc.length==0){
-				alert("角色和描述信息都不能为空!");
-				$("#Layer_role #add").attr("disabled",true);
-			}
-			
-		
-			$.ajax({
-                                type: 'post',
-                                url:'/addrole',
-                                data:{'rolename':rolename,'role_desc':role_desc},
-                                cache:false,
-                                dataType: 'json',
-                                success: function(data){
-										if (data['result']==1){
-											alert("添加用户成功！");
-											$(".top").hide();
-											$("#Layer_role").hide();
-											$("#rolearea").append("<tr border='1'><td width='6%' align='center' bgcolor='#F0F0F0'></td><td width='6%' align='center' bgcolor='#F0F0F0'>"+rolename+"</td><td width='14%' align='center' bgcolor='#F0F0F0'>"+role_desc+"</td><td width='21%' align='center' bgcolor='#F0F0F0'>没有任何用户</td><td width='53%' align='center' bgcolor='#F0F0F0'><img  src='/images/add_btn.jpg' id='assign' name='assign' height='20' width='20'>&nbsp;&nbsp;&nbsp;<img src='/images/remove.jpg' id='remove' name='remove' height='20' width='20'></td></tr>");
-											//window.location.href='/main';
-											
-											
-										}else {
-											alert("用户已经存在！");
-											$("#username").val('');
-											$("#nickname").val('');
-											$("#passwd").val('');
-											$("#reptpass").val('');
-											$("#email").val('');
-											$("#username").focus();
-											$("#Login").attr("disabled",true);
-										}
-                                        //window.location.href = msg.url;
-
-                                }
-			});
-		});
-	
-		
-	});	
-	$("table tr").each(function(){
-		var $position=$(this);
-		var $assign=$(this).find("#assign");
-		var $remove=$(this).find("#remove")
-		$assign.mouseover(function(e){
-			$assign.css({"height":22,'width':22,'border':'1px solid'});
-			var $tooltip="<div id='tooltip'>将用户添加到角色。</div>"
-			var xx = e.originalEvent.x || e.originalEvent.layerX || 0; 
-			var yy = e.originalEvent.y || e.originalEvent.layerY || 0;
-			$("body").append($tooltip);
-			$("#tooltip").show();
-			$("#tooltip").css({'top':yy+2+'px','left':xx+1+'px'})
-		}).mouseout(function(e){
-			$("#tooltip").hide();
-			$assign.css({"height":20,'width':20,'border':0});
-		});
-		
-		
-		
-		//remove function
-		$remove.mouseover(function(e){
-			$remove.css({"height":22,'width':22,'border':'1px solid'});
-			
-			var $tooltip1="<div id='tooltip1'>将用户从角色中移除。</div>"
-			var xx = e.originalEvent.x || e.originalEvent.layerX || 0; 
-			var yy = e.originalEvent.y || e.originalEvent.layerY || 0;
-			$("body").append($tooltip1);
-			$("#tooltip1").show();
-			$("#tooltip1").css({'top':yy+2+'px','left':xx+1+'px'})
-		}).mouseout(function(e){
-			$("#tooltip1").hide();
-			$remove.css({"height":20,'width':20,'border':0});
-		});
-		
-		
-		//关联用户
-		var container_users=$position.children("td:eq(3)").text();
-		//var current_user='';
-		var current_user=container_users;
-		$assign.click(function(){
-			//alert(current_user);
-			$("#userassign tbody").find("#current_user").val(current_user);
-			//var $rolename=$assign.parent().parent().children("td:eq(1)").text();
-			$(".top").css({"display":"block","opacity":"0.5"});
-			$("#Layer_assign").css("display","block");
-			$("#Layer_assign #cancle").click(function(){
-				$(".top").hide();
-			//	$("#userassign tbody").children("tr:eq(0)").children("td:eq(1)").text($rolename);
-				$("#Layer_assign").hide();
-			});
-			$("#Layer_assign #add").click(function(){
-			//	$(".top").hide();
-			//	$("#userassign tbody").children("tr:eq(0)").children("td:eq(1)").text($rolename);
-				var select_user=$("#userassign tbody").find("#select_user").val();
-				//if(current_user.indexOf(select_user)<0){
-				//	current_user+=select_user+',';
-				//}
-				if(current_user.indexOf(select_user)<0){
-					current_user+=select_user;
-					current_user+=',';
-				}
-				
-				$("#userassign tbody").find("#current_user").val(current_user);
-				//$("#Layer_assign").hide(current_user);
-			});
-			var rolename=$position.children("td:eq(1)").text();
-			var roleid=$position.children("td:eq(0)").text();
-			//var userlist=$("#userassign tbody").find("#current_user").val();
-			$("#Layer_assign #confirm").click(function(){
-					var userlist=$("#userassign tbody").find("#current_user").val();
-					console.log(userlist);
-					$.ajax({
-                                type: 'post',
-                                url:'/assign',
-                                data:{'userlist':userlist,'roleid':roleid,'rolename':rolename},
-                                cache:false,
-                                dataType: 'json',
-								success: function(data){
-									alert('success!');
-									if(data.result==1){
-										$(".top").hide();
-										$("#Layer_assign").hide();
-										var selected=$("table tr[class='selected']");
-										var index=selected.index();
-										$("table[id='rolearea'] tr:eq("+index+")").children("td:eq(3)").text(userlist);
-										
-									}
-								}
-                             
-					});
-			});
-			
-		})
-		
-		
-		//移除关联
-		
-		
-		
-		$remove.click(function(){
-			//$("#userassign tbody").find("#current_user").val(current_user);
-			//var $rolename=$assign.parent().parent().children("td:eq(1)").text();
-			var selected=$("table tr[class='selected']");
-			var index=selected.index();
-			var spare_users=$("table[id='rolearea'] tr:eq("+index+")").children("td:eq(3)").text();
-			console.log(spare_users.length);
-			if(spare_users.length>0){
-			$(".top").css({"display":"block","opacity":"0.5"});
-			$("#Layer_remove").css("display","block");
-			var selected=$("table tr[class='selected']");
-			var index=selected.index();
-			var spare_users=$("table[id='rolearea'] tr:eq("+index+")").children("td:eq(3)").text();
-			$("#userassign tbody").find("#rm_current_user").val(spare_users);
-			$("#Layer_remove #cancle").click(function(){
-				$(".top").hide();
-			//	$("#userassign tbody").children("tr:eq(0)").children("td:eq(1)").text($rolename);
-				$("#Layer_remove").hide();
-			});
-			$("#Layer_remove #remove_assign").click(function(){
-			
-				var currentUser = $("#userassign tbody").find("#rm_current_user");
-				var spare_user=currentUser.val();
-				var select_user=$("#userassign tbody").find("#rm_select_user").val();
-				// 从当前用户中删除选择的用户
-				var newItemStr = removeSelectItem(select_user, spare_user.split(','));
-				
-				currentUser.val(newItemStr);
-				
-				
-				
-				$("#Layer_remove #confirm").click(function(){
-					var currentUser=newItemStr;
-					var rolename=$position.children("td:eq(1)").text();
-					var roleid=$position.children("td:eq(0)").text();
-					var request=confirm("确定要移除用户吗?")
-					if(request==true){
-						$.ajax({
-                                type: 'post',
-                                url:'/remove_assign',
-                                data:{'current_user':currentUser,'roleid':roleid},
-                                cache:false,
-                                dataType: 'json',
-								success: function(data){
-									alert('success!');
-									$(".top").hide();
-									$("#Layer_remove").hide();
-									var selected=$("table tr[class='selected']");
-									var index=selected.index();
-									$("table[id='rolearea'] tr:eq("+index+")").children("td:eq(3)").text(currentUser);
-								}
-                             
-						});
-					}
-			});
-				
-			});
-			}
-			
-		})
-		
-		// 从当前用户中删除选择的用户
-		function removeSelectItem(item, itemArr){
-			var i,len= itemArr.length,index;
-			for(i=0;i<len;i++){
-				if(item == itemArr[i]){
-					index = i;break;
-				}
-			}
-			if(index !== undefined){
-				itemArr.splice(index,1);
-			}
-			
-			return itemArr.join(',');
-		}
-		
-		$("table[id='rolearea'] tr").mouseover(function(){
-			var $siblings = $(this).siblings('tr');
-			$siblings.removeClass("selected").find('input[id="del_single"]').prop('disabled', true);
-			$(this).addClass('selected').find('input[id="del_single"]').prop('disabled', false);
-			
-			
-		})
-		
-		
-		
-		
-		
-			
-	});
-	
-	
-	//删除角色
-	$("#delrole").click(function(){
-		// $(".col-xs-12").html("添加用户");
-		var index=$("div .row #delrole").index(this);
-		$("div #delrole").eq(index).show()
-		.siblings().hide();
-	
-	});
 
 
-})
-</script>
 	</head>
 
 	<body>
 	<div class='top'>
 	</div>
+<!-- 分配权限 -->
+<div  id='authlist'>
+<table border='1' id='autharea'>
+{%for menu in menulist%}
+<tr>
+<td colspan="2"><li><span id='li_parent_menu'>{{menu.name}}<input type="checkbox" id="p_menu_{{menu.id}}" value="{{menu.id}}"></span><hr /><ul>{%for menu1 in menulist1%}{%if menu1.parent_id==menu.id%}<li>{{menu1.name}}<input type="checkbox" id="sub_menu_{{menu1.id}}" value="{{menu1.id}}"></span></li>{%endif%}{%endfor%}</ul></li></td>
+</tr>
+{%endfor%}
+<tr>
+  <td width="154"><input name="Confirm" type="button" id="Confirm" value="确定" /></td>
+  <td width="277"><input name="Cancle" type="button" id="Cancle" value="取消" /></td>
+</tr>
+</table>
+</div>
+<!-- 重置密码 -->
 	<div  class="resetpass">
   <table width="23%" border="1" align="center" cellspacing="0" cellpadding="0"  >
     <tr>
@@ -1484,7 +539,7 @@ $(document).ready(function(){
 									<li>
 									<a href="#">
 										<i class="icon-double-angle-right"></i>
-										分配权限									</a>								</li> 
+										<span id="alloc_auth">分配权限</span>									</a>								</li> 
 
 						
 						
@@ -1521,14 +576,43 @@ $(document).ready(function(){
 								<li>
 									<a href="#">
 										<i class="icon-double-angle-right"></i>
-										添加菜单									</a>								</li>
+										<span id="Add_Menu">添加菜单</span>									</a>								</li>
 
 								<li>
 									<a href="#">
 										<i class="icon-double-angle-right"></i>
-										删除菜单								</a>								</li>
+										<span id="Del_Menu">删除菜单</span>								</a>								</li>
+								<li>
+									<a href="#">
+										<i class="icon-double-angle-right"></i>
+										编辑菜单								</a>								</li>
 							</ul>
 						</li>
+						{% for menu in menulist %}
+							{% if menu.id > 5 %}
+							<li id='menu_{{menu.id}}'>
+							<a href="#" class="dropdown-toggle">
+								<i class="icon-list"></i>
+								<span class="menu-text"> {{menu.name}} </span>
+
+								<b class="arrow icon-angle-down"></b>							</a>
+
+							<ul class="submenu">
+							{% for menu1 in menulist1 %}
+
+
+							{% if menu1.parent_id==menu.id %}
+							<li>
+									<a href="#">
+										<i class="icon-double-angle-right"></i>
+										{{menu1.name}}									</a>								</li>
+							{%endif%}
+							{%endfor%}
+							</ul>
+						</li>
+							{%endif%}
+						{%endfor%}
+						<span id='add_a_new'></span>
 
 						<li></li>
 
@@ -1641,6 +725,100 @@ $(document).ready(function(){
 						</div><!-- /.page-header -->
 
 						<div class="row">
+						<!-- 分配权限 -->
+						<div id="Layer_auth">
+  <table width="72%" height="261" border="1" align="center">
+    <tr>
+      <td height="46" colspan="2"><span class="STYLE3">&nbsp;分配权限</span></td>
+    </tr>
+    <tr>
+      <td width="41%" height="71"><span class="STYLE2">角色列表
+          <select name="rolelist" id="rolelist">
+		  {%if rolelist%}
+		  {% for role in rolelist%}
+		  <option value='{{role.id}}'>{{role.name}}</option>
+		  {%endfor%}
+		  {%endif%}
+		  </select>
+      </span></td>
+      <td width="59%"><input name="alloc_auth_btn" type="button" id="alloc_auth_btn" value="分配权限" /></td>
+    </tr>
+
+    <tr>
+      <td height="96" colspan="2">&nbsp;</td>
+    </tr>
+  </table>
+</div>
+						<!-- 删除菜单 -->
+						<div id="Layer_DelMenu">
+  <table width="72%" height="261" border="1" align="center">
+    <tr>
+      <td height="46"><span class="STYLE2">删除菜单</span></td>
+    </tr>
+    <tr>
+      <td height="71"><span class="STYLE2">父菜单
+          
+			<select name="parent_menu" id="parent_menu">
+			{%for menu in menulist%}
+			<option value='{{menu.id}}'>{{menu.name}}</option>
+			{%endfor%}
+        </select>        
+        <input name="del_p_menu" type="button" id="del_p_menu" value="删除父菜单" />
+      </span></td>
+    </tr>
+
+    <tr>
+      <td height="96"><span class="STYLE2">子菜单
+          <select name="child_menu" id="child_menu">
+          </select>      
+          <input type="button" name="del_c_menu" id="del_c_menu" value="删除子菜单" />
+      </span></td>
+    </tr>
+  </table>
+</div>
+							<!-- 添加菜单 -->
+							<div id="add_menu">
+  <table width="92%" height="175" border="1">
+    <tr>
+      <td colspan="5"><div align="center">添加菜单</div></td>
+    </tr>
+    <tr>
+      <td width="10%">上级菜单</td>
+      <td colspan="4"><select name="add_parent_menu" id="add_parent_menu">
+	   <option value=1>/root</option>
+	  {%for menu in menulist%}
+	  <option value='{{menu.id}}'>{{menu.name}}</option>
+	  {%endfor%}
+      </select>      </td>
+    </tr>
+    <tr>
+      <td>菜单名称</td>
+      <td colspan="4"><input name="menu_name" type="text" id="menu_name" /></td>
+    </tr>
+    <tr>
+      <td>url地址</td>
+      <td colspan="4"><input name="url" type="text" id="url" /></td>
+    </tr>
+    <tr>
+      <td>显示顺序</td>
+      <td colspan="4"><input type="text" name="textfield" /></td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td width="25%">&nbsp;</td>
+      <td width="44%">&nbsp;</td>
+      <td width="10%">&nbsp;</td>
+      <td width="11%">&nbsp;</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td><input name="confirm" type="button" id="confirm" value="确定" disabled /></td>
+      <td><input name="cancle" type="button" id="cancle" value="取消" /></td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+  </table>
+</div>
 							<!-- 删除用户 -->
 							<div id='deluser' class="deluser">
 								<div id='add'><input name='del_btn' type='button' id='del_btn' value='批量删除用户' disabled/></div>
@@ -2693,6 +1871,8 @@ $(document).ready(function(){
 
 		<!-- <![endif]-->
 
+		
+</script>
 		<!--[if IE]>
 <script type="text/javascript">
  window.jQuery || document.write("<script src='assets/js/jquery-1.10.2.min.js'>"+"<"+"script>");
