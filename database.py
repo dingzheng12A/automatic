@@ -60,6 +60,7 @@ class Menu(db.Model):
         parent_id=db.Column(db.Integer,index=True)
         url=db.Column(db.String(64))
 	sort=db.Column(db.Integer)
+	span_id=db.Column(db.String(64))
         create_time=db.Column(db.DateTime,default=datetime.datetime.now())
 
 	def __repr__(self):

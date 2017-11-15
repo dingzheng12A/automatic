@@ -18,7 +18,7 @@ class MenuInfo:
 	def GetMenu(self):
 		#sql="select a.id as id,a.name as name,a.parent_id,group_concat(b.name) submenu from sys_menu a left join sys_menu b on a.id=b.parent_id  group by a.id  having a.parent_id=1;"
 		sql="select id,name from sys_menu where parent_id=1"
-		sql2="select id,name,parent_id from sys_menu"
+		sql2="select id,name,parent_id,span_id from sys_menu"
 		try:
 			result=engine.execute(sql).fetchall()
 			result2=engine.execute(sql2).fetchall()
@@ -59,14 +59,25 @@ class MenuInfo:
 			pid=kwargs['pid']
 		if 'menuid' in kwargs:
                         menuid=kwargs['menuid']
-		sql="delete from sys_menu where id=%s" %(menuid)
-		engine.execute(sql)
-		sql="select id,name from sys_menu where parent_id=%s" % pid
-		result=engine.execute(sql).fetchall()
-                newresult=[]
-                for res in result:
-                        newresult.append({'id':res.id,'name':res.name})
-                return newresult
+		print 'pid:%s menuid:%s' %(pid,menuid)
+		if len(menuid)>0 and len(pid)>0:
+			sql="delete from sys_menu where id=%s" %(menuid)
+			engine.execute(sql)
+			sql="select id,name from sys_menu where parent_id=%s" % pid
+			result=engine.execute(sql).fetchall()
+                	newresult=[]
+                	for res in result:
+                        	newresult.append({'id':res.id,'name':res.name})
+                	return newresult
+		else:
+			sql="delete from sys_menu where id=%s" %(pid)
+                        engine.execute(sql)
+                        sql="select id,name from sys_menu where parent_id=1"
+                        result=engine.execute(sql).fetchall()
+                        newresult=[]
+                        for res in result:
+                                newresult.append({'id':res.id,'name':res.name})
+                        return newresult
 
 a=MenuInfo()
 print a.GetMenu()

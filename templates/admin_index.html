@@ -483,66 +483,63 @@
 							<span class="btn btn-warning"></span>
 
 							<span class="btn btn-danger"></span>						</div>
-					</div>
-		
+					</div><!-- #sidebar-shortcuts -->
+
 					<ul class="nav nav-list">
-					
 						<li class="active">
 							<a href="#">
 								<i class="icon-dashboard"></i>
 								<span class="menu-text"> 控制台 </span>							</a>						</li>
-						<!--
-						{%for ids in idslist%}
-						<li>
-							{%if ids|int==2%}<a href="#" class="dropdown-toggle">
-								<i class="icon-text-width"></i>
-							<span class="menu-text">用户管理</span></a>	{%endif%}					
-							<ul class="submenu">
-								{%if ids|int==21%}<li>
-									<a href="#">
-										<i class="icon-double-angle-right"></i>
-										<span id="adduser">添加用户</span>									</a>								</li>{%endif%}
 
-								{%if ids|int==22%}<li>
+						<li>
+							<a href="#" class="dropdown-toggle">
+								<i class="icon-text-width"></i>
+							<span class="menu-text">用户管理</span></a>						
+							<ul class="submenu">
+								<li>
 									<a href="#">
 										<i class="icon-double-angle-right"></i>
-										<span id="deluser">删除用户	</span>								</a>								</li>{%endif%}
-								{%if ids|int==23%}<li>
+										<span id="adduser">添加用户</span>									</a>								</li>
+
+								<li>
 									<a href="#">
 										<i class="icon-double-angle-right"></i>
-										<span id="associate">关联到角色</span>									</a>								</li>{%endif%}
+										<span id="deluser">删除用户	</span>								</a>								</li>
+								<li>
+									<a href="#">
+										<i class="icon-double-angle-right"></i>
+										<span id="associate">关联到角色</span>									</a>								</li>
 
 								<li>
 							</ul></li>
 
-						
 						<li>
-							{%if ids|int==3%}<a href="#" class="dropdown-toggle">
+							<a href="#" class="dropdown-toggle">
 								<i class="icon-desktop"></i>
 								<span class="menu-text"> 角色管理 </span>
 
-								<b class="arrow icon-angle-down"></b>							</a>{%endif%}
+								<b class="arrow icon-angle-down"></b>							</a>
 
 							<ul class="submenu">
-								{%if ids|int==31%}<li>
+								<li>
 									<a href="#">
 										<i class="icon-double-angle-right"></i>
-										<span id="addrole">添加角色</span>								</a>								</li>{%endif%}
-
-								{%if ids|int==32%}<li>
-									<a href="#">
-										<i class="icon-double-angle-right"></i>
-										<span id="delrole">删除角色</span>									</a>								</li>{%endif%}
+										<span id="addrole">添加角色</span>								</a>								</li>
 
 								<li>
 									<a href="#">
 										<i class="icon-double-angle-right"></i>
-										关联到用户									</a>								</li>
-
-								{%if ids|int==33%}<li>
+										<span id="delrole">删除角色</span>									</a>								</li>
+<!--
+								<li>
 									<a href="#">
 										<i class="icon-double-angle-right"></i>
-										<span id="alloc_auth">分配权限</span>									</a>								</li>{%endif%} 
+										关联到用户									</a>								</li> -->
+
+									<li>
+									<a href="#">
+										<i class="icon-double-angle-right"></i>
+										<span id="alloc_auth">分配权限</span>									</a>								</li> 
 
 						
 						
@@ -550,22 +547,22 @@
 						</li>
 
 						<li>
-							{%if ids|int==4%}<a href="#" class="dropdown-toggle">
+							<a href="#" class="dropdown-toggle">
 								<i class="icon-list"></i>
 								<span class="menu-text"> 权限管理 </span>
 
-								<b class="arrow icon-angle-down"></b>							</a>{%endif%} 
+								<b class="arrow icon-angle-down"></b>							</a>
 
 							<ul class="submenu">
-								{%if ids|int==41%}<li>
+								<li>
 									<a href="#">
 										<i class="icon-double-angle-right"></i>
-										添加权限									</a>								</li>{%endif%} 
+										添加权限									</a>								</li>
 
-								{%if ids|int==42%}<li>
+								<li>
 									<a href="#">
 										<i class="icon-double-angle-right"></i>
-										删除权限									</a>								</li>{%endif%} 
+										删除权限									</a>								</li>
 							</ul>
 						</li>
 						<li>
@@ -591,23 +588,14 @@
 										编辑菜单								</a>								</li>
 							</ul>
 						</li>
-						{%endfor%}
-						-->
-						
 						{% for menu in menulist %}
-							
-					
-							{%for ids in idslist%}
-			
-							{%if menu.id==ids|int %}
+							{% if menu.id > 5 %}
 							<li id='menu_{{menu.id}}'>
 							<a href="#" class="dropdown-toggle">
 								<i class="icon-list"></i>
 								<span class="menu-text"> {{menu.name}} </span>
 
 								<b class="arrow icon-angle-down"></b>							</a>
-							{%endif%}
-							{%endfor%}
 
 							<ul class="submenu">
 							
@@ -615,21 +603,17 @@
 
 
 							{% if menu1.parent_id==menu.id %}
-							{%for ids in idslist%}
-								{%if menu.id==ids|int %}
 							
 							<li>
 									<a href="#">
 										<i class="icon-double-angle-right"></i>
-										<span id='{{menu1.span_id}}'>{{menu1.name}}</span>
+										{{menu1.name}}
 									</a>								</li>
-								{%endif%}
-							{%endfor%}
 							{%endif%}
 							{%endfor%}
 							</ul>
 						</li>
-						
+							{%endif%}
 						{%endfor%}
 						<span id='add_a_new'></span>
 

@@ -104,6 +104,19 @@ class User:
                 db.session.commit()
             except Exception,e:
                 raise ('has error',e)
+
+	def GetIds(self,**kwargs):
+		username=''
+		if 'username' in kwargs:
+			username=kwargs['username']
+		sql="select group_concat(c.ids) as ids from users  a join role_user b  join sys_role_auth c where a.id=b.uid and b.roleid=c.roleid and a.username='%s' group by a.id;" % username
+		idslist=engine.execute(sql).first() 
+		result=[]
+		Idslist=idslist.ids.encode('unicode-escape').decode('string_escape')
+		for ids in Idslist.split(','):
+			result.append(ids)
+		print "sql:%s idslist:%s user:%s" %(sql,result,username)
+		return result
 		
 			
 class Role:
@@ -165,5 +178,7 @@ class RoleUser:
 			print 'has error:%s' % e
 			result={'result':0}
 		return result
+
+
 
 

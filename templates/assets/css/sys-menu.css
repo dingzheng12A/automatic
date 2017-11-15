@@ -33,6 +33,9 @@
 	height:auto;
 	z-index:55;
 	display:none;
-	text-align:center;
+	text-align:left;
 	background-color:#D2E9FF;
+}
+td{
+	
 }

@@ -23,7 +23,7 @@ $(document).ready(function(){
 				if (oldpass.length!=0&&newpass.length!=0&&(newpass==reptpass)){
 					$(".resetpass #modify").attr("disabled",false);
 				}else{
-					//	alert('xxxx');
+					
 						$(".resetpass #modify").attr("disabled",true);
 				};
 		});
@@ -36,7 +36,7 @@ $(document).ready(function(){
 				if (oldpass.length!=0&&newpass.length!=0&&(newpass==reptpass)){
 					$(".resetpass #modify").attr("disabled",false);
 				}else{
-					//	alert('xxxx');
+					
 						$(".resetpass #modify").attr("disabled",true);
 				};
 		});
@@ -50,7 +50,7 @@ $(document).ready(function(){
 				if (reptpass.length!=0){
 					$(".resetpass #modify").attr("disabled",false);
 				}else{
-					//	alert('xxxx');
+				
 						$(".resetpass #modify").attr("disabled",true);
 				};
 		});
@@ -137,7 +137,7 @@ $(document).ready(function(){
 				if (username.length!=0&& nicename.length!=0&&passwd.length!=0&&reptpass.length!=0&&email.length!=0&&(passwd==reptpass)){
 					$("#Layer2 #add").attr("disabled",false);
 				}else{
-					//	alert('xxxx');
+				
 						$("#Layer2 #add").attr("disabled",true);
 				};
 		});
@@ -151,7 +151,7 @@ $(document).ready(function(){
 				if (username.length!=0&& nicename.length!=0&&passwd.length!=0&&reptpass.length!=0&&email.length!=0&&(passwd==reptpass)){
 					$("#Layer2 #add").attr("disabled",false);
 				}else{
-					//	alert('xxxx');
+				
 						$("#Layer2 #add").attr("disabled",true);
 				};
 		});
@@ -165,7 +165,7 @@ $(document).ready(function(){
 				if (username.length!=0&& nicename.length!=0&&passwd.length!=0&&reptpass.length!=0&&email.length!=0&&(passwd==reptpass)){
 					$("#Layer2 #add").attr("disabled",false);
 				}else{
-					//	alert('xxxx');
+				
 						$("#Layer2 #add").attr("disabled",true);
 				};
 		});
@@ -205,7 +205,7 @@ $(document).ready(function(){
 				if (username.length!=0&& nicename.length!=0&&passwd.length!=0&&reptpass.length!=0&&email.length!=0&&(passwd==reptpass)){
 					$("#Layer2 #add").attr("disabled",false);
 				}else{
-					//	alert('xxxx');
+		
 						$("#Layer2 #add").attr("disabled",true);
 				};
 		});
@@ -555,7 +555,7 @@ $(document).ready(function(){
 				if (rolename.length!=0&& role_desc.length!=0){
 					$("#Layer_role #add").attr("disabled",false);
 				}else{
-					//	alert('xxxx');
+				
 					$("#Layer_role #add").attr("disabled",true);
 				};
 		});
@@ -568,7 +568,7 @@ $(document).ready(function(){
 				if (rolename.length!=0&& role_desc.length!=0){
 					$("#Layer_role #add").attr("disabled",false);
 				}else{
-					//	alert('xxxx');
+		
 					$("#Layer_role #add").attr("disabled",true);
 				};
 		});
@@ -928,7 +928,7 @@ $(document).ready(function(){
 		}
 	});
 	$("#child_menu").bind("change propertychange change",function(event){
-		alert('xxxx');
+	
 		if($(this).val()==null){
 			$("#del_c_menu").attr("disabled",true);
 		}else{
@@ -954,12 +954,12 @@ $(document).ready(function(){
 										console.log(key+":"+value);
 									
 									}); */
-								$("#child_menu").html('');	
-									for ( i = 0, len = data.length; i < len; i++ ) {
-										item = data[ i ];
+								$("#parent_menu").html('');	
+								for ( i = 0, len = data.length; i < len; i++ ) {
+									item = data[ i ];
 									//console.info( item[ "id" ] , item[ "name" ] ); // 按F12，查看打印到控制台的信息
-										$("#child_menu").append("<option value='"+item[ "id" ]+"'>"+item['name']+"</option>" );
-									}
+										$("#parent_menu").append("<option value='"+item[ "id" ]+"'>"+item['name']+"</option>" );
+								}
                                 }
                              
 			});
@@ -994,6 +994,49 @@ $(document).ready(function(){
 		}else{
 			$(this).parent().siblings().show();
 		}
+	});
+	
+	$("#autharea #Confirm").click(function(){
+		var Autharray=new Array();
+		var select_num=0;
+		var request=confirm("确定提交修改吗?");
+		if(request==true){
+			$("#authlist table input[type='checkbox']").each(function(){
+			//var CheckBox=$(this).find("input[type='checkbox']");
+			//$(CheckBox).attr("checked",true);
+			
+			
+			if($(this).is(":checked")){
+				if($(this).val().length>0){
+					Autharray[select_num]=$(this).val();
+					select_num+=1;
+				}
+			}
+			});
+
+				$.ajax({
+                                type: 'post',
+                                url:'/modifyauth',
+                                data:{'ids':Autharray.join(','),'roleid':$("#rolelist").val()},
+                                cache:false,
+                                dataType: 'json',
+								success: function(data){
+									
+								if(data.result==1){
+										alert("权限修改成功!");
+										$("#autharea").hide();
+										$(".top").hide();
+									}else{
+										alert("出现错误，请联系管理员!");
+									}
+                                }
+                             
+				});
+				
+		
+			
+		
+		};
 	});
 	
 

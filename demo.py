@@ -6,6 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 from User import User,Role,RoleUser
 from database import Users
 from Menu import MenuInfo
+from AuthPro import AuthPro
 app=Flask(__name__,static_folder='templates', static_url_path='')
 app.config['SECRET_KEY']='automatic system'
 app.config['SQLALCHEMY_DATABASE_URI']='mysql://automatic:automatic@localhost:3306/automatic'
@@ -22,35 +23,43 @@ def index_page():
 @app.route('/logincheck',methods=['POST','GET'])
 def logi_check():
 	if request.method == 'POST':
-		print '- * '*10
 		user=request.form['username']
 		password=request.form['pwd']
 		USER=User(user,password)
 		result=USER.Auth()
 		if result['result'] == 1:
 			session['username']=user
-		print "result:%s" % result
 		return jsonify(result)
 	else:
-		print '- * '*10
 		return ''
 
 @app.route('/logout',methods=['POST','GET'])
 def logout():
 	if request.method == 'GET':
-		print session
 		session.pop('username', None)
     		return redirect("/")
 @app.route('/main')
 def main_page():
 	if 'username' in session:	
-		USER=User()
-		userlist=USER.ListUser()
-		rolelist=USER.ListRole()
-		menu=MenuInfo()
-		menulist,menulist1=menu.GetMenu()
-		#userlist=UserList()
-		return render_template('index.html',username=session['username'].upper(),userlist=userlist,rolelist=rolelist,menulist=menulist,menulist1=menulist1)
+		username=session['username']
+		if username=='admin':
+			USER=User()
+                	userlist=USER.ListUser()
+                	rolelist=USER.ListRole()
+                	menu=MenuInfo()
+                	menulist,menulist1=menu.GetMenu()
+                	username=session['username']
+                	return render_template('admin_index.html',username=session['username'].upper(),userlist=userlist,rolelist=rolelist,menulist=menulist,menulist1=menulist1)
+		else:
+			USER=User()
+			userlist=USER.ListUser()
+			rolelist=USER.ListRole()
+			menu=MenuInfo()
+			menulist,menulist1=menu.GetMenu()
+			#userlist=UserList()
+			username=session['username']
+			idslist=USER.GetIds(username=username)
+			return render_template('index.html',username=session['username'].upper(),userlist=userlist,rolelist=rolelist,menulist=menulist,menulist1=menulist1,idslist=idslist)
 	else:
 		return redirect(url_for('index_page'))
 
@@ -70,7 +79,6 @@ def adduser():
 @app.route('/setpass',methods=['POST','GET'])
 def setpass():
 	if request.method == 'POST':
-		print 'x - '*10
                 username=request.form['username']
 		password=''
 		if 'pwd' in request.form:
@@ -81,7 +89,6 @@ def setpass():
 			USER.SetPass(password=password,status=enable)
 		else:
 			USER.SetPass(status=enable)
-		print 'status:%s' % enable
 		result={'result':1}
 		return jsonify(result)
         else:
@@ -90,7 +97,6 @@ def setpass():
 @app.route('/resetpass',methods=['POST','GET'])
 def resetpass():
 	if request.method == 'POST':
-		print 'x - '*10
                 username=request.form['username']
 		if 'oldpass' in request.form:
                 	oldpass=request.form['oldpass']
@@ -141,7 +147,6 @@ def addrole():
 def delrole():
 	if request.method == 'POST':
 		roleid=request.form['rolelist']
-		print 'roleid:%s' % roleid
 		ROLE=Role()
 
 		if len(roleid.split(","))==1:
@@ -153,7 +158,6 @@ def delrole():
 				if len(role)==0:
 					pass
 				else:
-					print 'del role:%s' % role
 					ROLE.DropRole(roleid=role)
 			result={'result':1}
                 	return jsonify(result)
@@ -168,11 +172,9 @@ def assign():
 		rolename=request.form['rolename']
 		userlist=request.form['userlist']
 		for user in userlist.split(','):
-			print "user is:%s" % user
 			if user!='':
 				USER=User(username=user)
 				uid=USER.GetUid()
-				#print 'usernmae:%s uid:%s' %(user,uid)
 				role_user=RoleUser(rid=roleid,rname=rolename,uid=uid,uname=user,db=db)
 				role_user.assign()
 		result={'result':1}
@@ -210,7 +212,6 @@ def submenu():
 		menuid=request.form['menuid']
 		menu=MenuInfo()
 		result=menu.SubMenu(menuid=menuid)
-		print result
 		return jsonify(result)
 	else:
 		return ''
@@ -223,11 +224,21 @@ def delmenu():
 		pid=request.form['pid']
 		menu=MenuInfo()
 		result=menu.DelMenu(menuid=menuid,pid=pid)
-		print result
 		return jsonify(result)
 	else:
 		return ''
-		
+
+@app.route('/modifyauth',methods=['POST','GET'])	
+def modifyauth():
+	if request.method == 'POST':
+		roleid=request.form['roleid']
+		ids=request.form['ids']
+		authpro=AuthPro(roleid=roleid,ids=ids)
+		result=authpro.AuthMod()
+		return jsonify(result)
+	else:
+		return ''
+			
 
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 
