@@ -84,7 +84,7 @@ def setpass():
 		if 'pwd' in request.form:
                 	password=request.form['pwd']
 		enable=request.form['status']
-		USER=User(username)
+		USER=User(username=username)
 		if password !='':		
 			USER.SetPass(password=password,status=enable)
 		else:

@@ -112,11 +112,14 @@ class User:
 		sql="select group_concat(c.ids) as ids from users  a join role_user b  join sys_role_auth c where a.id=b.uid and b.roleid=c.roleid and a.username='%s' group by a.id;" % username
 		idslist=engine.execute(sql).first() 
 		result=[]
-		Idslist=idslist.ids.encode('unicode-escape').decode('string_escape')
-		for ids in Idslist.split(','):
-			result.append(ids)
-		print "sql:%s idslist:%s user:%s" %(sql,result,username)
-		return result
+		if idslist is not None:
+			Idslist=idslist.ids.encode('unicode-escape').decode('string_escape')
+			for ids in Idslist.split(','):
+				result.append(ids)
+			print "sql:%s idslist:%s user:%s" %(sql,result,username)
+			return result
+		else:
+			return result
 		
 			
 class Role:
@@ -155,9 +158,18 @@ class RoleUser:
 		self.uname=uname
 		self.db=db
 	def assign(self):
-		role_user=Role_User(roleid=self.rid,rolename=self.rname,uid=self.uid,username=self.uname)
-		self.db.session.add_all([role_user])
-		self.db.session.commit()
+		role_user=Role_User.query.filter_by(roleid=self.rid,uid=self.uid).first()
+		if role_user is None:	
+			print 'z '*10
+			role_user=Role_User(roleid=self.rid,rolename=self.rname,uid=self.uid,username=self.uname)
+			self.db.session.add_all([role_user])
+			self.db.session.commit()
+		else:
+			role_user.roleid=self.rid
+			role_user.rolename=self.rname
+			role_user.uid=self.uid
+			role_user.username=self.uname
+			self.db.session.commit()
 
 	
 	def remove_assign(self,**kwargs):
