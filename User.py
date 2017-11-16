@@ -158,18 +158,16 @@ class RoleUser:
 		self.uname=uname
 		self.db=db
 	def assign(self):
-		role_user=Role_User.query.filter_by(roleid=self.rid,uid=self.uid).first()
-		if role_user is None:	
+		#role_user=Role_User.query.filter_by(roleid=self.rid,uid=self.uid)
+		exists_num=engine.execute("select count(*) from role_user where roleid=%s and uid=%s" %(self.rid,self.uid)).first()[0]
+		print "exists_num:%s.type:%s" %(exists_num,type(exists_num))
+		if exists_num==0:	
 			print 'z '*10
 			role_user=Role_User(roleid=self.rid,rolename=self.rname,uid=self.uid,username=self.uname)
 			self.db.session.add_all([role_user])
 			self.db.session.commit()
 		else:
-			role_user.roleid=self.rid
-			role_user.rolename=self.rname
-			role_user.uid=self.uid
-			role_user.username=self.uname
-			self.db.session.commit()
+			pass
 
 	
 	def remove_assign(self,**kwargs):

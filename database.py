@@ -50,7 +50,7 @@ class Role_User(db.Model):
 
 
 	def __repr__(self):
-		return '<Role_User {}>'.format(self.name)
+		return '<Role_User {}>'.format(self.id)
 
 
 class Menu(db.Model):
