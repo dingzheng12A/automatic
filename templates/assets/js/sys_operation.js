@@ -650,10 +650,21 @@ $(document).ready(function(){
 		
 		
 		//关联用户
-		var container_users=$position.children("td:eq(3)").text();
-		//var current_user='';
-		var current_user=container_users;
+	
+		
+		//console.log(333);
 		$assign.click(function(){
+			var selected=$("table tr[class='selected']");
+			var index=selected.index();
+			var container_users=$("table[id='rolearea'] tr:eq("+index+")").children("td:eq(3)").text();;
+			var current_user;
+		//var current_user='';
+			if(container_users.length==0){
+				current_user=container_users;
+			}else{
+				current_user=container_users;
+				current_user+=',';
+			}
 			//alert(current_user);
 			$("#userassign tbody").find("#current_user").val(current_user);
 			//var $rolename=$assign.parent().parent().children("td:eq(1)").text();
@@ -682,7 +693,10 @@ $(document).ready(function(){
 			var rolename=$position.children("td:eq(1)").text();
 			var roleid=$position.children("td:eq(0)").text();
 			//var userlist=$("#userassign tbody").find("#current_user").val();
-			$("#Layer_assign #confirm").click(function(){
+			
+			/*$("#Layer_assign #confirm").click(function(e){
+				e.stopPropagation(); 
+				console.log(222)
 					var userlist=$("#userassign tbody").find("#current_user").val();
 					console.log(userlist);
 					$.ajax({
@@ -692,10 +706,11 @@ $(document).ready(function(){
                                 cache:false,
                                 dataType: 'json',
 								success: function(data){
-									alert('success!');
-									if(data.result==1){
+										if(data.result==1){
+										alert('success!');
 										$(".top").hide();
 										$("#Layer_assign").hide();
+										//$(this).parent().parent().hide();
 										var selected=$("table tr[class='selected']");
 										var index=selected.index();
 										$("table[id='rolearea'] tr:eq("+index+")").children("td:eq(3)").text(userlist);
@@ -704,9 +719,38 @@ $(document).ready(function(){
 								}
                              
 					});
-			});
+			});*/
+			
+			$("#Layer_assign #confirm").off('click').on('click',function(){
+				var userlist=$("#userassign tbody").find("#current_user").val();
+				console.log(userlist);
+				$.ajax({
+							type: 'post',
+							url:'/assign',
+							data:{'userlist':userlist,'roleid':roleid,'rolename':rolename},
+							cache:false,
+							dataType: 'json',
+							success: function(data){
+									if(data.result==1){
+									alert('success!');
+									$(".top").hide();
+									$("#Layer_assign").hide();
+									//$(this).parent().parent().hide();
+									var selected=$("table tr[class='selected']");
+									var index=selected.index();
+									$("table[id='rolearea'] tr:eq("+index+")").children("td:eq(3)").text(userlist);
+									
+								}
+							}
+						 
+				});
+			})
+		
 			
 		})
+		
+		
+			
 		
 		
 		//移除关联
@@ -744,7 +788,7 @@ $(document).ready(function(){
 				
 				
 				
-				$("#Layer_remove #confirm").click(function(){
+				$("#Layer_remove #confirm").off('click').on('click',function(){
 					var currentUser=newItemStr;
 					var rolename=$position.children("td:eq(1)").text();
 					var roleid=$position.children("td:eq(0)").text();
@@ -767,7 +811,8 @@ $(document).ready(function(){
                              
 						});
 					}
-			});
+
+				})										
 				
 			});
 			}
