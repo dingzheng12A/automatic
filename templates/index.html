@@ -616,7 +616,7 @@
 
 							{% if menu1.parent_id==menu.id %}
 							{%for ids in idslist%}
-								{%if menu.id==ids|int %}
+								{%if menu1.id==ids|int %}
 							
 							<li>
 									<a href="#">
@@ -813,6 +813,10 @@
     <tr>
       <td>菜单名称</td>
       <td colspan="4"><input name="menu_name" type="text" id="menu_name" /></td>
+    </tr>
+	<tr>
+      <td>菜单ID</td>
+      <td colspan="4"><input name="menu_id" type="text" id="menu_id" /></td>
     </tr>
     <tr>
       <td>url地址</td>
