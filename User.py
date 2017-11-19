@@ -116,7 +116,7 @@ class User:
 			Idslist=idslist.ids.encode('unicode-escape').decode('string_escape')
 			for ids in Idslist.split(','):
 				result.append(ids)
-			print "sql:%s idslist:%s user:%s" %(sql,result,username)
+			#print "sql:%s idslist:%s user:%s" %(sql,result,username)
 			return result
 		else:
 			return result

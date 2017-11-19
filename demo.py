@@ -238,9 +238,19 @@ def modifyauth():
 		return jsonify(result)
 	else:
 		return ''
+
+@app.route('/getids',methods=['POST','GET'])
+def getids():
+	if request.method == 'POST':
+		roleid=request.form['roleid']
+		authpro=AuthPro(roleid=roleid)
+		result=authpro.GetAuth()
+		return jsonify(result)
+	else:
+		return ''
 			
 
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 
 if __name__=='__main__':
-	app.run(host='0.0.0.0',port='6699')
+	app.run(host='0.0.0.0',port=6699,debug=True)

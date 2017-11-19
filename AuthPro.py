@@ -28,4 +28,18 @@ class AuthPro:
 			except Exception,e:
 				result={'result':0}
 		return result
+
+	def GetAuth(self):
+		Authlist=Role_Auth.query.filter_by(roleid=self.roleid).first()
+		res=[]
+		if Authlist is not None:
+			for ids in Authlist.ids.split(','):
+				res.append(ids)
+			result={'idslist':res}
+			return result
+		else:
+			result={'idslist':res}
+			return result
+
+		
 				

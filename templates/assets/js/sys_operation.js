@@ -1023,12 +1023,57 @@ $(document).ready(function(){
 	});
 	
 	$("#alloc_auth_btn").click(function(){
-		$(".top").css({"display":"block","opacity":"0.5"});
+	/*	$(".top").css({"display":"block","opacity":"0.5"});
 		$("#authlist").css("display","block");
 		$("#autharea").find("#Cancle").click(function(){
 			$(".top").hide();
 			$("#authlist").hide();
 		});
+	*/	
+	
+		
+		$.ajax({
+                                type: 'post',
+                                url:'/getids',
+                                data:{'roleid':$("#rolelist").val()},
+                                cache:false,
+                                dataType: 'json',
+								success: function(data){
+									var i=0;len=data.idslist.length;
+									var unchecked=new Array(),j=0;
+									$(".top").css({"display":"block","opacity":"0.5"});
+									$("#autharea").css("display","block");
+									$("#authlist").css("display","block");
+									for(i=0;i<len;i++){
+										$("#authlist input[type='checkbox']").each(function(){
+											if($(this).val()==data.idslist[i]){
+												//alert($(this).val());
+												$(this).attr("checked",true);
+											}
+										});
+										
+									}
+									
+									
+								/*if(data.result==1){
+										alert("权限修改成功!");
+										$("#autharea").hide();
+										$(".top").hide();
+									}else{
+										alert("出现错误，请联系管理员!");
+									}
+								*/
+                                }
+                             
+		});
+		
+		
+
+		$("#autharea").find("#Cancle").click(function(){
+			$(".top").hide();
+			$("#authlist").hide();
+		});
+	
 		
 		
 	})
@@ -1070,6 +1115,7 @@ $(document).ready(function(){
 								if(data.result==1){
 										alert("权限修改成功!");
 										$("#autharea").hide();
+										$("#authlist").hide();
 										$(".top").hide();
 									}else{
 										alert("出现错误，请联系管理员!");

@@ -79,5 +79,5 @@ class MenuInfo:
                                 newresult.append({'id':res.id,'name':res.name})
                         return newresult
 
-a=MenuInfo()
-print a.GetMenu()
+#a=MenuInfo()
+#print a.GetMenu()
