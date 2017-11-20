@@ -882,11 +882,12 @@ $(document).ready(function(){
 	$("#add_menu #confirm").click(function(){
 		var menu_name=$("#menu_name").val();
 		var parent_menu=$("#add_parent_menu").val();
+		var menu_id=$("#menu_id").val();
 		console.log('parent_id'+parent_menu);
 		 $.ajax({
             type: 'post',
             url:'/addmenu',
-            data:{'parent_menu':parent_menu,'menu_name':menu_name},
+            data:{'parent_menu':parent_menu,'menu_name':menu_name,'menu_id':menu_id},
             cache:false,
             dataType: 'json',
 			success: function(data){
@@ -895,7 +896,7 @@ $(document).ready(function(){
 			$("#add_a_menu").append('<li><a href="#" class="dropdown-toggle"><i class="icon-list"></i><span class="menu-text">'+ menu_name+ '</span><b class="arrow icon-angle-down"></b>							</a></li>');
 			$("#memu_name").val('');
 			$("#menu_name").focus();
-			window.location.reload()
+			window.location.reload();
          }
                              
 });
@@ -1044,15 +1045,13 @@ $(document).ready(function(){
 									$(".top").css({"display":"block","opacity":"0.5"});
 									$("#autharea").css("display","block");
 									$("#authlist").css("display","block");
+									console.log(data.idslist);
+									$("#authlist input[type='checkbox']").prop('checked', false);
 									for(i=0;i<len;i++){
-										$("#authlist input[type='checkbox']").each(function(){
-											if($(this).val()==data.idslist[i]){
-												//alert($(this).val());
-												$(this).attr("checked",true);
-											}
-										});
+										$("#authlist input[type='checkbox'][value='"+data.idslist[i]+"']").prop('checked', true);
 										
 									}
+									
 									
 									
 								/*if(data.result==1){

@@ -199,8 +199,9 @@ def addmenu():
 	if request.method == 'POST':
 		parent_menu=request.form['parent_menu']
 		menu_name=request.form['menu_name']
+		menu_id=request.form['menu_id']
 		menu=MenuInfo()
-		menu.AddMenu(menu_name=menu_name,parent_menu=parent_menu)
+		menu.AddMenu(menu_name=menu_name,parent_menu=parent_menu,menu_id=menu_id)
 		result={'result':1}
 		return jsonify(result)
 	else:

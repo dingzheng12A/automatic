@@ -45,7 +45,9 @@ class MenuInfo:
 			parent_name=kwargs['parent_menu']
 		if 'menu_name' in kwargs:
 			menu_name=kwargs['menu_name']
-		sql="insert into sys_menu(`name`,`parent_id`,`create_time`)values('%s',%s,now())" %(menu_name,parent_name)
+		if 'menu_id' in kwargs:
+			menu_id=kwargs['menu_id']
+		sql="insert into sys_menu(`name`,`parent_id`,`span_id`,`create_time`)values('%s',%s,'%s',now())" %(menu_name,parent_name,menu_id)
 		try:
 			result=engine.execute(sql)
 			return result
