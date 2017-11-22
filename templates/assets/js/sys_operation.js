@@ -1129,15 +1129,23 @@ $(document).ready(function(){
 		};
 	});
 	
+<<<<<<< HEAD
 	//添加主机
 	$("#add_host").click(function(){
 		// $(".col-xs-12").html("添加用户");
+=======
+	
+	//添加主机
+	$("#add_host").click(function(){
+		// $(".col-xs-12").html("添加主机");
+>>>>>>> 4752b7d6881b3f439e3c6c3433133988b6d9b120
 		var index=$("div .row #addhost").index(this);
 		$("div #addhost").eq(index).show()
 		.siblings().hide();
 	
 	});
 	
+<<<<<<< HEAD
 	$("#add_host_btn").click(function(){
 		$(".top").css({"display":"block","opacity":"0.5"});
 		$("#Layer_host").css("display","block");
@@ -1147,6 +1155,8 @@ $(document).ready(function(){
 		});
 	});
 	
+=======
+>>>>>>> 4752b7d6881b3f439e3c6c3433133988b6d9b120
 
 })
 

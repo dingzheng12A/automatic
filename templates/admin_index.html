@@ -880,7 +880,18 @@
 								{%endif%}
 								</table>
 								</div>
-							
+							<!-- 添加主机 -->
+							<div id='addhost' class="addhost">
+								<div id='add'><input name='add_host_btn' type='button' id='add_host_btn' value='添加主机' /></div>
+								<table  id='hostarea' width='1661' border='1'>
+								<tr><td width='6%' align='center' bgcolor='#66b3ff'>id</td><td width='6%' align='center' bgcolor='#66b3ff'>ip地址</td><td width='14%' align='center' bgcolor='#66b3ff'>ssh端口</td><td width='21%' align='center' bgcolor='#66b3ff'>远端用户</td><td width='53%' align='center' bgcolor='#66b3ff'>修改主机信息</td></tr>
+								{%if userlist %}
+								{% for user in userlist%}
+								<tr border='1'><td width='6%' align='center'>{{user.id}}</td><td width='6%' align='center'>{{user.username}}</td><td width='14%' align='center' >{{user.email}}</td><td width='21%' align='center' >{% if user.status == 1%}启用{%else%}禁用{% endif %}</td><td width='53%' align='center' >修改密码:<input type='password' id='resetpass' name='resetpass' placeholder='重置密码'/>启用/禁用:<input type='checkbox' {% if user.status==1%}checked{%endif%} id='enable'>&nbsp;&nbsp;&nbsp;&nbsp;<input type='button' id='commit' name='commit' value='修改' disabled></td></tr>
+								{% endfor %}
+								{%endif%}
+								</table>
+							</div>
 							<!-- 设置页面 -->
 							<!-- 添加主机 -->
 							<div id='addhost' class="addhost">
