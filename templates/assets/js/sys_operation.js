@@ -1129,6 +1129,24 @@ $(document).ready(function(){
 		};
 	});
 	
+	//添加主机
+	$("#add_host").click(function(){
+		// $(".col-xs-12").html("添加用户");
+		var index=$("div .row #addhost").index(this);
+		$("div #addhost").eq(index).show()
+		.siblings().hide();
+	
+	});
+	
+	$("#add_host_btn").click(function(){
+		$(".top").css({"display":"block","opacity":"0.5"});
+		$("#Layer_host").css("display","block");
+		$("#Layer_host #cancle").click(function(){
+			$(".top").hide();
+			$("#Layer_host").hide();
+		});
+	});
+	
 
 })
 

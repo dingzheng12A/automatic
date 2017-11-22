@@ -39,3 +39,7 @@
 td{
 	
 }
+#addhost{
+	position:absolute;
+	display:none;
+}

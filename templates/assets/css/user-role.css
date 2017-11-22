@@ -139,3 +139,14 @@ div .delrole {
 	display:none;
 	
 }
+#Layer_host {
+	position:absolute;
+	width:526px;
+	height:auto;
+	background-color: #FFFFFF;
+	left: 30%;
+	top: 30%;
+	border:2px solid;
+	display:none;
+	z-index:55;
+}

@@ -96,6 +96,48 @@
     </tr>
   </table>
 </div>
+
+<!-- 添加主机表单 -->
+	 <div id="Layer_host">
+    <table  width="50%" border="1" align="center">
+      <tr>
+        <td colspan="2"><span class="STYLE5">添加主机</span></td>
+      </tr>
+      <tr>
+        <td width="27%">IP地址：</td>
+        <td width="73%"><label>
+          <input name="ipaddr" type="text" id="ipaddr" />
+        </label></td>
+      </tr>
+      <tr>
+        <td>SSH 端口：</td>
+        <td><label>
+          <input name="sshport" type="text" id="sshport" placeholder="默认端口是22" />
+        </label></td>
+      </tr>
+      <tr>
+        <td>远端执行用户：</td>
+        <td><label>
+          <input name="remote_user" type="text" id="remote_user" />
+        </label></td>
+      </tr>
+      <tr>
+        <td>主机描述:</td>
+        <td><label>
+          <input type="textarea" name="host_desc" id="host_desc" rows="" cols="" style="overflow:scroll;" />
+        </label></td>
+      </tr>
+      <tr>
+        <td><label>
+          <input name="add" type="button" id="add" value="添加" disabled/>
+        </label></td>
+        <td align="center"><label>
+          <input name="cancle" type="button" id="cancle" value="取消" />
+        </label></td>
+      </tr>
+    </table>
+  </div>
+<!--  添加用户表单 -->
 	 <div id="Layer2">
     <table  width="50%" border="1" align="center">
       <tr>
@@ -141,7 +183,7 @@
       </tr>
     </table>
   </div>
-  
+  <!--  添加角色表单 -->
   <div id="Layer_role">
     <table  width="50%" border="1" align="center">
       <tr>
@@ -840,6 +882,18 @@
 								</div>
 							
 							<!-- 设置页面 -->
+							<!-- 添加主机 -->
+							<div id='addhost' class="addhost">
+								<div id='add'><input name='add_host_btn' type='button' id='add_host_btn' value='添加主机' /></div>
+								<table  id='userarea' width='1661' border='1'>
+								<tr><td width='6%' align='center' bgcolor='#66b3ff'>主机ID</td><td width='6%' align='center' bgcolor='#66b3ff'>主机IP</td><td width='14%' align='center' bgcolor='#66b3ff'>SSH 端口</td><td width='21%' align='center' bgcolor='#66b3ff'>远程用户</td><td width='53%' align='center' bgcolor='#66b3ff'>描述信息</td></tr>
+								{%if hostslist %}
+								{% for host in hostlist%}
+								<tr border='1'><td width='6%' align='center'>{{host.id}}</td><td width='6%' align='center'>{{user.username}}</td><td width='14%' align='center' >{{user.email}}</td><td width='21%' align='center' >{% if user.status == 1%}启用{%else%}禁用{% endif %}</td><td width='53%' align='center' >修改密码:<input type='password' id='resetpass' name='resetpass' placeholder='重置密码'/>启用/禁用:<input type='checkbox' {% if user.status==1%}checked{%endif%} id='enable'>&nbsp;&nbsp;&nbsp;&nbsp;<input type='button' id='commit' name='commit' value='修改' disabled></td></tr>
+								{% endfor %}
+								{%endif%}
+								</table>
+								</div>
 							<!-- 添加用户界面 -->
 							<div id='adduser' class="adduser">
 								<div id='add'><input name='add_btn' type='button' id='add_btn' value='添加用户' /></div>
