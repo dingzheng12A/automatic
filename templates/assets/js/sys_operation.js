@@ -1129,6 +1129,16 @@ $(document).ready(function(){
 		};
 	});
 	
+	
+	//添加主机
+	$("#add_host").click(function(){
+		// $(".col-xs-12").html("添加主机");
+		var index=$("div .row #addhost").index(this);
+		$("div #addhost").eq(index).show()
+		.siblings().hide();
+	
+	});
+	
 
 })
 
