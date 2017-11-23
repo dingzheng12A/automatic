@@ -1129,23 +1129,16 @@ $(document).ready(function(){
 		};
 	});
 	
-<<<<<<< HEAD
-	//添加主机
-	$("#add_host").click(function(){
-		// $(".col-xs-12").html("添加用户");
-=======
-	
 	//添加主机
 	$("#add_host").click(function(){
 		// $(".col-xs-12").html("添加主机");
->>>>>>> 4752b7d6881b3f439e3c6c3433133988b6d9b120
 		var index=$("div .row #addhost").index(this);
 		$("div #addhost").eq(index).show()
 		.siblings().hide();
 	
 	});
 	
-<<<<<<< HEAD
+
 	$("#add_host_btn").click(function(){
 		$(".top").css({"display":"block","opacity":"0.5"});
 		$("#Layer_host").css("display","block");
@@ -1155,8 +1148,208 @@ $(document).ready(function(){
 		});
 	});
 	
-=======
->>>>>>> 4752b7d6881b3f439e3c6c3433133988b6d9b120
+	$("#Layer_host #ipaddr").bind("input propertychange change",function(event){
+		var $ipaddr=$("#Layer_host #ipaddr").val();
+		var $sshport=$("#Layer_host #sshport").val();
+		var $remote_user=$("#Layer_host #remote_user").val();
+		var $host_desc=$("#Layer_host #host_desc").val();
+		if($ipaddr.length>0 && $sshport.length>0 && $remote_user.length>0 && $host_desc.length>0 ){
+			console.log("sshport length:"+$sshport.length);
+			$("#Layer_host #add").attr("disabled",false);
+		}else{
+			$("#Layer_host #add").attr("disabled",true);
+		}
+	});
 
+	$("#Layer_host #sshport").bind("input propertychange change",function(event){
+		var $ipaddr=$("#Layer_host #ipaddr").val();
+		var $sshport=$("#Layer_host #sshport").val();
+		var $remote_user=$("#Layer_host #remote_user").val();
+		var $host_desc=$("#Layer_host #host_desc").val();
+		if($ipaddr.length>0 && $sshport.length>0 && $remote_user.length>0 && $host_desc.length>0 ){
+			$("#Layer_host #add").attr("disabled",false);
+		}else{
+			$("#Layer_host #add").attr("disabled",true);
+		}
+	});
+	
+	$("#Layer_host #remote_user").bind("input propertychange change",function(event){
+		var $ipaddr=$("#Layer_host #ipaddr").val();
+		var $sshport=$("#Layer_host #sshport").val();
+		var $remote_user=$("#Layer_host #remote_user").val();
+		var $host_desc=$("#Layer_host #host_desc").val();
+		if($ipaddr.length>0 && $sshport.length>0 && $remote_user.length>0 && $host_desc.length>0 ){
+			$("#Layer_host #add").attr("disabled",false);
+		}else{
+			$("#Layer_host #add").attr("disabled",true);
+		}
+	});
+	
+	
+	$("#Layer_host #host_desc").bind("input propertychange change",function(event){
+		var $ipaddr=$("#Layer_host #ipaddr").val();
+		var $sshport=$("#Layer_host #sshport").val();
+		var $remote_user=$("#Layer_host #remote_user").val();
+		var $host_desc=$("#Layer_host #host_desc").val();
+		if($ipaddr.length>0 && $sshport.length>0 && $remote_user.length>0 && $host_desc.length>0 ){
+			$("#Layer_host #add").attr("disabled",false);
+		}else{
+			$("#Layer_host #add").attr("disabled",true);
+		}
+	});
+	
+	
+	$("#Layer_host #add").click(function(){
+		var $sshport=$("#Layer_host #sshport").val();
+		var $ipaddr=$("#Layer_host #ipaddr").val();
+		var $remote_user=$("#Layer_host #remote_user").val();
+		var $host_desc=$("#Layer_host #host_desc").val();
+		if(isInteger($sshport)==false){
+			alert("ssh端口必须是数字！");
+			$("#Layer_host #sshport").val('');
+			$("#Layer_host #add").attr("disabled",true);
+			$("#Layer_host #sshport").focus();
+		}else{
+			$.ajax({
+                                type: 'post',
+                                url:'/addhost',
+                                data:{'host_ip':$ipaddr,'sshport':$sshport,'remote_user':$remote_user,'host_desc':$host_desc},
+                                cache:false,
+                                dataType: 'json',
+								success: function(data){
+									if (data.result==1){
+										alert("主机信息添加成功!");
+										$(".top").hide();
+										$("#Layer_host").hide();
+										$("#hostarea").append("<tr border='1'><td width='6%' align='center'></td><td width='6%' align='center'>"+$ipaddr+"</td><td width='14%' align='center' >"+$sshport+"</td><td width='21%' align='center' >"+$remote_user+"</td><td width='53%' align='center' >"+$host_desc+"</td></tr>")
+									}else{
+										alert("主机信息添加失败，请联系管理员！");
+									
+									}
+                                }
+                             
+			});
+		}
+	});
+
+	//删除主机
+	$("#del_host").click(function(){
+		// $(".col-xs-12").html("添加用户");
+		var index=$("div .row #delhost").index(this);
+		$("div #delhost").eq(index).show()
+		.siblings().hide();
+	
+	});
+	
+	
+	//删除主机
+		
+		$("#delhost table tr").click(function(){
+			var $siblings = $(this).siblings('tr');
+			$siblings.removeClass("selected").find('input[id="del_single"]').prop('disabled', true);
+			$(this).addClass('selected').find('input[id="del_single"]').prop('disabled', false);
+			
+			
+		})
+		
+		$("#delhost table tr").find("#del_single").click(function(){
+			var request=confirm("是否删除主机?");
+			var $position=$(this).parent().parent();
+			var hostId=$(this).parent().siblings().find("#id").val();
+			if(request==true){
+				$.ajax({
+                        type: 'post',
+                        url:'/delhost',
+                        data:{'hostId':hostId},
+                        cache:false,
+                        dataType: 'json',
+						success: function(data){
+							$position.hide();
+							alert("主机已经删除!");
+						
+                        }
+                     
+				});
+			};
+			
+			
+		});
+		var host_c_num=0;
+		var hostarray=new Array();
+		$("#delhost table tr").each(function(){
+			var $id=$(this).children("td:eq(0)").find("input");
+			$(this).click(function(){
+			if ($id.is(":checked")){
+				host_c_num+=1;
+				hostarray[host_c_num]=$id.val();
+				console.log('点击次数:'+host_c_num);
+				
+			
+			}else{
+				host_c_num-=1;
+				hostarray.splice(host_c_num,1);
+				console.log('点击次数:'+host_c_num);
+						
+			}
+			if(host_c_num>0){
+				$("#delhost #del_host_btn").attr("disabled",false);
+			}else{
+				$("#delhost #del_host_btn").attr("disabled",true);
+			}
+			
+				
+			});
+			
+			
+		})
+		
+		//批量删除主机
+		$("#delhost #del_host_btn").click(function(){
+			console.log(hostarray);
+			console.log('点击次数:'+num);
+			var request=confirm("是否删除主机?");
+			if(request==true){
+			$.ajax({
+                type: 'post',
+                url:'/delhost',
+                data:{'hostId':hostarray.join(',')},
+                cache:false,
+                dataType: 'json',
+				success: function(data){
+				//	$position.hide();
+					alert("主机已经删除!");
+					$("#delhost table tr").each(function(){
+						var $id=$(this).children("td:eq(0)").find("input");
+						if ($id.is(":checked")){
+							$id.parent().parent().hide();
+						}
+			
+					
+			
+			
+					})
+				
+                }
+                     
+			});
+			}
+			
+		});
+	
+	//添加主机组
+	//添加角色
+	$("#add_hostgroup").click(function(){
+		// $(".col-xs-12").html("添加用户");
+		var index=$("div .row #addhostgroup").index(this);
+		$("div #addhostgroup").eq(index).show()
+		.siblings().hide();
+	
+	});
+	
 })
+
+function isInteger(obj) {
+	var re=new RegExp('["^\\d+$"]',"g");
+	return re.test(obj);
+}
 

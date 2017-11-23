@@ -3,7 +3,7 @@
 from flask import Flask,render_template,redirect
 from flask import request,jsonify,session,url_for
 from flask_sqlalchemy import SQLAlchemy
-from User import User,Role,RoleUser
+from User import User,Role,RoleUser,Host
 from database import Users
 from Menu import MenuInfo
 from AuthPro import AuthPro
@@ -44,22 +44,27 @@ def main_page():
 		username=session['username']
 		if username=='admin':
 			USER=User()
+			HOST=Host()
                 	userlist=USER.ListUser()
                 	rolelist=USER.ListRole()
                 	menu=MenuInfo()
                 	menulist,menulist1=menu.GetMenu()
+			hostlist=HOST.gethost()
                 	username=session['username']
-                	return render_template('admin_index.html',username=session['username'].upper(),userlist=userlist,rolelist=rolelist,menulist=menulist,menulist1=menulist1)
+                	return render_template('admin_index.html',username=session['username'].upper(),userlist=userlist,rolelist=rolelist,menulist=menulist,menulist1=menulist1,hostlist=hostlist)
 		else:
 			USER=User()
+			HOST=Host()
 			userlist=USER.ListUser()
 			rolelist=USER.ListRole()
 			menu=MenuInfo()
 			menulist,menulist1=menu.GetMenu()
+			hostlist=HOST.gethost()
 			#userlist=UserList()
 			username=session['username']
 			idslist=USER.GetIds(username=username)
-			return render_template('index.html',username=session['username'].upper(),userlist=userlist,rolelist=rolelist,menulist=menulist,menulist1=menulist1,idslist=idslist)
+			
+			return render_template('index.html',username=session['username'].upper(),userlist=userlist,rolelist=rolelist,menulist=menulist,menulist1=menulist1,idslist=idslist,hostlist=hostlist)
 	else:
 		return redirect(url_for('index_page'))
 
@@ -249,6 +254,38 @@ def getids():
 		return jsonify(result)
 	else:
 		return ''
+
+
+@app.route('/addhost',methods=['POST','GET'])
+def addhost():
+	if request.method == 'POST':
+		host_ip=request.form['host_ip']
+		sshport=request.form['sshport']
+		remote_user=request.form['remote_user']
+		host_desc=request.form['host_desc']
+		host=Host(host_ip=host_ip,sshport=sshport,remote_user=remote_user,host_desc=host_desc,db=db)
+		result=host.addhost()
+		return jsonify(result)
+	else:
+		return ''
+
+@app.route('/delhost',methods=['POST','GET'])
+def delhost():
+        if request.method == 'POST':
+                hostid=request.form['hostId']
+                USER=User()
+		host=Host()
+                if len(hostid.split(","))==1:
+                        result=host.delhost(hostid=hostid)
+                        return jsonify(result)
+                else:
+                        hostlist=hostid.split(",")
+                        for host_id in hostlist:
+                                result=host.delhost(hostid=host_id)
+                        return jsonify(result)
+        else:
+                return ''
+		
 			
 
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'

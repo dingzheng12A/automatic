@@ -884,27 +884,54 @@
 							<div id='addhost' class="addhost">
 								<div id='add'><input name='add_host_btn' type='button' id='add_host_btn' value='添加主机' /></div>
 								<table  id='hostarea' width='1661' border='1'>
-								<tr><td width='6%' align='center' bgcolor='#66b3ff'>id</td><td width='6%' align='center' bgcolor='#66b3ff'>ip地址</td><td width='14%' align='center' bgcolor='#66b3ff'>ssh端口</td><td width='21%' align='center' bgcolor='#66b3ff'>远端用户</td><td width='53%' align='center' bgcolor='#66b3ff'>修改主机信息</td></tr>
-								{%if userlist %}
-								{% for user in userlist%}
-								<tr border='1'><td width='6%' align='center'>{{user.id}}</td><td width='6%' align='center'>{{user.username}}</td><td width='14%' align='center' >{{user.email}}</td><td width='21%' align='center' >{% if user.status == 1%}启用{%else%}禁用{% endif %}</td><td width='53%' align='center' >修改密码:<input type='password' id='resetpass' name='resetpass' placeholder='重置密码'/>启用/禁用:<input type='checkbox' {% if user.status==1%}checked{%endif%} id='enable'>&nbsp;&nbsp;&nbsp;&nbsp;<input type='button' id='commit' name='commit' value='修改' disabled></td></tr>
+								<tr><td width='6%' align='center' bgcolor='#66b3ff'>id</td><td width='6%' align='center' bgcolor='#66b3ff'>ip地址</td><td width='14%' align='center' bgcolor='#66b3ff'>ssh端口</td><td width='21%' align='center' bgcolor='#66b3ff'>远端用户</td><td width='53%' align='center' bgcolor='#66b3ff'>主机描述信息</td></tr>
+								{%if hostlist %}
+								{% for host in hostlist%}
+								<tr border='1'><td width='6%' align='center'>{{host.id}}</td><td width='6%' align='center'>{{host.ipaddr}}</td><td width='14%' align='center' >{{host.sshport}}</td><td width='21%' align='center' >{{host.remote_user}}</td><td width='53%' align='center' >{{host.host_desc}}</td></tr>
 								{% endfor %}
 								{%endif%}
 								</table>
 							</div>
+							
+							<!-- 删除主机 -->
+							<div id='delhost' class="delhost">
+								<div id='add'><input name='del_host_btn' type='button' id='del_host_btn' value='批量删除主机' disabled/></div>
+								<table  id='hostlist' width='1661' border='1'>
+								<tr><td width='6%' align='center' bgcolor='#66b3ff'>主机ID</td><td width='6%' align='center' bgcolor='#66b3ff'>主机IP</td><td width='14%' align='center' bgcolor='#66b3ff'>SSH端口</td><td width='21%' align='center' bgcolor='#66b3ff'>远端用户</td><td width='53%' align='center' bgcolor='#66b3ff'>删除操作</td></tr>
+								{%if hostlist %}
+								{% for host in hostlist%}
+								<tr border='1'><td width='6%' align='center'><input type='checkbox' id='id' value='{{host.id}}'></td><td width='6%' align='center'>{{host.ipaddr}}</td><td width='14%' align='center' >{{host.sshport}}</td><td width='21%' align='center' >{{host.remote_user}}</td><td width='53%' align='center' ><input type='button' id='del_single' name='del_single' value='删除' disabled></td></tr>
+								{% endfor %}
+								{%endif%}
+								</table>
+								</div>
+								
+								
+							<!-- 添加主机组界面 -->
+							<div id='addhostgroup' class="addhostgroup">
+								<div id='add'><input name='addhostgroup_btn' type='button' id='addhostgroup_btn' value='添加主机组' /></div>
+								<table  id='grouparea' width='1661' border='1'>
+								<tr><td width='6%' align='center' bgcolor='#66b3ff'>GroupId</td><td width='6%' align='center' bgcolor='#66b3ff'>主机组</td><td width='14%' align='center' bgcolor='#66b3ff'>主机组描述信息</td><td width='21%' align='center' bgcolor='#66b3ff'>主机组中的主机</td><td width='53%' align='center' bgcolor='#66b3ff'>关联主机</td></tr>
+								{%if grouplist %}
+								{% for group in grouplist%}
+								<tr border='1'><td width='6%' align='center'>{{group.id}}</td><td width='6%' align='center'>{{group.name}}</td><td width='14%' align='center' >{{group.group_desc}}</td><td width='21%' align='center' ></td><td width='53%' align='center' ><img  src='/images/add_btn.jpg' id='assign' name='assign' height='20' width='20'>&nbsp;&nbsp;&nbsp;<img src='/images/remove.jpg' id='remove' name='remove' height='20' width='20'></td></td></tr>
+								{% endfor %}
+								{%endif%}
+								</table>
+								</div>
 							<!-- 设置页面 -->
-							<!-- 添加主机 -->
-							<div id='addhost' class="addhost">
+							<!-- 添加主机表单 
+							<div id='Layer_addhost' class="addhost">
 								<div id='add'><input name='add_host_btn' type='button' id='add_host_btn' value='添加主机' /></div>
 								<table  id='userarea' width='1661' border='1'>
 								<tr><td width='6%' align='center' bgcolor='#66b3ff'>主机ID</td><td width='6%' align='center' bgcolor='#66b3ff'>主机IP</td><td width='14%' align='center' bgcolor='#66b3ff'>SSH 端口</td><td width='21%' align='center' bgcolor='#66b3ff'>远程用户</td><td width='53%' align='center' bgcolor='#66b3ff'>描述信息</td></tr>
 								{%if hostslist %}
 								{% for host in hostlist%}
-								<tr border='1'><td width='6%' align='center'>{{host.id}}</td><td width='6%' align='center'>{{user.username}}</td><td width='14%' align='center' >{{user.email}}</td><td width='21%' align='center' >{% if user.status == 1%}启用{%else%}禁用{% endif %}</td><td width='53%' align='center' >修改密码:<input type='password' id='resetpass' name='resetpass' placeholder='重置密码'/>启用/禁用:<input type='checkbox' {% if user.status==1%}checked{%endif%} id='enable'>&nbsp;&nbsp;&nbsp;&nbsp;<input type='button' id='commit' name='commit' value='修改' disabled></td></tr>
+								<tr border='1'><td width='6%' align='center'>{{host.id}}</td><td width='6%' align='center'>{{host.ipaddr}}</td><td width='14%' align='center' >{{host.sshport}}</td><td width='21%' align='center' >{{host.remote_user}}</td><td width='53%' align='center' >{{host.host_desc}}</td></tr>
 								{% endfor %}
 								{%endif%}
 								</table>
-								</div>
+								</div> -->
 							<!-- 添加用户界面 -->
 							<div id='adduser' class="adduser">
 								<div id='add'><input name='add_btn' type='button' id='add_btn' value='添加用户' /></div>

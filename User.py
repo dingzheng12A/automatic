@@ -192,3 +192,34 @@ class RoleUser:
 
 
 
+class Host():
+	def __init__(self,host_ip="",sshport=None,remote_user="",host_desc="",db=None):
+		self.host_ip=host_ip
+		self.sshport=sshport
+		self.remote_user=remote_user
+		self.host_desc=host_desc
+		self.db=db
+
+	def addhost(self):
+		host=Hosts(ipaddr=self.host_ip,sshport=self.sshport,remote_user=self.remote_user,host_desc=self.host_desc)
+		self.db.session.add_all([host])
+                self.db.session.commit()
+		result={'result':1}
+                return result
+	
+	def gethost(self):
+		hostlist=Hosts.query.filter_by()
+		for host in hostlist:
+			print("ip:%s.port:%s.remote_user:%s.host_desc:%s") %(host.ipaddr,host.sshport,host.remote_user,host.host_desc)
+		return hostlist
+			
+	def delhost(self,**kwargs):
+                if 'hostid' in kwargs:
+                        hostid=kwargs['hostid']
+                        hosts=Hosts.query.filter_by(id=hostid)
+                        hosts.delete()
+                        db.session.commit()
+                        result={'result':1}
+                else:
+                        result={'result':0}
+

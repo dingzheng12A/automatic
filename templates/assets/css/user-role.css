@@ -18,7 +18,13 @@ div .deluser {
 	width:1247px;
 	display:none;
 	}
-
+div .delhost {
+	position:related;	
+	left: 0;
+	top:0;
+	width:1247px;
+	display:none;
+	}
 
 div .addrole {
 	position:related;	
@@ -150,3 +156,23 @@ div .delrole {
 	display:none;
 	z-index:55;
 }
+#Layer_addhost {
+	position:absolute;
+	width:auto;
+	height:auto;
+	background-color: #FFFFFF;
+	left: 30%;
+	top: 30%;
+	border:2px solid;
+	display:none;
+	z-index:55;
+}
+
+div .addhostgroup {
+	position:related;	
+	left: 0;
+	top:0;
+	width:1247px;
+	display:none;
+	}
+	
