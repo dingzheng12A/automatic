@@ -89,6 +89,15 @@ class Hosts(db.Model):
 	sshport=db.Column(db.Integer,default=22)
 	remote_user=db.Column(db.String(40))
 	host_desc=db.Column(db.String(256))
+
+class HostGroup(db.Model):
+	__tablename__="sys_hostgroup"
+	id=db.Column(db.Integer,primary_key=True)
+        group_name=db.Column(db.String(256))
+        group_desc=db.Column(db.String(256))
+	def __repr__(self): 
+        	return '<HostGroup {}>'.format(self.id) 
+	
 	
 
 if __name__=='__main__':

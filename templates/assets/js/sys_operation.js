@@ -1337,7 +1337,6 @@ $(document).ready(function(){
 		});
 	
 	//添加主机组
-	//添加角色
 	$("#add_hostgroup").click(function(){
 		// $(".col-xs-12").html("添加用户");
 		var index=$("div .row #addhostgroup").index(this);
@@ -1345,6 +1344,79 @@ $(document).ready(function(){
 		.siblings().hide();
 	
 	});
+	
+	$("#addhostgroup_btn").click(function(){
+		$(".top").css({"display":"block","opacity":"0.5"});
+		$("#Layer_hostgroup").css("display","block");
+		$("#Layer_hostgroup #cancle").click(function(){
+			$(".top").hide();
+			$("#Layer_hostgroup").hide();
+		});
+		$("#Layer_hostgroup #hostgroup_name").bind("input propertychange change",function(event){
+				var hostgroup_name=$("#Layer_hostgroup #hostgroup_name").val();
+				var hostgroup_desc=$("#Layer_hostgroup #hostgroup_desc").val();
+			
+		
+				if (hostgroup_name.length!=0&& hostgroup_desc.length!=0){
+					$("#Layer_hostgroup #add").attr("disabled",false);
+				}else{
+				
+					$("#Layer_hostgroup #add").attr("disabled",true);
+				};
+		});
+		
+		$("#Layer_hostgroup #hostgroup_desc").bind("input propertychange change",function(event){
+				var hostgroup_name=$("#Layer_hostgroup #hostgroup_name").val();
+				var hostgroup_desc=$("#Layer_hostgroup #hostgroup_desc").val();
+			
+		
+				if (hostgroup_name.length!=0&& hostgroup_desc.length!=0){
+					$("#Layer_hostgroup #add").attr("disabled",false);
+				}else{
+		
+					$("#Layer_hostgroup #add").attr("disabled",true);
+				};
+		});
+		$("#Layer_hostgroup #add").click(function(){
+			var hostgroup_name=$("#Layer_hostgroup #hostgroup_name").val();
+			var hostgroup_desc=$("#Layer_hostgroup #hostgroup_desc").val();
+			if (hostgroup_name.length==0||hostgroup_desc.length==0){
+				alert("角色和描述信息都不能为空!");
+				$("#Layer_hostgroup #add").attr("disabled",true);
+			}
+			
+		
+			$.ajax({
+                                type: 'post',
+                                url:'/addhostgroup',
+                                data:{'hostgroup_name':hostgroup_name,'hostgroup_desc':hostgroup_desc},
+                                cache:false,
+                                dataType: 'json',
+                                success: function(data){
+										if (data['result']==1){
+											alert("添加主机组成功！");
+											$(".top").hide();
+											$("#Layer_hostgroup").hide();
+											$("#grouparea").append("<tr border='1'><td width='6%' align='center' bgcolor='#F0F0F0'></td><td width='6%' align='center' bgcolor='#F0F0F0'>"+hostgroup_name+"</td><td width='14%' align='center' bgcolor='#F0F0F0'>"+hostgroup_desc+"</td><td width='21%' align='center' bgcolor='#F0F0F0'>没有任何主机信息</td><td width='53%' align='center' bgcolor='#F0F0F0'><img  src='/images/add_btn.jpg' id='assign' name='assign' height='20' width='20'>&nbsp;&nbsp;&nbsp;<img src='/images/remove.jpg' id='remove' name='remove' height='20' width='20'></td></tr>");
+											//window.location.href='/main';
+											
+											
+										}else {
+											alert("主机组已经存在！");
+											$("#Layer_hostgroup #hostgroup_name").val('');
+											$("#Layer_hostgroup #hostgroup_desc").val('');
+											$("#Layer_hostgroup #hostgroup_name").focus();
+											
+											$("#Layer_hostgroup #add").attr("disabled",true);
+										}
+                                        //window.location.href = msg.url;
+
+                                }
+			});
+		});
+	
+		
+	});	
 	
 })
 

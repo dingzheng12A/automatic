@@ -223,3 +223,16 @@ class Host():
                 else:
                         result={'result':0}
 
+
+class Host_Group():
+	def __init__(self,group_name="",group_desc="",db=None):
+		self.group_name=group_name
+		self.group_desc=group_desc
+		self.db=db
+
+	def addhostgroup(self):
+		hostgroup=HostGroup(group_name=self.group_name,group_desc=self.group_desc)
+		self.db.session.add_all([hostgroup])
+                self.db.session.commit()
+		result={'result':1}
+                return result

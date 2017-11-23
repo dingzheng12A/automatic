@@ -175,4 +175,15 @@ div .addhostgroup {
 	width:1247px;
 	display:none;
 	}
-	
+
+#Layer_hostgroup {
+	position:absolute;
+	width:526px;
+	height:auto;
+	background-color: #FFFFFF;
+	left: 30%;
+	top: 30%;
+	border:2px solid;
+	display:none;
+	z-index:55;
+}

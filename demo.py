@@ -3,7 +3,7 @@
 from flask import Flask,render_template,redirect
 from flask import request,jsonify,session,url_for
 from flask_sqlalchemy import SQLAlchemy
-from User import User,Role,RoleUser,Host
+from User import User,Role,RoleUser,Host,Host_Group
 from database import Users
 from Menu import MenuInfo
 from AuthPro import AuthPro
@@ -281,12 +281,23 @@ def delhost():
                 else:
                         hostlist=hostid.split(",")
                         for host_id in hostlist:
-                                result=host.delhost(hostid=host_id)
+                                host.delhost(hostid=host_id)
+			result={'result':1}
                         return jsonify(result)
         else:
                 return ''
 		
 			
+@app.route('/addhostgroup',methods=['POST','GET'])
+def addhostgroup():
+	if request.method == 'POST':
+		groupname=request.form['hostgroup_name']
+		groupdesc=request.form['hostgroup_desc']
+		hostgroup=Host_Group(group_name=groupname,group_desc=groupdesc,db=db)
+		result=hostgroup.addhostgroup()
+		return jsonify(result)
+	else:
+		return ''
 
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 
