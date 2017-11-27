@@ -21,7 +21,7 @@ def index_page():
 	return render_template('login.html')
 
 @app.route('/logincheck',methods=['POST','GET'])
-def logi_check():
+def login_check():
 	if request.method == 'POST':
 		user=request.form['username']
 		password=request.form['pwd']
@@ -35,6 +35,8 @@ def logi_check():
 
 @app.route('/logout',methods=['POST','GET'])
 def logout():
+	if 'username' not in session:
+		return 'no authorized!'
 	if request.method == 'GET':
 		session.pop('username', None)
     		return redirect("/")
@@ -57,8 +59,10 @@ def main_page():
 		else:
 			USER=User()
 			HOST=Host()
+			HOSTGROUP=Host_Group()
 			userlist=USER.ListUser()
 			rolelist=USER.ListRole()
+			hostgroups=HOSTGROUP.ListGroup()
 			menu=MenuInfo()
 			menulist,menulist1=menu.GetMenu()
 			hostlist=HOST.gethost()
@@ -66,12 +70,14 @@ def main_page():
 			username=session['username']
 			idslist=USER.GetIds(username=username)
 			
-			return render_template('index.html',username=session['username'].upper(),userlist=userlist,rolelist=rolelist,menulist=menulist,menulist1=menulist1,idslist=idslist,hostlist=hostlist)
+			return render_template('index.html',username=session['username'].upper(),userlist=userlist,rolelist=rolelist,menulist=menulist,menulist1=menulist1,idslist=idslist,hostlist=hostlist,hostgroups=hostgroups)
 	else:
 		return redirect(url_for('index_page'))
 
 @app.route('/adduser',methods=['POST','GET'])
 def adduser():
+	if 'username' not in session:
+		return 'no authorized!'
 	if request.method == 'POST':
 		username=request.form['username']
 		nickname=request.form['nickname']
@@ -85,6 +91,8 @@ def adduser():
 
 @app.route('/setpass',methods=['POST','GET'])
 def setpass():
+	if 'username' not in session:
+		return 'no authorized!'
 	if request.method == 'POST':
                 username=request.form['username']
 		password=''
@@ -103,6 +111,8 @@ def setpass():
 
 @app.route('/resetpass',methods=['POST','GET'])
 def resetpass():
+	if 'username' not in session:
+		return 'no authorized!'
 	if request.method == 'POST':
                 username=request.form['username']
 		if 'oldpass' in request.form:
@@ -124,6 +134,8 @@ def resetpass():
 
 @app.route('/deluser',methods=['POST','GET'])
 def deluser():
+	if 'username' not in session:
+		return 'no authorized!'
 	if request.method == 'POST':
 		userid=request.form['userlist']
 		USER=User()
@@ -141,6 +153,8 @@ def deluser():
 
 @app.route('/addrole',methods=['POST','GET'])
 def addrole():
+	if 'username' not in session:
+		return 'no authorized!'
 	if request.method == 'POST':
 		rolename=request.form['rolename']
 		role_desc=request.form['role_desc']
@@ -152,6 +166,8 @@ def addrole():
 
 @app.route('/delrole',methods=['POST','GET'])
 def delrole():
+	if 'username' not in session:
+		return 'no authorized!'
 	if request.method == 'POST':
 		roleid=request.form['rolelist']
 		ROLE=Role()
@@ -174,6 +190,8 @@ def delrole():
 
 @app.route('/assign',methods=['POST','GET'])
 def assign():
+	if 'username' not in session:
+		return 'no authorized!'
 	if request.method == 'POST':
 		roleid=request.form['roleid']
 		rolename=request.form['rolename']
@@ -192,6 +210,8 @@ def assign():
 
 @app.route('/remove_assign',methods=['POST','GET'])
 def remove_assign():
+	if 'username' not in session:
+		return 'no authorized!'
         if request.method == 'POST':
                 roleid=request.form['roleid']
                 current_user=request.form['current_user']
@@ -203,6 +223,8 @@ def remove_assign():
 
 @app.route('/addmenu',methods=['POST','GET'])
 def addmenu():
+	if 'username' not in session:
+		return 'no authorized!'
 	if request.method == 'POST':
 		parent_menu=request.form['parent_menu']
 		menu_name=request.form['menu_name']
@@ -227,6 +249,8 @@ def submenu():
 		
 @app.route('/delmenu',methods=['POST','GET'])
 def delmenu():
+	if 'username' not in session:
+		return 'no authorized!'
 	if request.method == 'POST':
 		menuid=request.form['menuid']
 		pid=request.form['pid']
@@ -238,6 +262,8 @@ def delmenu():
 
 @app.route('/modifyauth',methods=['POST','GET'])	
 def modifyauth():
+	if 'username' not in session:
+		return 'no authorized!'
 	if request.method == 'POST':
 		roleid=request.form['roleid']
 		ids=request.form['ids']
@@ -249,6 +275,8 @@ def modifyauth():
 
 @app.route('/getids',methods=['POST','GET'])
 def getids():
+	if 'username' not in session:
+		return 'no authorized!'
 	if request.method == 'POST':
 		roleid=request.form['roleid']
 		authpro=AuthPro(roleid=roleid)
@@ -260,6 +288,8 @@ def getids():
 
 @app.route('/addhost',methods=['POST','GET'])
 def addhost():
+	if 'username' not in session:
+		return 'no authorized!'
 	if request.method == 'POST':
 		host_ip=request.form['host_ip']
 		sshport=request.form['sshport']
@@ -273,6 +303,8 @@ def addhost():
 
 @app.route('/delhost',methods=['POST','GET'])
 def delhost():
+	if 'username' not in session:
+		return 'no authorized!'
         if request.method == 'POST':
                 hostid=request.form['hostId']
                 USER=User()
@@ -292,6 +324,8 @@ def delhost():
 			
 @app.route('/addhostgroup',methods=['POST','GET'])
 def addhostgroup():
+	if 'username' not in session:
+		return 'no authorized!'
 	if request.method == 'POST':
 		groupname=request.form['hostgroup_name']
 		groupdesc=request.form['hostgroup_desc']
@@ -303,6 +337,8 @@ def addhostgroup():
 
 @app.route('/hostassign',methods=['POST','GET'])
 def hostassign():
+	if 'username' not in session:
+		return 'no authorized!'
 	if request.method == 'POST':
                 groupid=request.form['groupid']
                 groupname=request.form['groupname']
@@ -321,6 +357,8 @@ def hostassign():
 
 @app.route('/removehost_assign',methods=['POST','GET'])
 def removehost_assign():
+	if 'username' not in session:
+		return 'no authorized!'
         if request.method == 'POST':
                 groupid=request.form['groupid']
                 current_host=request.form['current_host']
@@ -333,6 +371,8 @@ def removehost_assign():
 
 @app.route('/delhostgroup',methods=['POST','GET'])
 def delhostgroup():
+	if 'username' not in session:
+		return 'no authorized!'
         if request.method == 'POST':
                 groupid=request.form['grouplist']
                 hostgroup=Host_Group()
