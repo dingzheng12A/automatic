@@ -614,7 +614,7 @@ $(document).ready(function(){
 	
 		
 	});	
-	$("table tr").each(function(){
+	$("table[id='rolearea'] tr").each(function(){
 		var $position=$(this);
 		var $assign=$(this).find("#assign");
 		var $remove=$(this).find("#remove")
@@ -859,6 +859,7 @@ $(document).ready(function(){
 	
 	});
 
+	
 
 	//添加菜单
 	$("#Add_Menu").click(function(){
@@ -1418,6 +1419,301 @@ $(document).ready(function(){
 		
 	});	
 	
+	$("table[id='grouparea'] tr").each(function(){
+		var $group_position=$(this);
+		var $assign=$(this).find("#assign");
+		var $remove=$(this).find("#remove")
+		$assign.mouseover(function(e){
+			$assign.css({"height":22,'width':22,'border':'1px solid'});
+			var $tooltip1="<div id='tooltip2'>将主机添加到主机组。</div>"
+			var xx = e.originalEvent.x || e.originalEvent.layerX || 0; 
+			var yy = e.originalEvent.y || e.originalEvent.layerY || 0;
+			$("body").append($tooltip1);
+			$("#tooltip2").show();
+			$("#tooltip2").css({'top':yy+2+'px','left':xx+1+'px'})
+		}).mouseout(function(e){
+			$("#tooltip2").hide();
+			$assign.css({"height":20,'width':20,'border':0});
+		});
+		
+		
+		
+		//remove function
+		$remove.mouseover(function(e){
+			$remove.css({"height":22,'width':22,'border':'1px solid'});
+			
+			var $tooltip2="<div id='tooltip2'>将主机从主机组中移除。</div>"
+			var xx = e.originalEvent.x || e.originalEvent.layerX || 0; 
+			var yy = e.originalEvent.y || e.originalEvent.layerY || 0;
+			$("body").append($tooltip2);
+			$("#tooltip2").show();
+			$("#tooltip2").css({'top':yy+2+'px','left':xx+1+'px'})
+		}).mouseout(function(e){
+			$("#tooltip2").hide();
+			$remove.css({"height":20,'width':20,'border':0});
+		});
+		
+		
+		
+		//关联主机和主机组
+			$assign.click(function(){
+			var selected=$("table[id='grouparea'] tr[class='selected']");
+			var index=selected.index();
+			
+			var container_hosts=$("table[id='grouparea'] tr:eq("+index+")").children("td:eq(3)").text();;
+			var current_host;
+			console.log("当前包包含主机:"+container_hosts);
+			if(container_hosts.length==0){
+				current_host=container_hosts;
+			}else{
+				current_host=container_hosts;
+				current_host+=',';
+			}
+			//alert(current_host);
+			$("#Layerhost_assign tbody").find("#current_host").val(current_host);
+			//var $rolename=$assign.parent().parent().children("td:eq(1)").text();
+			$(".top").css({"display":"block","opacity":"0.5"});
+			$("#Layerhost_assign").css("display","block");
+			$("#Layerhost_assign #cancle").click(function(){
+				$(".top").hide();
+			//	$("#userassign tbody").children("tr:eq(0)").children("td:eq(1)").text($rolename);
+				$("#Layerhost_assign").hide();
+			});
+			$("#Layerhost_assign #add").click(function(){
+			
+				var select_host=$("#hostassign tbody").find("#select_host").val();
+				
+				if(current_host.indexOf(select_host)<0){
+					current_host+=select_host;
+					current_host+=',';
+				}
+				
+				$("#hostassign tbody").find("#current_host").val(current_host);
+				//$("#Layer_assign").hide(current_user);
+			});
+			var groupname=$group_position.children("td:eq(1)").text();
+			var groupid=$group_position.children("td:eq(0)").text();
+			
+			$("#Layerhost_assign #confirm").off('click').on('click',function(){
+				var hostlist=$("#hostassign tbody").find("#current_host").val();
+				console.log(hostlist);
+				$.ajax({
+							type: 'post',
+							url:'/hostassign',
+							data:{'hostlist':hostlist,'groupid':groupid,'groupname':groupname},
+							cache:false,
+							dataType: 'json',
+							success: function(data){
+									if(data.result==1){
+									alert('success!');
+									$(".top").hide();
+									$("#Layerhost_assign").hide();
+									//$(this).parent().parent().hide();
+									//var selected=$("table[id='grouparea'] tr[class='selected']");
+									//var index=selected.index();
+									$("table[id='grouparea'] tr:eq("+index+")").children("td:eq(3)").text(hostlist);
+									
+								}
+							}
+						 
+				});
+			})
+		
+			
+		})
+		
+		
+		//把主机从主机组中移除
+		$remove.click(function(){
+			var selected=$("table[id='grouparea'] tr[class='selected']");
+			var index=selected.index();
+			var spare_hosts=$("table[id='grouparea'] tr:eq("+index+")").children("td:eq(3)").text();
+			var groupname=selected.children("td:eq(1)").text();
+			var groupid=$("table[id='grouparea'] tr:eq("+index+")").children("td:eq(0)").text();
+			console.log("剩余主机数量:"+spare_hosts.length);
+			console.log("当前主机组:"+groupname);
+			if(spare_hosts.length>0){
+			$(".top").css({"display":"block","opacity":"0.5"});
+			$("#Layerhost_remove").css("display","block");
+			var selected=$("table[id='grouparea'] tr[class='selected']");
+			var index=selected.index();
+			var spare_hosts=$("table[id='grouparea'] tr:eq("+index+")").children("td:eq(3)").text();
+			$("#hostassign tbody").find("#rm_current_host").val(spare_hosts);
+			$("#Layerhost_remove #cancle").click(function(){
+				$(".top").hide();
+		
+				$("#Layerhost_remove").hide();
+			});
+			$("#Layerhost_remove #remove_assign").click(function(){
+			
+				var currentHost = $("#hostassign tbody").find("#rm_current_host");
+				var spare_host=currentHost.val();
+				var select_host=$("#hostassign tbody").find("#rm_select_host").val();
+				// 从当前用户中删除选择的用户
+				var newItemStr = removeSelectItem(select_host, spare_host.split(','));
+				
+				currentHost.val(newItemStr);
+				
+				
+				//var $position=$("table[id='grouparea'] tr[class='selected']");
+				$("#Layerhost_remove #confirm").off('click').on('click',function(){
+					var currentHost=newItemStr;
+					
+					console.log("当前主机组:"+groupname+"当前剩余主机:"+currentHost);
+					//var groupid=$position.children("td:eq(0)").text();
+					var request=confirm("确定要移除主机吗?")
+					if(request==true){
+						$.ajax({
+                                type: 'post',
+                                url:'/removehost_assign',
+                                data:{'current_host':currentHost,'groupid':groupid},
+                                cache:false,
+                                dataType: 'json',
+								success: function(data){
+									alert('success!');
+									$(".top").hide();
+									$("#Layerhost_remove").hide();
+									var selected=$("table[id='grouparea'] tr[class='selected']");
+									var index=selected.index();
+									$("table[id='grouparea'] tr:eq("+index+")").children("td:eq(3)").text(currentHost);
+								}
+                             
+						});
+					}
+
+				})										
+				
+			});
+			}
+			
+		})
+		
+		
+	});
+
+		
+	$("table[id='grouparea'] tr").mouseover(function(){
+		var $siblings = $(this).siblings('tr');
+		$siblings.removeClass("selected");
+		$(this).addClass('selected');
+			
+			
+		}).mouseout(function(){
+			$(this).removeClass("selected");
+		})
+		
+	//删除主机组
+	$("#del_hostgroup").click(function(){
+		// $(".col-xs-12").html("添加用户");
+		var index=$("div .row #delhostgroup").index(this);
+		$("div #delhostgroup").eq(index).show()
+		.siblings().hide();
+	
+	});
+	//删除主机组
+		
+		$("#delhostgroup table tr").click(function(){
+			var $siblings = $(this).siblings('tr');
+			$siblings.removeClass("selected").find('input[id="delhostgroup_commit"]').prop('disabled', true);
+			$(this).addClass('selected').find('input[id="delhostgroup_commit"]').prop('disabled', false);
+			
+			
+		})
+		
+		$("#delhostgroup table tr").find("#delhostgroup_commit").click(function(){
+			var container_hosts=$(this).parent().parent().children("td:eq(3)").text();
+			var $position=$(this).parent().parent();
+			var groupId=$(this).parent().siblings().find("#group_id").val();
+			if(container_hosts.length>0){
+				alert("组中包含主机，不能删除!");}
+			else{	
+			var request=confirm("是否删除主机组?");
+			
+			
+			if(request==true){
+					$.ajax({
+                        type: 'post',
+                        url:'/delhostgroup',
+                        data:{'grouplist':groupId},
+                        cache:false,
+                        dataType: 'json',
+						success: function(data){
+							$position.hide();
+							alert("主机组已经删除!");
+						
+                        }
+                     
+					});
+			};
+			};
+			
+			
+		});
+		var click_hostgroup_num=0;
+		var grouparray=new Array();
+		$("#delhostgroup table tr").each(function(){
+		
+			var $id=$(this).children("td:eq(0)").find("input");
+			$(this).click(function(){
+			if ($id.is(":checked")){
+				click_hostgroup_num+=1;
+				grouparray[click_hostgroup_num]=$id.val();
+				console.log('点击次数:'+click_hostgroup_num);
+				
+				
+			
+			}else{
+				click_hostgroup_num-=1;
+				grouparray.splice(click_hostgroup_num,1);
+				console.log('点击次数:'+click_hostgroup_num);
+						
+			}
+			if(click_hostgroup_num>0){
+				$("#delhostgroup #delhostgroup_btn").attr("disabled",false);
+			}else{
+				$("#delhostgroup #delhostgroup_btn").attr("disabled",true);
+			}
+			
+				
+			});
+			
+			
+		})
+		//批量删除角色
+		$("#delhostgroup #delhostgroup_btn").click(function(){
+			console.log(grouparray);
+			console.log('点击次数:'+click_hostgroup_num);
+			var request=confirm("是否删除主机组?");
+			if(request==true){
+			$.ajax({
+                type: 'post',
+                url:'/delhostgroup',
+                data:{'grouplist':grouparray.join(',')},
+                cache:false,
+                dataType: 'json',
+				success: function(data){
+				//	$position.hide();
+					alert("主机组已经删除!");
+					$("#delhostgroup table tr").each(function(){
+						var $id=$(this).children("td:eq(0)").find("input");
+						if ($id.is(":checked")){
+							$id.parent().parent().hide();
+						}
+						click_hostgroup_num=0;
+			
+					
+			
+			
+					})
+				
+                }
+                     
+			});
+			}
+			
+		});
+	
+	
 })
 
 function isInteger(obj) {
@@ -1425,3 +1721,16 @@ function isInteger(obj) {
 	return re.test(obj);
 }
 
+function removeSelectItem(item, itemArr){
+			var i,len= itemArr.length,index;
+			for(i=0;i<len;i++){
+				if(item == itemArr[i]){
+					index = i;break;
+				}
+			}
+			if(index !== undefined){
+				itemArr.splice(index,1);
+			}
+			
+			return itemArr.join(',');
+}

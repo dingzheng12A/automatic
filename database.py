@@ -97,6 +97,16 @@ class HostGroup(db.Model):
         group_desc=db.Column(db.String(256))
 	def __repr__(self): 
         	return '<HostGroup {}>'.format(self.id) 
+
+class HostinGroup(db.Model):
+	__tablename__="sys_group_host"
+        id=db.Column(db.Integer,primary_key=True)
+        groupid=db.Column(db.Integer,index=True)
+        groupname=db.Column(db.String(64))
+        hostid=db.Column(db.Integer,index=True)
+        host_ip=db.Column(db.String(64))
+        create_time=db.Column(db.DateTime,default=datetime.datetime.now())
+	
 	
 	
 

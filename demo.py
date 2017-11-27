@@ -45,13 +45,15 @@ def main_page():
 		if username=='admin':
 			USER=User()
 			HOST=Host()
+			HOSTGROUP=Host_Group()
                 	userlist=USER.ListUser()
                 	rolelist=USER.ListRole()
+			hostgroups=HOSTGROUP.ListGroup()
                 	menu=MenuInfo()
                 	menulist,menulist1=menu.GetMenu()
 			hostlist=HOST.gethost()
                 	username=session['username']
-                	return render_template('admin_index.html',username=session['username'].upper(),userlist=userlist,rolelist=rolelist,menulist=menulist,menulist1=menulist1,hostlist=hostlist)
+                	return render_template('admin_index.html',username=session['username'].upper(),userlist=userlist,rolelist=rolelist,menulist=menulist,menulist1=menulist1,hostlist=hostlist,hostgroups=hostgroups)
 		else:
 			USER=User()
 			HOST=Host()
@@ -298,6 +300,59 @@ def addhostgroup():
 		return jsonify(result)
 	else:
 		return ''
+
+@app.route('/hostassign',methods=['POST','GET'])
+def hostassign():
+	if request.method == 'POST':
+                groupid=request.form['groupid']
+                groupname=request.form['groupname']
+                hostlist=request.form['hostlist']
+                for host in hostlist.split(','):
+                        if host!='':
+                                HOST=Host(host_ip=host)
+                                hostid=HOST.GetHostid()
+                                host_group=Host_Group(db=db)
+                                host_group.assign(groupid=groupid,groupname=groupname,host_ip=host,hostid=hostid)
+                result={'result':1}
+                return jsonify(result)
+        else:
+                return ''
+
+
+@app.route('/removehost_assign',methods=['POST','GET'])
+def removehost_assign():
+        if request.method == 'POST':
+                groupid=request.form['groupid']
+                current_host=request.form['current_host']
+                group_host=Host_Group()
+                result=group_host.remove_assign(groupid=groupid,current_host=current_host)
+                return jsonify(result)
+        else:
+                return ''
+
+
+@app.route('/delhostgroup',methods=['POST','GET'])
+def delhostgroup():
+        if request.method == 'POST':
+                groupid=request.form['grouplist']
+                hostgroup=Host_Group()
+
+                if len(groupid.split(","))==1:
+                        result=hostgroup.DropHostGroup(groupid=groupid)
+                        return jsonify(result)
+                else:
+                        grouplist=groupid.split(",")
+                        for group in grouplist:
+                                if len(group)==0:
+                                        pass
+                                else:
+                                        hostgroup.DropHostGroup(groupid=group)
+                        result={'result':1}
+                        return jsonify(result)
+        else:
+                return ''
+
+
 
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 

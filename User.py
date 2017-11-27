@@ -223,6 +223,11 @@ class Host():
                 else:
                         result={'result':0}
 
+	def GetHostid(self):
+                hostid=engine.execute('select * from sys_hosts where ipaddr="%s"' %(self.host_ip)).first()
+                #print 'hostid is:%s' % hostid.id
+                return hostid.id
+
 
 class Host_Group():
 	def __init__(self,group_name="",group_desc="",db=None):
@@ -236,3 +241,68 @@ class Host_Group():
                 self.db.session.commit()
 		result={'result':1}
                 return result
+
+	def gethostgroup(self):
+		hostgroups=engine.execute('select * from sys_hostgroup').fetchall()
+		return hostgroups
+
+        def assign(self,**kwargs):
+		groupid=None
+		hostid=None
+		groupname=None
+		host_ip=None
+		if 'groupid' in kwargs:
+			groupid=kwargs['groupid']
+		if 'hostid' in kwargs:
+			hostid=kwargs['hostid']
+		if 'groupname' in kwargs:
+			groupname=kwargs['groupname']
+		if 'host_ip' in kwargs:
+			host_ip=kwargs['host_ip']
+		if groupid is not None and hostid is not None:	
+                	exists_num=engine.execute("select count(*) from sys_group_host where groupid=%s and hostid=%s" %(groupid,hostid)).first()[0]
+                	print "exists_num:%s.type:%s" %(exists_num,type(exists_num))
+                	if exists_num==0:
+                        	print 'z '*10
+                        	host_group=HostinGroup(groupid=groupid,groupname=groupname,hostid=hostid,host_ip=host_ip)
+                        	self.db.session.add_all([host_group])
+                        	self.db.session.commit()
+                	else:
+                        	pass
+		else:
+			pass
+	def ListGroup(self):
+
+        #       grouplist=engine.execute('select * from sys_hostgroup').fetchall()
+                grouplist=engine.execute('select a.id,a.group_name,a.`group_desc`,group_concat(b.host_ip) as hostlist from sys_hostgroup a left join sys_group_host b on a.id=b.groupid group by a.id;').fetchall()
+                return grouplist
+
+	def remove_assign(self,**kwargs):
+                if 'current_host' in kwargs:
+                        current_host=kwargs['current_host']
+                if 'groupid' in kwargs:
+                        groupid=kwargs['groupid']
+                if len(current_host)==0:
+                        sql="delete from sys_group_host  where groupid=%s;" % groupid
+                        engine.execute(sql)
+                else:
+                        sql="delete from sys_group_host where groupid=%s and host_ip not in (%s);" % (groupid,'"'+current_host.replace(',','","').strip()+'"' )
+                        #print "Execute SQL:%s" % sql
+                        engine.execute(sql)
+                try:
+                        res=engine.execute(sql)
+                        #print res
+                        result={'result':1}
+                except Exception,e:
+                        print 'has error:%s' % e
+                        result={'result':0}
+                return result
+	
+	def DropHostGroup(self,**kwargs):
+		if 'groupid' in kwargs:
+			groupid=kwargs['groupid']
+			print 'groupid is:%s' %groupid
+			role=engine.execute('delete from sys_hostgroup where id=%s' %(groupid))
+			result={'result':1}
+		else:
+			result={'result':0}
