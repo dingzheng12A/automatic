@@ -7,6 +7,14 @@
 	display:none;
 }
 
+#remote_user_add {
+	position:absolute;
+	width:756px;
+	height:auto;
+	border:2px solid;
+	z-index:1;
+	display:none;
+}
 #Layer_DelMenu {
 	position:absolute;
 	width:449px;

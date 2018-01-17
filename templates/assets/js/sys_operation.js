@@ -1712,6 +1712,74 @@ $(document).ready(function(){
 			}
 			
 		});
+		
+		var num_host=0;
+		var iparray=new Array();
+		$("#change_root_passwd").click(function(){
+			$('#myModal').modal('show');
+			//$(".top").css({"display":"block","opacity":"0.5"});
+			$("#select_all").click(function(){
+				//$("#myModal").find("input").each(function(){
+					$('#myModal').find("input").prop("checked",true);
+				//});
+			});
+			
+			$("#select_invert").click(function(){
+				$("#myModal").find("input").each(function(){
+					if ($(this).is(":checked")){
+						$(this).attr("checked",false);
+					}else{
+						$(this).attr("checked",true);
+					};
+					
+				});
+			});
+			
+			$('#change_password').click(function(){
+					$("#myModal").find("input").each(function(){
+					if ($(this).is(":checked")){
+						iparray[num]=$(this).val();
+						num+=1;
+					};
+					});
+			//	console.log('点击次数:'+num);
+			var $iplist=iparray.join("!");
+			$('#myModal').modal('hide');
+			$('#ajaxResult').modal('show');
+			$.ajax({
+                                type: 'post',
+                                url:'/change_root_passwd',
+                                data:{'iplist':$iplist},
+                                cache:false,
+                                dataType: 'json',
+								success: function(data){
+					
+									if(data.result==1){
+										//window.location.href = /
+										//window.open('/passfile.txt', '_blank')
+										$('#ajaxResultContent').html('<a href="/passfile.txt" download>下载</a>')
+										
+										
+									}
+								//window.location.href = "/";
+									$('#myModal').modal('hide');
+                                },
+                             
+			});
+			//$('#myModal').modal('hide');
+			//});
+			$("#myModal").find("input").each(function(){
+					if ($(this).is(":checked")){
+						$(this).attr("checked",false);
+					};
+			});	
+			 
+			});
+				
+					
+			
+			
+		});
 	
 	
 })

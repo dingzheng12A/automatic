@@ -242,3 +242,10 @@ div .addhostgroup {
 	display:none;
 	z-index:55;
 }
+
+#return_msg {
+	border:1px solid color #81c0c0;
+	background-color:#81c0c0;
+	font-size:10px;
+	
+}

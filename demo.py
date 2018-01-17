@@ -7,6 +7,8 @@ from User import User,Role,RoleUser,Host,Host_Group
 from database import Users
 from Menu import MenuInfo
 from AuthPro import AuthPro
+from remote_user_manager import UserManager
+from password_modify import *
 app=Flask(__name__,static_folder='templates', static_url_path='')
 app.config['SECRET_KEY']='automatic system'
 app.config['SQLALCHEMY_DATABASE_URI']='mysql://automatic:automatic@localhost:3306/automatic'
@@ -351,6 +353,44 @@ def delhostgroup():
                         return jsonify(result)
         else:
                 return ''
+
+
+@app.route('/remote_user_manager',methods=['POST','GET'])
+def remote_user_manager():
+        if request.method == 'POST':
+                remote_host=request.form['remote_host']
+                username=request.form['username']
+                passwd=request.form['passwd']
+		operateId=request.form['operateId']
+		if operateId=='1':
+			usermanager=UserManager(remote_user=username,remote_host=remote_host)
+			result=usermanager.add(password=passwd)
+			print result
+			return jsonify(result)
+		else:
+			return ''
+			
+        else:
+                return ''
+
+
+@app.route('/change_root_passwd',methods=['POST','GET'])
+def change_root_passwd():
+	if request.method == 'POST':
+		iplist=request.form['iplist']
+		iplist=iplist.split('!')
+		try:
+			passwordmanager=PasswordManager(filename="mysite.yaml",outfile="aaa.yaml",iplist=iplist)
+			passwordmanager.generate()
+			passwordmanager.execute()
+			passwordmanager.clearyaml()
+			return jsonify({"result":1})
+		except:
+			return jsonify({"result":0})
+	else:
+		return ''
+		
+
 
 
 

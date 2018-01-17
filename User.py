@@ -208,7 +208,8 @@ class Host():
                 return result
 	
 	def gethost(self):
-		hostlist=Hosts.query.filter_by()
+		#hostlist=Hosts.query.filter_by()
+                hostlist=engine.execute('select * from sys_hosts').fetchall()
 		for host in hostlist:
 			print("ip:%s.port:%s.remote_user:%s.host_desc:%s") %(host.ipaddr,host.sshport,host.remote_user,host.host_desc)
 		return hostlist
