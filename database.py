@@ -85,6 +85,7 @@ class Role_Auth(db.Model):
 class Hosts(db.Model):
 	__tablename__="sys_hosts"
 	id=db.Column(db.Integer,primary_key=True)
+	hostname=db.Column(db.String(256),default='')
 	ipaddr=db.Column(db.String(256))
 	sshport=db.Column(db.Integer,default=22)
 	remote_user=db.Column(db.String(40))

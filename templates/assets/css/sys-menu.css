@@ -54,3 +54,16 @@ td{
 	position:absolute;
 	display:none;
 }
+
+#group_title{
+	position:related;
+	display:block;
+	background-color:#D2E9FF;
+	border:2px solid #D2E9FF;
+	width:449px;
+	height:auto;
+	text-align:left;
+	font-size:15px;
+	font-weight:bold;
+}
+

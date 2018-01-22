@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-from User import User
-USER=User()
-userlist=USER.ListUser()
-print "userlist:%s" % userlist
+from remote_user_manager import UserManager
+usermanager=UserManager("127.0.0.1","root")
+usermanager.add(password="abcdefg")

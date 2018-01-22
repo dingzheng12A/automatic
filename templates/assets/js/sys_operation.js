@@ -1154,7 +1154,8 @@ $(document).ready(function(){
 		var $sshport=$("#Layer_host #sshport").val();
 		var $remote_user=$("#Layer_host #remote_user").val();
 		var $host_desc=$("#Layer_host #host_desc").val();
-		if($ipaddr.length>0 && $sshport.length>0 && $remote_user.length>0 && $host_desc.length>0 ){
+		var $hostgroup=$("#Layer_host select").find("option:selected").text();
+		if($ipaddr.length>0 && $sshport.length>0 && $remote_user.length>0 && $host_desc.length>0  && $hostgroup.length>0){
 			console.log("sshport length:"+$sshport.length);
 			$("#Layer_host #add").attr("disabled",false);
 		}else{
@@ -1167,7 +1168,8 @@ $(document).ready(function(){
 		var $sshport=$("#Layer_host #sshport").val();
 		var $remote_user=$("#Layer_host #remote_user").val();
 		var $host_desc=$("#Layer_host #host_desc").val();
-		if($ipaddr.length>0 && $sshport.length>0 && $remote_user.length>0 && $host_desc.length>0 ){
+		var $hostgroup=$("#Layer_host select").find("option:selected").text();
+		if($ipaddr.length>0 && $sshport.length>0 && $remote_user.length>0 && $host_desc.length>0 && $hostgroup.length>0){
 			$("#Layer_host #add").attr("disabled",false);
 		}else{
 			$("#Layer_host #add").attr("disabled",true);
@@ -1179,7 +1181,8 @@ $(document).ready(function(){
 		var $sshport=$("#Layer_host #sshport").val();
 		var $remote_user=$("#Layer_host #remote_user").val();
 		var $host_desc=$("#Layer_host #host_desc").val();
-		if($ipaddr.length>0 && $sshport.length>0 && $remote_user.length>0 && $host_desc.length>0 ){
+		var $hostgroup=$("#Layer_host select").find("option:selected").text();
+		if($ipaddr.length>0 && $sshport.length>0 && $remote_user.length>0 && $host_desc.length>0 && $hostgroup.length>0){
 			$("#Layer_host #add").attr("disabled",false);
 		}else{
 			$("#Layer_host #add").attr("disabled",true);
@@ -1192,19 +1195,35 @@ $(document).ready(function(){
 		var $sshport=$("#Layer_host #sshport").val();
 		var $remote_user=$("#Layer_host #remote_user").val();
 		var $host_desc=$("#Layer_host #host_desc").val();
-		if($ipaddr.length>0 && $sshport.length>0 && $remote_user.length>0 && $host_desc.length>0 ){
+		var $hostgroup=$("#Layer_host select").find("option:selected").text();
+		if($ipaddr.length>0 && $sshport.length>0 && $remote_user.length>0 && $host_desc.length>0  && $hostgroup.length>0){
 			$("#Layer_host #add").attr("disabled",false);
 		}else{
 			$("#Layer_host #add").attr("disabled",true);
 		}
 	});
 	
+	$("#Layer_host select").bind("change propertychange change",function(event){
+		var $ipaddr=$("#Layer_host #ipaddr").val();
+		var $sshport=$("#Layer_host #sshport").val();
+		var $remote_user=$("#Layer_host #remote_user").val();
+		var $host_desc=$("#Layer_host #host_desc").val();
+		var $hostgroup=$("#Layer_host select").find("option:selected").text();
+		if($ipaddr.length>0 && $sshport.length>0 && $remote_user.length>0 && $host_desc.length>0  && $hostgroup.length>0){
+			$("#Layer_host #add").attr("disabled",false);
+		}else{
+			$("#Layer_host #add").attr("disabled",true);
+		}
+	});
 	
 	$("#Layer_host #add").click(function(){
 		var $sshport=$("#Layer_host #sshport").val();
 		var $ipaddr=$("#Layer_host #ipaddr").val();
+		var $hostname=$("#Layer_host #hostname").val();
 		var $remote_user=$("#Layer_host #remote_user").val();
 		var $host_desc=$("#Layer_host #host_desc").val();
+		var $hostgroup=$("#Layer_host select").find("option:selected").text();
+		var $hostgroupId=$("#Layer_host select").find("option:selected").val();
 		if(isInteger($sshport)==false){
 			alert("ssh端口必须是数字！");
 			$("#Layer_host #sshport").val('');
@@ -1214,7 +1233,7 @@ $(document).ready(function(){
 			$.ajax({
                                 type: 'post',
                                 url:'/addhost',
-                                data:{'host_ip':$ipaddr,'sshport':$sshport,'remote_user':$remote_user,'host_desc':$host_desc},
+                                data:{'host_ip':$ipaddr,'hostname':$hostname,'sshport':$sshport,'remote_user':$remote_user,'host_desc':$host_desc,'hostgroup':$hostgroup,'hostgroupId':$hostgroupId},
                                 cache:false,
                                 dataType: 'json',
 								success: function(data){
@@ -1222,8 +1241,14 @@ $(document).ready(function(){
 										alert("主机信息添加成功!");
 										$(".top").hide();
 										$("#Layer_host").hide();
-										$("#hostarea").append("<tr border='1'><td width='6%' align='center'></td><td width='6%' align='center'>"+$ipaddr+"</td><td width='14%' align='center' >"+$sshport+"</td><td width='21%' align='center' >"+$remote_user+"</td><td width='53%' align='center' >"+$host_desc+"</td></tr>")
-									}else{
+										$("#hostarea").append("<tr border='1'><td width='6%' align='center'></td><td width='6%' align='center'>"+$ipaddr+"</td><td width='6%' align='center'>"+$hostname+"</td><td width='14%' align='center' >"+$sshport+"</td><td width='21%' align='center' >"+$remote_user+"</td><td width='53%' align='center' >"+$host_desc+"</td></tr>")
+									}else if (data.result==2){
+										alert("主机信息已经存在，添加失败");
+										$("#Layer_host #ipaddr").val('');
+										$("#Layer_host #ipaddr").focus();
+									
+									}
+									else{
 										alert("主机信息添加失败，请联系管理员！");
 									
 									}
@@ -1236,6 +1261,7 @@ $(document).ready(function(){
 	//删除主机
 	$("#del_host").click(function(){
 		// $(".col-xs-12").html("添加用户");
+		window.location.href='/main#';
 		var index=$("div .row #delhost").index(this);
 		$("div #delhost").eq(index).show()
 		.siblings().hide();
@@ -1713,9 +1739,9 @@ $(document).ready(function(){
 			
 		});
 		
-		var num_host=0;
-		var iparray=new Array();
+		
 		$("#change_root_passwd").click(function(){
+			
 			$('#myModal').modal('show');
 			//$(".top").css({"display":"block","opacity":"0.5"});
 			$("#select_all").click(function(){
@@ -1735,17 +1761,24 @@ $(document).ready(function(){
 				});
 			});
 			
-			$('#change_password').click(function(){
-					$("#myModal").find("input").each(function(){
-					if ($(this).is(":checked")){
-						iparray[num]=$(this).val();
-						num+=1;
-					};
-					});
+			$('#change_password').off("click").click(function(){
+			var num_host=0;
+			var iparray=new Array();
+			var $iplist='';
+			$("#myModal").find("input").each(function(){
+				if ($(this).is(":checked")){
+					iparray[num_host]=$(this).val();
+					num_host+=1;
+				};
+			});
+			
 			//	console.log('点击次数:'+num);
-			var $iplist=iparray.join("!");
+			
+			$iplist=iparray.join("!");
+			console.log("num_host:"+num_host);
 			$('#myModal').modal('hide');
 			$('#ajaxResult').modal('show');
+			//alert("Iplist:"+$iplist);
 			$.ajax({
                                 type: 'post',
                                 url:'/change_root_passwd',
@@ -1775,12 +1808,26 @@ $(document).ready(function(){
 			});	
 			 
 			});
+			
+			$("#close_change_password").click(function(){
+				window.location.href = '/main#';
+			});
 				
 					
 			
 			
 		});
-	
+		/*
+		$(".modal-body").find("#hostname_span").each(function(){
+			$(this).mouseover(function(e){
+				$("#mytooltip").modal("show");
+				//$("[data-toggle='tooltip']").tooltip();
+			}).mouseout(function(e){
+				alert("xxx");
+			});
+		});*/
+		
+		
 	
 })
 
@@ -1802,3 +1849,6 @@ function removeSelectItem(item, itemArr){
 			
 			return itemArr.join(',');
 }
+
+
+$(function () { $("[data-toggle='tooltip']").tooltip(); });

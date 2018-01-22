@@ -64,11 +64,13 @@ def main_page():
 			menu=MenuInfo()
 			menulist,menulist1=menu.GetMenu()
 			hostlist=HOST.gethost()
+			HOSTGROUP=Host_Group()
+			hostgroups=HOSTGROUP.ListGroup()
 			#userlist=UserList()
 			username=session['username']
 			idslist=USER.GetIds(username=username)
 			
-			return render_template('index.html',username=session['username'].upper(),userlist=userlist,rolelist=rolelist,menulist=menulist,menulist1=menulist1,idslist=idslist,hostlist=hostlist)
+			return render_template('index.html',username=session['username'].upper(),userlist=userlist,rolelist=rolelist,menulist=menulist,menulist1=menulist1,idslist=idslist,hostlist=hostlist,hostgroups=hostgroups)
 	else:
 		return redirect(url_for('index_page'))
 
@@ -264,11 +266,16 @@ def getids():
 def addhost():
 	if request.method == 'POST':
 		host_ip=request.form['host_ip']
+		hostname=request.form['hostname']
 		sshport=request.form['sshport']
+		groupname=request.form['hostgroup']
+		groupid=request.form['hostgroupId']
 		remote_user=request.form['remote_user']
 		host_desc=request.form['host_desc']
-		host=Host(host_ip=host_ip,sshport=sshport,remote_user=remote_user,host_desc=host_desc,db=db)
-		result=host.addhost()
+		host=Host(host_ip=host_ip,hostname=hostname,sshport=sshport,remote_user=remote_user,host_desc=host_desc,db=db)
+		
+		result=host.addhost(groupid=groupid,groupname=groupname)
+		print("Host operation result:%s" % result) 
 		return jsonify(result)
 	else:
 		return ''
@@ -374,6 +381,7 @@ def remote_user_manager():
                 return ''
 
 
+"""
 @app.route('/change_root_passwd',methods=['POST','GET'])
 def change_root_passwd():
 	if request.method == 'POST':
@@ -391,6 +399,28 @@ def change_root_passwd():
 		return ''
 		
 
+"""
+@app.route('/change_root_passwd',methods=['POST','GET'])
+def change_root_passwd():
+	if request.method == 'POST':
+		passwdfile=open("templates/passfile.txt","a+")
+		iplist=request.form['iplist']
+		iplist=iplist.split('!')
+		for ip in iplist:
+			if ip is not None:
+				try:
+					usermanager=UserManager(remote_user='root',remote_host=ip)
+					password=mkpasswd()
+                        		result=usermanager.add(password=password)
+					passwdfile.write("%s\t%s\t%s\n" %(ip,password.strip("\n"),time.strftime("%y-%m-%d %H:%M:%S",time.localtime(time.time()))) )
+			
+				except:
+					return jsonify({"result":0})
+			return jsonify({"result":1})
+		passwdfile.close()
+	else:
+			return ''
+		
 
 
 

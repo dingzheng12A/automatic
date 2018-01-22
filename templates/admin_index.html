@@ -110,6 +110,12 @@
           <input name="ipaddr" type="text" id="ipaddr" />
         </label></td>
       </tr>
+	  <tr>
+        <td width="27%">主机名：</td>
+        <td width="73%"><label>
+          <input name="hostname" type="text" id="hostname" />
+        </label></td>
+      </tr>
       <tr>
         <td>SSH 端口：</td>
         <td><label>
@@ -120,6 +126,17 @@
         <td>远端执行用户：</td>
         <td><label>
           <input name="remote_user" type="text" id="remote_user" />
+        </label></td>
+      </tr>
+	  <tr>
+        <td>所属区域:</td>
+        <td><label>
+          <select>
+			<option value ="" selected></option>
+			{% for group in hostgroups%}
+			<option value ={{group.id}}>{{group.group_name}}</option>
+			{% endfor%}
+		  </select>
         </label></td>
       </tr>
       <tr>
@@ -685,7 +702,7 @@
 							</ul>
 						</li>
 
-						<li>
+						<!-- <li>
 							<a href="#" class="dropdown-toggle">
 								<i class="icon-list"></i>
 								<span class="menu-text"> 权限管理 </span>
@@ -703,7 +720,7 @@
 										<i class="icon-double-angle-right"></i>
 										删除权限									</a>								</li>
 							</ul>
-						</li>
+						</li> -->
 						<li>
 							<a href="#" class="dropdown-toggle">
 								<i class="icon-list"></i>
@@ -981,10 +998,10 @@
 							<div id='addhost' class="addhost">
 								<div id='add'><input name='add_host_btn' type='button' id='add_host_btn' value='添加主机' /></div>
 								<table  id='hostarea' width='1661' border='1'>
-								<tr><td width='6%' align='center' bgcolor='#66b3ff'>id</td><td width='6%' align='center' bgcolor='#66b3ff'>ip地址</td><td width='14%' align='center' bgcolor='#66b3ff'>ssh端口</td><td width='21%' align='center' bgcolor='#66b3ff'>远端用户</td><td width='53%' align='center' bgcolor='#66b3ff'>主机描述信息</td></tr>
+								<tr><td width='6%' align='center' bgcolor='#66b3ff'>id</td><td width='6%' align='center' bgcolor='#66b3ff'>HostName</td><td width='6%' align='center' bgcolor='#66b3ff'>ip地址</td><td width='14%' align='center' bgcolor='#66b3ff'>ssh端口</td><td width='21%' align='center' bgcolor='#66b3ff'>远端用户</td><td width='53%' align='center' bgcolor='#66b3ff'>主机描述信息</td></tr>
 								{%if hostlist %}
 								{% for host in hostlist%}
-								<tr border='1'><td width='6%' align='center'>{{host.id}}</td><td width='6%' align='center'>{{host.ipaddr}}</td><td width='14%' align='center' >{{host.sshport}}</td><td width='21%' align='center' >{{host.remote_user}}</td><td width='53%' align='center' >{{host.host_desc}}</td></tr>
+								<tr border='1'><td width='6%' align='center'>{{host.id}}</td><td width='6%' align='center'>{{host.hostname}}</td><td width='6%' align='center'>{{host.ipaddr}}</td><td width='14%' align='center' >{{host.sshport}}</td><td width='21%' align='center' >{{host.remote_user}}</td><td width='53%' align='center' >{{host.host_desc}}</td></tr>
 								{% endfor %}
 								{%endif%}
 								</table>
@@ -994,10 +1011,10 @@
 							<div id='delhost' class="delhost">
 								<div id='add'><input name='del_host_btn' type='button' id='del_host_btn' value='批量删除主机' disabled/></div>
 								<table  id='hostlist' width='1661' border='1'>
-								<tr><td width='6%' align='center' bgcolor='#66b3ff'>主机ID</td><td width='6%' align='center' bgcolor='#66b3ff'>主机IP</td><td width='14%' align='center' bgcolor='#66b3ff'>SSH端口</td><td width='21%' align='center' bgcolor='#66b3ff'>远端用户</td><td width='53%' align='center' bgcolor='#66b3ff'>删除操作</td></tr>
+								<tr><td width='6%' align='center' bgcolor='#66b3ff'>主机ID</td><td width='6%' align='center' bgcolor='#66b3ff'>HostName</td><td width='6%' align='center' bgcolor='#66b3ff'>主机IP<</td><td width='14%' align='center' bgcolor='#66b3ff'>SSH端口</td><td width='21%' align='center' bgcolor='#66b3ff'>远端用户</td><td width='53%' align='center' bgcolor='#66b3ff'>删除操作</td></tr>
 								{%if hostlist %}
 								{% for host in hostlist%}
-								<tr border='1'><td width='6%' align='center'><input type='checkbox' id='id' value='{{host.id}}'></td><td width='6%' align='center'>{{host.ipaddr}}</td><td width='14%' align='center' >{{host.sshport}}</td><td width='21%' align='center' >{{host.remote_user}}</td><td width='53%' align='center' ><input type='button' id='del_single' name='del_single' value='删除' disabled></td></tr>
+								<tr border='1'><td width='6%' align='center'><input type='checkbox' id='id' value='{{host.id}}'></td><td width='6%' align='center'>{{host.hostname}}</td><td width='6%' align='center'>{{host.ipaddr}}</td><td width='14%' align='center' >{{host.sshport}}</td><td width='21%' align='center' >{{host.remote_user}}</td><td width='53%' align='center' ><input type='button' id='del_single' name='del_single' value='删除' disabled></td></tr>
 								{% endfor %}
 								{%endif%}
 								</table>
@@ -2164,23 +2181,34 @@
         <h4 class="modal-title" id="gridSystemModalLabel">修改账号密码</h4>
       </div>
       <div class="modal-body">
-	  {%if hostlist %}
-	  {% for host in hostlist%}
-	  {{host.ipaddr}} <input type="checkbox" id="{{host.ipaddr}}" value="{{host.ipaddr}}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	  {% endfor %}
+	  {% if hostgroups %}
+		{% for group in hostgroups%}
+			<div id='group_title'>{{group.group_name}}</div>
+			
+			{%if hostlist %}
+				{% for host in hostlist%}
+					{% if host.groupname == group.group_name %}
+					<!--	{{host.ipaddr}} <input type="checkbox" id="{{host.ipaddr}}" value="{{host.ipaddr}}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
+						<span id="hostname_span" data-toggle='tooltip' title="IP:{{host.ipaddr}} 描述:{{host.host_desc}}" data-placement="right">{{host.hostname}}</span>
+						<input type="checkbox" id="{{host.host_desc}}" value="{{host.ipaddr}}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					{%endif%}
+				{%endfor%}
+			{%endif%}
+			<hr/>
+		{%endfor%}
 	  {%endif%}
       
       </div>
 	  <hr/>
 	  <div><input type='button' value='全选' id='select_all'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='button' id='select_invert' value='反选'></div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal" id="close_change_password">关闭</button>
         <button type="button" class="btn btn-primary" id="change_password">修改密码</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
+<a href="#" data-toggle="tooltip" title="Example tooltip" id='mytooltip'>请悬停在我的上面</a>
 <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" id="ajaxResult">
   <div class="modal-dialog modal-sm" role="document">
     <div class="modal-content">

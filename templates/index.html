@@ -65,6 +65,159 @@
 </tr>
 </table>
 </div>
+
+<!-- 添加主机表单 -->
+	 <div id="Layer_host">
+    <table  width="50%" border="1" align="center">
+      <tr>
+        <td colspan="2"><span class="STYLE5">添加主机</span></td>
+      </tr>
+      <tr>
+        <td width="27%">IP地址：</td>
+        <td width="73%"><label>
+          <input name="ipaddr" type="text" id="ipaddr" />
+        </label></td>
+      </tr>
+	  <tr>
+        <td width="27%">主机名：</td>
+        <td width="73%"><label>
+          <input name="hostname" type="text" id="hostname" />
+        </label></td>
+      </tr>
+      <tr>
+        <td>SSH 端口：</td>
+        <td><label>
+          <input name="sshport" type="text" id="sshport" placeholder="默认端口是22" />
+        </label></td>
+      </tr>
+      <tr>
+        <td>远端执行用户：</td>
+        <td><label>
+          <input name="remote_user" type="text" id="remote_user" />
+        </label></td>
+      </tr>
+	  <tr>
+        <td>所属区域:</td>
+        <td><label>
+          <select>
+			<option value ="" selected></option>
+			{% for group in hostgroups%}
+			<option value ={{group.id}}>{{group.group_name}}</option>
+			{% endfor%}
+		  </select>
+        </label></td>
+      </tr>
+      <tr>
+        <td>主机描述:</td>
+        <td><label>
+          <input type="textarea" name="host_desc" id="host_desc" rows="" cols="" style="overflow:scroll;" />
+        </label></td>
+      </tr>
+      <tr>
+        <td><label>
+          <input name="add" type="button" id="add" value="添加" disabled/>
+        </label></td>
+        <td align="center"><label>
+          <input name="cancle" type="button" id="cancle" value="取消" />
+        </label></td>
+      </tr>
+    </table>
+  </div>
+  
+<!--   添加主机组表单 -->
+  <div id="Layer_hostgroup">
+    <table  width="50%" border="1" align="center">
+      <tr>
+        <td colspan="2"><span class="STYLE5">添加主机组</span></td>
+      </tr>
+      <tr>
+        <td width="27%">主机组名称：</td>
+        <td width="73%"><label>
+          <input name="hostgroup_name" type="text" id="hostgroup_name" />
+        </label></td>
+      </tr>
+      <tr>
+        <td>主机组描述信息：</td>
+        <td><label>
+          <input name="hostgroup_desc" type="textarea" id="hostgroup_desc"  rows="3" cols="20"/>
+        </label></td>
+      </tr>
+      <tr>
+        <td><label>
+          <input name="add" type="button" id="add" value="添加" disabled/>
+        </label></td>
+        <td align="center"><label>
+          <input name="cancle" type="button" id="cancle" value="取消" />
+        </label></td>
+      </tr>
+    </table>
+  </div>
+  
+  
+<!-- 关联主机到主机组 -->
+  <div id="Layerhost_assign">
+  <table width="17%" border="1" id="hostassign">
+  <tr>
+    <td colspan="2">添加主机到主机组</td>
+    <td width="88%">&nbsp;</td>
+  </tr>
+  <tr>
+    <td colspan="2">当前包含的主机</td>
+    <td><input type="text" name="current_host" id="current_host"></td>
+  </tr>
+  <tr>
+    <td colspan="3"><hr /></td>
+  </tr>
+  <tr>
+    <td colspan="2">主机列表</td>
+    <td><select name="select_host" id="select_host">
+	{% if hostlist %}
+	{%for host in hostlist%}
+    <option value='{{ host.ipaddr }}'>{{ host.ipaddr }}</option>
+	{% endfor %}
+	{% endif %}
+	</select>
+	</td>
+  </tr>
+  <tr>
+    <td width="7%"><input name="add" type="button" id="add" value="添加"></td>
+    <td width="5%"><input name="confirm" type="button" id="confirm" value="确定"></td>
+    <td><input name="cancle" type="button" id="cancle" value="取消"></td>
+  </tr>
+</table>
+  </div>  
+<!-- 取消用户和角色的关联关系 -->  
+<div id="Layerhost_remove">
+  <table width="17%" border="1" id="hostassign">
+  <tr>
+    <td colspan="2">移除关联</td>
+    <td width="88%">&nbsp;</td>
+  </tr>
+  <tr>
+    <td colspan="2">当前包含的主机</td>
+    <td><input type="text" name="current_host" id="rm_current_host"></td>
+  </tr>
+  <tr>
+    <td colspan="3"><hr /></td>
+  </tr>
+  <tr>
+    <td colspan="2">原主机列表</td>
+    <td><select name="select_host" id="rm_select_host">
+	{% if hostlist %}
+	{%for host in hostlist%}
+    <option value='{{ host.ipaddr }}'>{{ host.ipaddr }}</option>
+	{% endfor %}
+	{% endif %}
+	</select>
+	</td>
+  </tr>
+  <tr>
+    <td width="7%"><input name="remove_assign" type="button" id="remove_assign" value="移除"></td>
+    <td width="5%"><input name="confirm" type="button" id="confirm" value="确定"></td>
+    <td><input name="cancle" type="button" id="cancle" value="取消"></td>
+  </tr>
+</table>
+</div> 
 <!-- 重置密码 -->
 	<div  class="resetpass">
   <table width="23%" border="1" align="center" cellspacing="0" cellpadding="0"  >
@@ -857,6 +1010,7 @@
 							
 							<!-- 设置页面 -->
 							<!-- 添加主机 -->
+							<!--
 							<div id='addhost' class="host">
 								<div id='add'><input name='add_btn' type='button' id='add_btn' value='添加用户' /></div>
 								<table  id='userarea' width='1661' border='1'>
@@ -864,6 +1018,31 @@
 								{%if userlist %}
 								{% for user in userlist%}
 								<tr border='1'><td width='6%' align='center'>{{user.id}}</td><td width='6%' align='center'>{{user.username}}</td><td width='14%' align='center' >{{user.email}}</td><td width='21%' align='center' >{% if user.status == 1%}启用{%else%}禁用{% endif %}</td><td width='53%' align='center' >修改密码:<input type='password' id='resetpass' name='resetpass' placeholder='重置密码'/>启用/禁用:<input type='checkbox' {% if user.status==1%}checked{%endif%} id='enable'>&nbsp;&nbsp;&nbsp;&nbsp;<input type='button' id='commit' name='commit' value='修改' disabled></td></tr>
+								{% endfor %}
+								{%endif%}
+								</table>
+								</div>
+							-->
+							<div id='addhost' class="addhost">
+								<div id='add'><input name='add_host_btn' type='button' id='add_host_btn' value='添加主机' /></div>
+								<table  id='hostarea' width='1661' border='1'>
+								<tr><td width='6%' align='center' bgcolor='#66b3ff'>id</td><td width='6%' align='center' bgcolor='#66b3ff'>HostName</td><td width='6%' align='center' bgcolor='#66b3ff'>ip地址</td><td width='14%' align='center' bgcolor='#66b3ff'>ssh端口</td><td width='21%' align='center' bgcolor='#66b3ff'>远端用户</td><td width='53%' align='center' bgcolor='#66b3ff'>主机描述信息</td></tr>
+								{%if hostlist %}
+								{% for host in hostlist%}
+								<tr border='1'><td width='6%' align='center'>{{host.id}}</td><td width='6%' align='center'>{{host.hostname}}</td><td width='6%' align='center'>{{host.ipaddr}}</td><td width='14%' align='center' >{{host.sshport}}</td><td width='21%' align='center' >{{host.remote_user}}</td><td width='53%' align='center' >{{host.host_desc}}</td></tr>
+								{% endfor %}
+								{%endif%}
+								</table>
+							</div>
+							
+							<!-- 删除主机 -->
+							<div id='delhost' class="delhost">
+								<div id='add'><input name='del_host_btn' type='button' id='del_host_btn' value='批量删除主机' disabled/></div>
+								<table  id='hostlist' width='1661' border='1'>
+								<tr><td width='6%' align='center' bgcolor='#66b3ff'>主机ID</td><td width='6%' align='center' bgcolor='#66b3ff'>HostName</td><td width='6%' align='center' bgcolor='#66b3ff'>主机IP<</td><td width='14%' align='center' bgcolor='#66b3ff'>SSH端口</td><td width='21%' align='center' bgcolor='#66b3ff'>远端用户</td><td width='53%' align='center' bgcolor='#66b3ff'>删除操作</td></tr>
+								{%if hostlist %}
+								{% for host in hostlist%}
+								<tr border='1'><td width='6%' align='center'><input type='checkbox' id='id' value='{{host.id}}'></td><td width='6%' align='center'>{{host.hostname}}</td><td width='6%' align='center'>{{host.ipaddr}}</td><td width='14%' align='center' >{{host.sshport}}</td><td width='21%' align='center' >{{host.remote_user}}</td><td width='53%' align='center' ><input type='button' id='del_single' name='del_single' value='删除' disabled></td></tr>
 								{% endfor %}
 								{%endif%}
 								</table>

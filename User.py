@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+#coding: utf8
 from flask import jsonify
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine, MetaData,Table
@@ -193,23 +194,49 @@ class RoleUser:
 
 
 class Host():
-	def __init__(self,host_ip="",sshport=None,remote_user="",host_desc="",db=None):
+	def __init__(self,host_ip="",hostname="",sshport=None,remote_user="",host_desc="",db=None):
 		self.host_ip=host_ip
+		self.hostname=hostname
 		self.sshport=sshport
 		self.remote_user=remote_user
 		self.host_desc=host_desc
 		self.db=db
 
-	def addhost(self):
-		host=Hosts(ipaddr=self.host_ip,sshport=self.sshport,remote_user=self.remote_user,host_desc=self.host_desc)
-		self.db.session.add_all([host])
-                self.db.session.commit()
-		result={'result':1}
-                return result
+	def addhost(self,**kwargs):
+		hostId=engine.execute('select id from sys_hosts where  ipaddr="%s"' % self.host_ip).first()
+		if hostId is None:
+			try:
+				host=Hosts(ipaddr=self.host_ip,hostname=self.hostname,sshport=self.sshport,remote_user=self.remote_user,host_desc=self.host_desc)
+				self.db.session.add_all([host])
+                		self.db.session.commit()
+				hostId=engine.execute('select id from sys_hosts where  ipaddr="%s"' % self.host_ip).first()[0]
+				print("hostId:%s" %hostId)
+			except:
+				result={'result':2}
+			groupname=""
+			groupId=""
+			if 'groupname' in kwargs:
+				groupname=kwargs['groupname']
+			if 'groupid' in kwargs:
+				groupId=kwargs['groupid']
+			try:
+				hostgroup=Host_Group(db=db)
+				hostgroup.assign(groupid=groupId,groupname=groupname,hostid=hostId,host_ip=self.host_ip)
+				result={'result':1}
+			except Exception,e:
+				print("reason:%s" % e)
+				result={'result':0}
+                	return result
+		else:
+			result={'result':2}
+			return result
 	
 	def gethost(self):
 		#hostlist=Hosts.query.filter_by()
-                hostlist=engine.execute('select * from sys_hosts').fetchall()
+		#修改处理方式，增加了对主机群组的读取
+		
+                hostlist=engine.execute('select a.id,a.hostname,a.ipaddr,a.sshport,a.remote_user,a.host_desc,b.groupid,b.groupname from sys_hosts a join sys_group_host b on a.id=b.hostid;').fetchall()
+                #hostlist=engine.execute('select * from sys_hosts').fetchall()
 		for host in hostlist:
 			print("ip:%s.port:%s.remote_user:%s.host_desc:%s") %(host.ipaddr,host.sshport,host.remote_user,host.host_desc)
 		return hostlist
@@ -217,10 +244,18 @@ class Host():
 	def delhost(self,**kwargs):
                 if 'hostid' in kwargs:
                         hostid=kwargs['hostid']
-                        hosts=Hosts.query.filter_by(id=hostid)
-                        hosts.delete()
-                        db.session.commit()
-                        result={'result':1}
+                        #hosts=Hosts.query.filter_by(id=hostid)
+                        #hosts.delete()
+                        #db.session.commit()
+                        #result={'result':1}
+			sql=" delete a,b from sys_hosts a left  join sys_group_host b on a.id=b.hostid where a.id=%s;" % hostid
+			try:
+				print("SQL:%s" %sql)
+				engine.execute(sql)
+				result={'result':1}
+			except:
+				result={'result':2}
+			print("delhost result:%s" %result)
                 else:
                         result={'result':0}
 
