@@ -31,13 +31,16 @@ class User:
 	def AddUser(self):
 		password=self.encrypt(self.pwd)
 		user=Users(username=self.username,nickname=self.nickname,password=password,email=self.email)
-		#try:
-		self.db.session.add_all([user])
-		self.db.session.commit()
-		result={'result':1}
-		#except Exception,e:
-		#	print "failure,reson:%s" % e
-		#	result={'result':0}
+		try:
+			self.db.session.add_all([user])
+			self.db.session.commit()
+			newuser=engine.execute("select id,username,email,status from users where username='%s'" % self.username).first()
+			result={'result':1,'id':newuser.id,'username':newuser.username,'email':newuser.email,'status':newuser.status}
+
+		except Exception,e:
+			self.db.session.rollback()
+			print "failure,reson:%s" % e
+			result={'result':0,'reason':e}
 		return result
 	def DropUser(self,**kwargs):
 		if 'userid' in kwargs:
@@ -49,7 +52,6 @@ class User:
 		else:
 			result={'result':0}
 	def ListUser(self):
-		
 		userlist=engine.execute('select * from users where id!=1').fetchall()
 		return userlist
 	def ListRole(self):
@@ -160,7 +162,7 @@ class RoleUser:
 		self.db=db
 	def assign(self):
 		#role_user=Role_User.query.filter_by(roleid=self.rid,uid=self.uid)
-		exists_num=engine.execute("select count(*) from role_user where roleid=%s and uid=%s" %(self.rid,self.uid)).first()[0]
+		exists_num=engine.execute("select count(1) from role_user where roleid=%s and uid=%s" %(self.rid,self.uid)).first()[0]
 		print "exists_num:%s.type:%s" %(exists_num,type(exists_num))
 		if exists_num==0:	
 			print 'z '*10

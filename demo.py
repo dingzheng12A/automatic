@@ -261,7 +261,6 @@ def getids():
 	else:
 		return ''
 
-
 @app.route('/addhost',methods=['POST','GET'])
 def addhost():
 	if request.method == 'POST':
@@ -422,6 +421,74 @@ def change_root_passwd():
 			return ''
 		
 
+@app.route('/queryUser',methods=['POST','GET'])
+def queryUser():
+	if 'username' in session:
+		USER=User()
+		userlist=USER.ListUser()
+		UserList=[]
+		for user in userlist:
+			User_dict={}
+			User_dict['id']=user.id
+			User_dict['username']=user.username
+			User_dict['email']=user.email
+			User_dict['status']=user.status
+			UserList.append(User_dict)
+		return jsonify(UserList)
+	else:
+		return ''
+
+@app.route('/queryRole',methods=['POST','GET'])
+def queryRole():
+	if 'username' in session:
+		USER=User()
+		rolelist=USER.ListRole()
+		RoleList=[]
+		for role in rolelist:
+			role_dict={}
+			role_dict['id']=role.id
+			role_dict['rolename']=role.name
+			role_dict['roledesc']=role.desc
+			role_dict['userlist']=role.userlist
+			RoleList.append(role_dict)
+		return jsonify(RoleList)
+	else:
+		return ''
+@app.route('/queryHost',methods=['POST','GET'])
+def queryHost():
+	if 'username' in session:
+		HOST=Host()
+		hostlist=HOST.gethost()
+		HostList=[]
+		for host in hostlist:
+			host_dict={}
+			host_dict['id']=host.id
+			host_dict['hostname']=host.hostname
+			host_dict['ipaddr']=host.ipaddr
+			host_dict['sshport']=host.sshport
+			host_dict['remote_user']=host.remote_user
+			host_dict['host_desc']=host.host_desc
+			HostList.append(host_dict)
+		return jsonify(HostList)
+	else:
+		return ''
+
+@app.route('/queryHostGroup',methods=['POST','GET'])
+def queryHostGroup():
+	if 'username' in session:
+		HOSTGROUP=Host_Group()
+		hostgroups=HOSTGROUP.ListGroup()
+		HostGroupList=[]
+		for hostgroup in hostgroups:
+			hostgroup_dict={}
+			hostgroup_dict['id']=hostgroup.id
+			hostgroup_dict['group_name']=hostgroup.group_name
+			hostgroup_dict['group_desc']=hostgroup.group_desc
+			hostgroup_dict['hostlist']=hostgroup.hostlist
+			HostGroupList.append(hostgroup_dict)
+		return jsonify(HostGroupList)
+	else:
+		return ''
 
 
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'

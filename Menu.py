@@ -18,7 +18,7 @@ class MenuInfo:
 	def GetMenu(self):
 		#sql="select a.id as id,a.name as name,a.parent_id,group_concat(b.name) submenu from sys_menu a left join sys_menu b on a.id=b.parent_id  group by a.id  having a.parent_id=1;"
 		sql="select id,name from sys_menu where parent_id=1"
-		sql2="select id,name,parent_id,span_id from sys_menu"
+		sql2="select id,name,parent_id,span_id,url from sys_menu"
 		try:
 			result=engine.execute(sql).fetchall()
 			result2=engine.execute(sql2).fetchall()
