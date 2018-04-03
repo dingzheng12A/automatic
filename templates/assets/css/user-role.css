@@ -249,3 +249,17 @@ div .addhostgroup {
 	font-size:10px;
 	
 }
+
+#Layer2_monitor_source {
+	position:absolute;
+	width:526px;
+	height:auto;
+	background-color: #FFFFFF;
+	left: 30%;
+	top: 30%;
+	border:2px solid;
+	display:none;
+	z-index:55;
+}
+
+

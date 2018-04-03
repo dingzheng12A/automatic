@@ -151,6 +151,8 @@ $(document).ready(function(){
 	$("#add_btn").click(function(){
 		$(".top").css({"display":"block","opacity":"0.5"});
 		$("#Layer2").css("display","block");
+		$("#Layer2 input[type='text']").val('');
+		$("#Layer2 input[type='password']").val('');
 		$("#Layer2 #cancle").click(function(){
 			$(".top").hide();
 			$("#Layer2").hide();
@@ -623,6 +625,8 @@ $(document).ready(function(){
 	$("#addrole_btn").click(function(){
 		$(".top").css({"display":"block","opacity":"0.5"});
 		$("#Layer_role").css("display","block");
+		$("#Layer_role input[type='text']").val('');
+		$("#Layer_role input[type='textarea']").val('');
 		$("#Layer_role #cancle").click(function(){
 			$(".top").hide();
 			$("#Layer_role").hide();
@@ -1233,6 +1237,8 @@ $(document).ready(function(){
 	$("#add_host_btn").click(function(){
 		$(".top").css({"display":"block","opacity":"0.5"});
 		$("#Layer_host").css("display","block");
+		$("#Layer_host input[type='text']").val('');
+		$("#Layer_host input[type='text']").val('');
 		$.getJSON("/queryHostGroup",function(result){
 			$("#Layer_host select").empty();
 			$("#Layer_host select").html('<select><option value ="" selected></option></select>');
@@ -1491,6 +1497,8 @@ $(document).ready(function(){
 	$("#addhostgroup_btn").click(function(){
 		$(".top").css({"display":"block","opacity":"0.5"});
 		$("#Layer_hostgroup").css("display","block");
+		$("#Layer_hostgroup input[type='text']").val('');
+		$("#Layer_hostgroup input[type='textarea']").val('');
 		$("#Layer_hostgroup #cancle").click(function(){
 			$(".top").hide();
 			$("#Layer_hostgroup").hide();
@@ -1520,7 +1528,7 @@ $(document).ready(function(){
 					$("#Layer_hostgroup #add").attr("disabled",true);
 				};
 		});
-		$("#Layer_hostgroup #add").click(function(){
+		$("#Layer_hostgroup #add").off().click(function(){
 			var hostgroup_name=$("#Layer_hostgroup #hostgroup_name").val();
 			var hostgroup_desc=$("#Layer_hostgroup #hostgroup_desc").val();
 			if (hostgroup_name.length==0||hostgroup_desc.length==0){
@@ -2077,27 +2085,29 @@ $(document).ready(function(){
 			});
 			
 			$('#change_password').off("click").click(function(){
-			var num_host=0;
 			var iparray=new Array();
 			var $iplist='';
 			$("#myModal").find("input").each(function(){
+				// debugger
 				if ($(this).is(":checked")){
-					iparray[num_host]=$(this).val();
-					num_host+=1;
+					var hostIdsObj = {}
+					hostIdsObj.hostName =  $(this)[0].id;
+					hostIdsObj.ip = $(this)[0].defaultValue;
+					iparray.push(hostIdsObj);
 				};
 			});
 			
 			//	console.log('点击次数:'+num);
-			
-			$iplist=iparray.join("!");
-			console.log("num_host:"+num_host);
+			console.log("iparray:"+iparray);
 			$('#myModal').modal('hide');
 			$('#ajaxResult').modal('show');
+			
 			//alert("Iplist:"+$iplist);
 			$.ajax({
                                 type: 'post',
                                 url:'/change_root_passwd',
-                                data:{'iplist':$iplist},
+                                data:{'iplist[]':JSON.stringify(iparray)},
+								// data:iparray,
                                 cache:false,
                                 dataType: 'json',
 								success: function(data){
@@ -2105,9 +2115,11 @@ $(document).ready(function(){
 									if(data.result==1){
 										//window.location.href = /
 										//window.open('/passfile.txt', '_blank')
-										$('#ajaxResultContent').html('<a href="/passfile.txt" download>下载</a>')
+										$('#ajaxResultContent').html('<a href="/passfile.txt" download>下载</a>');
 										
 										
+									}else{
+										$('#ajaxResultContent').html('修改成功<a href="/passfile.txt" download>下载</a></br><span>'+data.result+'</span>');
 									}
 								//window.location.href = "/";
 									$('#myModal').modal('hide');
@@ -2132,17 +2144,114 @@ $(document).ready(function(){
 			
 			
 		});
-		/*
-		$(".modal-body").find("#hostname_span").each(function(){
-			$(this).mouseover(function(e){
-				$("#mytooltip").modal("show");
-				//$("[data-toggle='tooltip']").tooltip();
-			}).mouseout(function(e){
-				alert("xxx");
+		//添加监控源
+		$("#monitor_source").click(function(){
+			var index=$("div .row #add_monitor_source").index(this);
+			$("div #add_monitor_source").eq(index).show()
+			.siblings().hide();
+		})
+		
+		//点击按钮新增监控源
+		$("#add_monitor_source #add_btn").click(function(){
+			$(".top").css({"display":"block","opacity":"0.5"});
+		    $("#Layer2_monitor_source").css("display","block");
+		    $("#Layer2_monitor_source input[type='text']").val('');
+		    $("#Layer2_monitor_source input[type='password']").val('');
+		    $("#Layer2_monitor_source #cancle").click(function(){
+				$(".top").hide();
+				$("#Layer2_monitor_source").hide();
 			});
-		});*/
-		
-		
+			
+			
+			
+			
+		});
+			//检查服务器IP是否为空
+			$("#Layer2_monitor_source #server_name").bind("input propertychange change",function(event){
+				var server_name=$("#Layer2_monitor_source #server_name").val();
+				var nicename=$("#Layer2_monitor_source #nicename").val();
+				var passwd=$("#Layer2_monitor_source #passwd").val();	
+				if (username.length!=0&& nicename.length!=0&&passwd.length!=0){
+						$("#Layer2_monitor_source #add").attr("disabled",false);
+						$("#Layer2_monitor_source #Test_connect").attr("disabled",false);
+				}else{
+				
+						$("#Layer2_monitor_source #add").attr("disabled",true);
+						$("#Layer2_monitor_source #Test_connect").attr("disabled",true);
+				};
+			});
+			
+			//检查账号是否为空
+			$("#Layer2_monitor_source #nicename").bind("input propertychange change",function(event){
+				var server_name=$("#Layer2_monitor_source #server_name").val();
+				var nicename=$("#Layer2_monitor_source #nicename").val();
+				var passwd=$("#Layer2_monitor_source #passwd").val();	
+				if (server_name.length!=0&& nicename.length!=0&&passwd.length!=0){
+					$("#Layer2_monitor_source #add").attr("disabled",false);
+					$("#Layer2_monitor_source #Test_connect").attr("disabled",false);
+				}else{
+				
+						$("#Layer2_monitor_source #add").attr("disabled",true);
+						$("#Layer2_monitor_source #Test_connect").attr("disabled",true);
+				};
+			});
+			
+			
+			//检查密码是否为空
+			$("#Layer2_monitor_source #passwd").bind("input propertychange change",function(event){
+				var server_name=$("#Layer2_monitor_source #server_name").val();
+				var nicename=$("#Layer2_monitor_source #nicename").val();
+				var passwd=$("#Layer2_monitor_source #passwd").val();	
+				if (server_name.length!=0&& nicename.length!=0&&passwd.length!=0){
+					$("#Layer2_monitor_source #add").attr("disabled",false);
+					$("#Layer2_monitor_source #Test_connect").attr("disabled",false);
+				}else{
+				
+						$("#Layer2_monitor_source #add").attr("disabled",true);
+						$("#Layer2_monitor_source #Test_connect").attr("disabled",true);
+				};
+			});
+			
+			$("#Layer2_monitor_source #server_name").blur(function(event){
+			    var server_name=$("#Layer2_monitor_source #server_name").val();
+				if(isDataurl(server_name)==false){
+					alert("配置信息不正确!");
+					$("#Layer2_monitor_source #server_name").val('');
+					$("#Layer2_monitor_source #server_name").css("border","1px solid red");
+				}
+				
+			});
+			
+			
+			//测试连接是否成功
+			$("#Layer2_monitor_source #Test_connect").click(function(){
+				$.ajax({
+                                type: 'post',
+                                url:'/ConnectCheck',
+                                data:{'server_info':$("#Layer2_monitor_source #server_name").val(),'account':$("#Layer2_monitor_source #nicename").val(),'passwd':$("#Layer2_monitor_source #passwd").val()},
+								// data:iparray,
+                                cache:false,
+                                dataType: 'json',
+								success: function(data){
+					
+									if(data.result==1){
+										//window.location.href = /
+										//window.open('/passfile.txt', '_blank')
+										alert("测试数据库连接成功!");
+									}else{
+										alert("测试数据库连接失败!");
+										$("#Layer2_monitor_source #server_name").val('');
+										$("#Layer2_monitor_source #server_name").css("border","1px solid red");
+										$("#Layer2_monitor_source #add").attr("disabled",false);
+										$("#Layer2_monitor_source #Test_connect").attr("disabled",false);
+									}
+                                },
+                             
+				});
+				
+				
+			});
+			
 	
 })
 
@@ -2150,6 +2259,15 @@ function isInteger(obj) {
 	var re=new RegExp('["^\\d+$"]',"g");
 	return re.test(obj);
 }
+
+
+function isDataurl(obj) {
+	var re=new RegExp("^[a-zA-Z0-9][a-zA-Z1-9.]+:[1-9][0-9]{0,4}/[a-zA-Z]+$","g");
+	return re.test(obj);
+}
+
+
+
 
 function removeSelectItem(item, itemArr){
 			var i,len= itemArr.length,index;

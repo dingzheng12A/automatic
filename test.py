@@ -1,4 +1,8 @@
 #!/usr/bin/env python
-from remote_user_manager import UserManager
-usermanager=UserManager("127.0.0.1","root")
-usermanager.add(password="abcdefg")
+from remote_user_command import CmdManager
+cmd="awk -F ':' '$3!=0{print $1}' /etc/passwd"
+cmdmanager=CmdManager(remote_host='127.0.0.1',remote_user='root')
+try:
+	cmdmanager.Execute(cmd=cmd)
+except Exception,e:
+	print(e)

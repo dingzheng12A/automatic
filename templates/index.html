@@ -2128,21 +2128,34 @@
         <h4 class="modal-title" id="gridSystemModalLabel">修改账号密码</h4>
       </div>
       <div class="modal-body">
-	  {%if hostlist %}
-	  {% for host in hostlist%}
-	  {{host.ipaddr}} <input type="checkbox" id="{{host.ipaddr}}" value="{{host.ipaddr}}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	  {% endfor %}
+	  {% if hostgroups %}
+		{% for group in hostgroups%}
+			<div id='group_title'>{{group.group_name}}</div>
+			
+			{%if hostlist %}
+				{% for host in hostlist%}
+					{% if host.groupname == group.group_name %}
+					<!--	{{host.ipaddr}} <input type="checkbox" id="{{host.ipaddr}}" value="{{host.ipaddr}}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
+						<span id="hostname_span" data-toggle='tooltip' title="IP:{{host.ipaddr}} 描述:{{host.host_desc}}" data-placement="right">{{host.hostname}}</span>
+						<input type="checkbox" id="{{host.host_desc}}" value="{{host.ipaddr}}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					{%endif%}
+				{%endfor%}
+			{%endif%}
+			<hr/>
+		{%endfor%}
 	  {%endif%}
       
       </div>
+	  <hr/>
+	  <div><input type='button' value='全选' id='select_all'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='button' id='select_invert' value='反选'></div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal" id="close_change_password">关闭</button>
         <button type="button" class="btn btn-primary" id="change_password">修改密码</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
+<a href="#" data-toggle="tooltip" title="Example tooltip" id='mytooltip'>请悬停在我的上面</a>
 <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" id="ajaxResult">
   <div class="modal-dialog modal-sm" role="document">
     <div class="modal-content">
@@ -2160,6 +2173,7 @@
     </div>
   </div>
 </div>
+
 
 		<script type="text/javascript">
 			jQuery(function($) {

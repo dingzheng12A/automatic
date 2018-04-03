@@ -38,7 +38,6 @@
 		<script src="assets/js/ace-extra.min.js"></script>
 		<script src="assets/js/jquery-3.2.1.min.js"></script>
 		<script src="assets/js/sys_operation.js"></script>
-		<script src="assets/js/ansible_operator.js"></script>
 		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 
 		<!--[if lt IE 9]>
@@ -65,37 +64,6 @@
   <td width="277"><input name="Cancle" type="button" id="Cancle" value="取消" /></td>
 </tr>
 </table>
-</div>
-<!-- 重置密码 -->
-	<div  class="resetpass">
-  <table width="23%" border="1" align="center" cellspacing="0" cellpadding="0"  >
-    <tr>
-      <td width="41%">用户名：</td>
-      <td width="59%"><label>
-        <input name="username" type="text" id="username" size="15" value="{{username}}" readonly>
-      </label></td>
-    </tr>
-    <tr>
-      <td>原始密码：</td>
-      <td><label>
-        <input name="oldpass" type="password" id="oldpass" size="15">
-      </label></td>
-    </tr>
-    <tr>
-      <td>新密码:</td>
-      <td><label>
-        <input name="newpass" type="password" id="newpass" size="15">
-      </label></td>
-    </tr>
-    <tr>
-      <td>重复输入密码</td>
-      <td><input name="reptpass" type="password" id="reptpass" size="15"></td>
-    </tr>
-    <tr>
-      <td><input name="modify" type="submit" id="modify" value="修改" disabled></td>
-      <td><input name="cancle" type="button" id="cancle" value="取消"></td>
-    </tr>
-  </table>
 </div>
 
 <!-- 添加主机表单 -->
@@ -250,8 +218,37 @@
   </tr>
 </table>
 </div> 
-
-<!--  添加用户表单 -->
+<!-- 重置密码 -->
+	<div  class="resetpass">
+  <table width="23%" border="1" align="center" cellspacing="0" cellpadding="0"  >
+    <tr>
+      <td width="41%">用户名：</td>
+      <td width="59%"><label>
+        <input name="username" type="text" id="username" size="15" value="{{username}}" readonly>
+      </label></td>
+    </tr>
+    <tr>
+      <td>原始密码：</td>
+      <td><label>
+        <input name="oldpass" type="password" id="oldpass" size="15">
+      </label></td>
+    </tr>
+    <tr>
+      <td>新密码:</td>
+      <td><label>
+        <input name="newpass" type="password" id="newpass" size="15">
+      </label></td>
+    </tr>
+    <tr>
+      <td>重复输入密码</td>
+      <td><input name="reptpass" type="password" id="reptpass" size="15"></td>
+    </tr>
+    <tr>
+      <td><input name="modify" type="submit" id="modify" value="修改" disabled></td>
+      <td><input name="cancle" type="button" id="cancle" value="取消"></td>
+    </tr>
+  </table>
+</div>
 	 <div id="Layer2">
     <table  width="50%" border="1" align="center">
       <tr>
@@ -297,7 +294,7 @@
       </tr>
     </table>
   </div>
-  <!--  添加角色表单 -->
+  
   <div id="Layer_role">
     <table  width="50%" border="1" align="center">
       <tr>
@@ -325,7 +322,7 @@
       </tr>
     </table>
   </div>
-<!-- 关联用户到角色 -->
+
   <div id="Layer_assign">
   <table width="17%" border="1" id="userassign">
   <tr>
@@ -358,45 +355,6 @@
 </table>
   </div>  
   
-  
-<div id="Layer2_monitor_source">
-    <table  width="75%" border="1" align="center">
-      <tr>
-        <td colspan="2"><span class="STYLE5">监控服务器设置</span></td>
-      </tr>
-      <tr>
-        <td width="27%">服务器IP:</td>
-        <td width="73%"><label>
-          <input name="server_name" type="text" id="server_name" placeholder="13.228.136.199:3306/zabbix"/>
-        </label></td>
-      </tr>
-      <tr>
-        <td>账号：</td>
-        <td><label>
-          <input name="nicename" type="text" id="nicename" />
-        </label></td>
-      </tr>
-      <tr>
-        <td>密码：</td>
-        <td><label>
-          <input name="passwd" type="password" id="passwd" />
-        </label></td>
-      </tr>
-      <tr>
-        <td><label>
-          <input name="add" type="button" id="add" value="添加" disabled/>
-        </label></td>
-        <td align="center"><label>
-          <input name="cancle" type="button" id="cancle" value="取消" />
-        </label></td><td align="center"><label>
-          <input name="Test_connect" type="button" id="Test_connect" value="测试连接" />
-        </label></td>
-      </tr>
-    </table>
-  </div> 
-
- 
-<!-- 取消用户和角色的关联关系 -->  
 <div id="Layer_remove">
   <table width="17%" border="1" id="userassign">
   <tr>
@@ -678,88 +636,91 @@
 							<span class="btn btn-warning"></span>
 
 							<span class="btn btn-danger"></span>						</div>
-					</div><!-- #sidebar-shortcuts -->
-
+					</div>
+		
 					<ul class="nav nav-list">
+					
 						<li class="active">
 							<a href="#">
 								<i class="icon-dashboard"></i>
 								<span class="menu-text"> 控制台 </span>							</a>						</li>
-
+						<!--
+						{%for ids in idslist%}
 						<li>
-							<a href="#" class="dropdown-toggle">
+							{%if ids|int==2%}<a href="#" class="dropdown-toggle">
 								<i class="icon-text-width"></i>
-							<span class="menu-text">用户管理</span></a>						
+							<span class="menu-text">用户管理</span></a>	{%endif%}					
 							<ul class="submenu">
-								<li>
+								{%if ids|int==21%}<li>
 									<a href="#">
 										<i class="icon-double-angle-right"></i>
-										<span id="adduser">添加用户</span>									</a>								</li>
+										<span id="adduser">添加用户</span>									</a>								</li>{%endif%}
 
-								<li>
+								{%if ids|int==22%}<li>
 									<a href="#">
 										<i class="icon-double-angle-right"></i>
-										<span id="deluser">删除用户	</span>								</a>								</li>
-								<li>
+										<span id="deluser">删除用户	</span>								</a>								</li>{%endif%}
+								{%if ids|int==23%}<li>
 									<a href="#">
 										<i class="icon-double-angle-right"></i>
-										<span id="associate">关联到角色</span>									</a>								</li>
+										<span id="associate">关联到角色</span>									</a>								</li>{%endif%}
 
 								<li>
 							</ul></li>
 
+						
 						<li>
-							<a href="#" class="dropdown-toggle">
+							{%if ids|int==3%}<a href="#" class="dropdown-toggle">
 								<i class="icon-desktop"></i>
 								<span class="menu-text"> 角色管理 </span>
 
-								<b class="arrow icon-angle-down"></b>							</a>
+								<b class="arrow icon-angle-down"></b>							</a>{%endif%}
 
 							<ul class="submenu">
-								<li>
+								{%if ids|int==31%}<li>
 									<a href="#">
 										<i class="icon-double-angle-right"></i>
-										<span id="addrole">添加角色</span>								</a>								</li>
+										<span id="addrole">添加角色</span>								</a>								</li>{%endif%}
+
+								{%if ids|int==32%}<li>
+									<a href="#">
+										<i class="icon-double-angle-right"></i>
+										<span id="delrole">删除角色</span>									</a>								</li>{%endif%}
 
 								<li>
 									<a href="#">
 										<i class="icon-double-angle-right"></i>
-										<span id="delrole">删除角色</span>									</a>								</li>
-<!--
-								<li>
-									<a href="#">
-										<i class="icon-double-angle-right"></i>
-										关联到用户									</a>								</li> -->
+										关联到用户									</a>								</li>
 
-									<li>
+								{%if ids|int==33%}<li>
 									<a href="#">
 										<i class="icon-double-angle-right"></i>
-										<span id="alloc_auth">分配权限</span>									</a>								</li> 
+										<span id="alloc_auth">分配权限</span>									</a>								</li>{%endif%} 
 
 						
 						
 							</ul>
 						</li>
 
-						<!-- <li>
-							<a href="#" class="dropdown-toggle">
+						<li>
+							{%if ids|int==4%}<a href="#" class="dropdown-toggle">
 								<i class="icon-list"></i>
 								<span class="menu-text"> 权限管理 </span>
 
-								<b class="arrow icon-angle-down"></b>							</a>
+								<b class="arrow icon-angle-down"></b>							</a>{%endif%} 
 
 							<ul class="submenu">
-								<li>
+								{%if ids|int==41%}<li>
 									<a href="#">
 										<i class="icon-double-angle-right"></i>
-										添加权限									</a>								</li>
+										添加权限									</a>								</li>{%endif%} 
 
-								<li>
+								{%if ids|int==42%}<li>
 									<a href="#">
 										<i class="icon-double-angle-right"></i>
-										删除权限									</a>								</li>
+										删除权限									</a>								</li>{%endif%} 
 							</ul>
-						</li> -->
+						</li>
 						<li>
 							<a href="#" class="dropdown-toggle">
 								<i class="icon-list"></i>
@@ -783,14 +744,23 @@
 										编辑菜单								</a>								</li>
 							</ul>
 						</li>
+						{%endfor%}
+						-->
+						
 						{% for menu in menulist %}
-							{% if menu.id > 5 %}
+							
+					
+							{%for ids in idslist%}
+			
+							{%if menu.id==ids|int %}
 							<li id='menu_{{menu.id}}'>
 							<a href="#" class="dropdown-toggle">
 								<i class="icon-list"></i>
 								<span class="menu-text"> {{menu.name}} </span>
 
 								<b class="arrow icon-angle-down"></b>							</a>
+							{%endif%}
+							{%endfor%}
 
 							<ul class="submenu">
 							
@@ -798,17 +768,21 @@
 
 
 							{% if menu1.parent_id==menu.id %}
+							{%for ids in idslist%}
+								{%if menu1.id==ids|int %}
 							
 							<li>
 									<a href="#">
 										<i class="icon-double-angle-right"></i>
 										<span id='{{menu1.span_id}}'>{{menu1.name}}</span>
 									</a>								</li>
+								{%endif%}
+							{%endfor%}
 							{%endif%}
 							{%endfor%}
 							</ul>
 						</li>
-							{%endif%}
+						
 						{%endfor%}
 						<span id='add_a_new'></span>
 
@@ -981,7 +955,7 @@
       <td colspan="5"><div align="center">添加菜单</div></td>
     </tr>
     <tr>
-      <td width="10%">上级菜单</td>
+      <td width="10%">上级菜单aaa</td>
       <td colspan="4"><select name="add_parent_menu" id="add_parent_menu">
 	   <option value=1>/root</option>
 	  {%for menu in menulist%}
@@ -1033,7 +1007,22 @@
 								{%endif%}
 								</table>
 								</div>
+							
+							<!-- 设置页面 -->
 							<!-- 添加主机 -->
+							<!--
+							<div id='addhost' class="host">
+								<div id='add'><input name='add_btn' type='button' id='add_btn' value='添加用户' /></div>
+								<table  id='userarea' width='1661' border='1'>
+								<tr><td width='6%' align='center' bgcolor='#66b3ff'>id</td><td width='6%' align='center' bgcolor='#66b3ff'>用户名</td><td width='14%' align='center' bgcolor='#66b3ff'>描述信息</td><td width='21%' align='center' bgcolor='#66b3ff'>用户管理</td><td width='53%' align='center' bgcolor='#66b3ff'>修改用户信息</td></tr>
+								{%if userlist %}
+								{% for user in userlist%}
+								<tr border='1'><td width='6%' align='center'>{{user.id}}</td><td width='6%' align='center'>{{user.username}}</td><td width='14%' align='center' >{{user.email}}</td><td width='21%' align='center' >{% if user.status == 1%}启用{%else%}禁用{% endif %}</td><td width='53%' align='center' >修改密码:<input type='password' id='resetpass' name='resetpass' placeholder='重置密码'/>启用/禁用:<input type='checkbox' {% if user.status==1%}checked{%endif%} id='enable'>&nbsp;&nbsp;&nbsp;&nbsp;<input type='button' id='commit' name='commit' value='修改' disabled></td></tr>
+								{% endfor %}
+								{%endif%}
+								</table>
+								</div>
+							-->
 							<div id='addhost' class="addhost">
 								<div id='add'><input name='add_host_btn' type='button' id='add_host_btn' value='添加主机' /></div>
 								<table  id='hostarea' width='1661' border='1'>
@@ -1058,33 +1047,6 @@
 								{%endif%}
 								</table>
 								</div>
-								
-								
-							<!-- 添加主机组界面 -->
-							<div id='addhostgroup' class="addhostgroup">
-								<div id='add'><input name='addhostgroup_btn' type='button' id='addhostgroup_btn' value='添加主机组' /></div>
-								<table  id='grouparea' width='1661' border='1'>
-								<tr><td width='6%' align='center' bgcolor='#66b3ff'>GroupId</td><td width='6%' align='center' bgcolor='#66b3ff'>主机组</td><td width='14%' align='center' bgcolor='#66b3ff'>主机组描述信息</td><td width='21%' align='center' bgcolor='#66b3ff'>主机组中的主机</td><td width='53%' align='center' bgcolor='#66b3ff'>关联主机</td></tr>
-								{%if hostgroups %}
-								{% for group in hostgroups%}
-								<tr border='1'><td width='6%' align='center'>{{group.id}}</td><td width='6%' align='center'>{{group.group_name}}</td><td width='14%' align='center' >{{group.group_desc}}</td><td width='21%' align='center' >{% if group.hostlist %}{{group.hostlist}}{%endif%}</td><td width='53%' align='center' ><img  src='/images/add_btn.jpg' id='assign' name='assign' height='20' width='20'>&nbsp;&nbsp;&nbsp;<img src='/images/remove.jpg' id='remove' name='remove' height='20' width='20'></td></td></tr>
-								{% endfor %}
-								{%endif%}
-								</table>
-								</div>
-							<!-- 设置页面 -->
-							<!-- 添加主机表单 
-							<div id='Layer_addhost' class="addhost">
-								<div id='add'><input name='add_host_btn' type='button' id='add_host_btn' value='添加主机' /></div>
-								<table  id='userarea' width='1661' border='1'>
-								<tr><td width='6%' align='center' bgcolor='#66b3ff'>主机ID</td><td width='6%' align='center' bgcolor='#66b3ff'>主机IP</td><td width='14%' align='center' bgcolor='#66b3ff'>SSH 端口</td><td width='21%' align='center' bgcolor='#66b3ff'>远程用户</td><td width='53%' align='center' bgcolor='#66b3ff'>描述信息</td></tr>
-								{%if hostslist %}
-								{% for host in hostlist%}
-								<tr border='1'><td width='6%' align='center'>{{host.id}}</td><td width='6%' align='center'>{{host.ipaddr}}</td><td width='14%' align='center' >{{host.sshport}}</td><td width='21%' align='center' >{{host.remote_user}}</td><td width='53%' align='center' >{{host.host_desc}}</td></tr>
-								{% endfor %}
-								{%endif%}
-								</table>
-								</div> -->
 							<!-- 添加用户界面 -->
 							<div id='adduser' class="adduser">
 								<div id='add'><input name='add_btn' type='button' id='add_btn' value='添加用户' /></div>
@@ -1109,7 +1071,7 @@
 								{% endfor %}
 								{%endif%}
 								</table>
-							</div>
+								</div>
 								
 								
 								
@@ -1125,106 +1087,10 @@
 								{%endif%}
 								</table>
 								</div>
-								
-								<!-- 删除主机组界面 -->
-							<div id='delhostgroup' class="delhostgroup">
-								<div id='add'><input name='delhostgroup_btn' type='button' id='delhostgroup_btn' value='批量删除主机组' disabled/></div>
-								<table  id='rolelist' width='1661' border='1'>
-								<tr><td width='6%' align='center' bgcolor='#66b3ff'>主机组Id</td><td width='6%' align='center' bgcolor='#66b3ff'>主机组</td><td width='14%' align='center' bgcolor='#66b3ff'>描述信息</td><td width='21%' align='center' bgcolor='#66b3ff'>组内含有的主机</td><td width='53%' align='center' bgcolor='#66b3ff'>删除</td></tr>
-								{%if hostgroups %}
-								{% for group in hostgroups%}
-								<tr border='1'><td width='6%' align='center'><input type='checkbox' id='group_id' value='{{group.id}}'></td><td width='6%' align='center'>{{group.group_name}}</td><td width='14%' align='center' >{{group.group_desc}}</td><td width='21%' align='center' >{% if group.hostlist %}{{group.hostlist}}{%endif%}</td><td width='53%' align='center' >&nbsp;&nbsp;&nbsp;&nbsp;<input type='button' id='delhostgroup_commit' name='delhostgroup_commit' value='删除' disabled></td></td></tr>
-								{% endfor %}
-								{%endif%}
-								</table>
-								</div>
-								
-							<!-- 批量用户添加 -->
-<div id="remote_user_add">
-  <table width="92%" height="175" border="1">
-    <tr>
-      <td colspan="5"><div align="center">批量添加用户</div></td>
-    </tr>
-    <tr>
-      <td width="10%">远端主机</td>
-      <td colspan="4"><select name="remote_hosts" id="remote_hosts">
-	   <option value=1></option>
-	  {%for host in hostlist%}
-	  <option value='{{host.ipaddr}}'>{{host.ipaddr}}</option>
-	  {%endfor%}
-      </select>      </td>
-    </tr>
-    <tr>
-      <td>用户名：</td>
-      <td colspan="4"><input name="username" type="text" id="username" /></td>
-    </tr>
-	<tr>
-      <td>密码：</td>
-      <td colspan="4"><input name="passwd" type="password" id="passwd" /></td>
-    </tr>
-    <tr>
-      <td>&nbsp;</td>
-      <td><input name="confirm" type="button" id="confirm" value="确定" disabled /></td>
-      <td><input name="cancle" type="button" id="cancle" value="取消" /></td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-    </tr>
-	<tr>
-	</tr>
-	<tr><div></div></tr>
-	
-  </table>
-  <hr />
-  <div id='return_msg'></div>
-</div>
-<div id="remote_user_del">
-  <table width="92%" height="175" border="1">
-    <tr>
-      <td colspan="5"><div align="center">删除远端用户</div></td>
-    </tr>
-    <tr>
-      <td width="10%">远端主机</td>
-      <td colspan="4"><select name="remote_hosts" id="remote_hosts">
-	   <option value=1></option>
-	  {%for host in hostlist%}
-	  <option value='{{host.ipaddr}}'>{{host.ipaddr}}</option>
-	  {%endfor%}
-      </select>      </td>
-    </tr>
-    <tr>
-      <td>用户名：</td>
-      <td colspan="4"><select name="remote_user" id="remote_user">
-      </select></td>
-    </tr>
-    <tr>
-      <td>&nbsp;</td>
-      <td><input name="confirm" type="button" id="confirm" value="确定" disabled /></td>
-      <td><input name="cancle" type="button" id="cancle" value="取消" /></td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-    </tr>
-	<tr>
-	</tr>
-	<tr><div></div></tr>
-	
-  </table>
-  <hr />
-  <div id='return_msg'></div>
-</div>
-
-
-							<!-- 添加监控源 -->
-							<div id='add_monitor_source' class="adduser">
-								<div id='add'><input name='add_btn' type='button' id='add_btn' value='添加监控源' /></div>
-								<table  id='monitor_area' width='1661' border='1'>
-								<tr><td width='6%' align='center' bgcolor='#66b3ff'>id</td><td width='6%' align='center' bgcolor='#66b3ff'>服务器地址</td><td width='14%' align='center' bgcolor='#66b3ff'>访问端口</td><td width='21%' align='center' bgcolor='#66b3ff'>访问账号</td><td width='53%' align='center' bgcolor='#66b3ff'>修改账号信息</td></tr>
-								</table>
-								</div>
-
-			<!--				<div class="col-xs-12" id="col-xs-12"> -->
+							<div class="col-xs-12" id="col-xs-12">
 								<!-- PAGE CONTENT BEGINS -->
 
-					<!--			<div class="alert alert-block alert-success"> 
+								<div class="alert alert-block alert-success">
 									<button type="button" class="close" data-dismiss="alert">
 										<i class="icon-remove"></i>									</button>
 
@@ -1236,10 +1102,10 @@
 										<small>(v1.2)</small>									</strong>
 									,轻量级好用的后台管理系统模版.								</div>
 
-								<div class="row">  
+								<div class="row">
 									<div class="space-6"></div>
 
-								<div class="col-sm-7 infobox-container">* 
+									<div class="col-sm-7 infobox-container">
 										<div class="infobox infobox-green  ">
 											<div class="infobox-icon">
 												<i class="icon-comments"></i>											</div>
@@ -1350,11 +1216,11 @@
 										</div>
 									</div>
 
-									<div class="vspace-sm"></div> -->
+									<div class="vspace-sm"></div>
 
-					<!--				<div class="col-sm-5"> -->
-					<!--					<div class="widget-box"> 
-											<div class="widget-header widget-header-flat widget-header-small"> 
+									<div class="col-sm-5">
+										<div class="widget-box">
+											<div class="widget-header widget-header-flat widget-header-small">
 												<h5>
 													<i class="icon-signal"></i>
 													访问来源												</h5>
@@ -1416,16 +1282,16 @@
 															<h4 class="bigger pull-right">1,050</h4>
 														</div>
 													</div>
-												</div> /widget-main
-											</div> /widget-body
+												</div><!-- /widget-main -->
+											</div><!-- /widget-body -->
 										</div><!-- /widget-box -->
-									</div> <!-- /span 
-								</div><!-- /row 
-						
+									</div><!-- /span -->
+								</div><!-- /row -->
+
 								<div class="hr hr32 hr-dotted"></div>
 
 								<div class="row">
-									<div class="col-sm-5"> 
+									<div class="col-sm-5">
 										<div class="widget-box transparent">
 											<div class="widget-header widget-header-flat">
 												<h4 class="lighter">
@@ -1524,7 +1390,7 @@
 										</div><!-- /widget-box -->
 									</div>
 
-								<!--  class="col-sm-7">
+									<div class="col-sm-7">
 										<div class="widget-box transparent">
 											<div class="widget-header widget-header-flat">
 												<h4 class="lighter">
@@ -1539,9 +1405,9 @@
 											<div class="widget-body">
 												<div class="widget-main padding-4">
 													<div id="sales-charts"></div>
-												</div><!-- /widget-main 
-											</div><!-- /widget-body 
-										</div><!-- /widget-box 
+												</div><!-- /widget-main -->
+											</div><!-- /widget-body -->
+										</div><!-- /widget-box -->
 									</div>
 								</div>
 
@@ -1873,7 +1739,7 @@
 																	<i class="icon-arrow-right"></i>																</a>															</div>
 
 															<div class="hr hr-double hr8"></div>
-														</div><!-- member-tab 
+														</div><!-- member-tab -->
 
 														<div id="comment-tab" class="tab-pane">
 															<div class="comments">
@@ -2014,10 +1880,10 @@
 															<div class="hr hr-double hr8"></div>
 														</div>
 													</div>
-												</div><!-- /widget-main 
-											</div><!-- /widget-body 
-										</div><!-- /widget-box 
-									</div><!-- /span 
+												</div><!-- /widget-main -->
+											</div><!-- /widget-body -->
+										</div><!-- /widget-box -->
+									</div><!-- /span -->
 
 									<div class="col-sm-6">
 										<div class="widget-box ">
@@ -2138,17 +2004,17 @@
 																</span>															</div>
 														</div>
 													</form>
-												</div><!-- /widget-main 
-											</div><!-- /widget-body 
-										</div><!-- /widget-box 
-									</div><!-- /span 
+												</div><!-- /widget-main -->
+											</div><!-- /widget-body -->
+										</div><!-- /widget-box -->
+									</div><!-- /span -->
 								</div><!-- /row -->
 
-								<!-- PAGE CONTENT ENDS 
-							</div><!-- /.col 
-						</div><!-- /.row 
-					</div><!-- /.page-content 
-				</div><!-- /.main-content 
+								<!-- PAGE CONTENT ENDS -->
+							</div><!-- /.col -->
+						</div><!-- /.row -->
+					</div><!-- /.page-content -->
+				</div><!-- /.main-content -->
 
 				<div class="ace-settings-container" id="ace-settings-container">
 					<div class="btn btn-app btn-xs btn-warning ace-settings-btn" id="ace-settings-btn">
@@ -2193,8 +2059,8 @@
 								<b></b>							</label>
 						</div>
 					</div>
-				</div><!-- /#ace-settings-container 
-			</div><!-- /.main-container-inner 
+				</div><!-- /#ace-settings-container -->
+			</div><!-- /.main-container-inner -->
 
 			<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
 				<i class="icon-double-angle-up icon-only bigger-110"></i>			</a>		</div><!-- /.main-container -->
@@ -2254,8 +2120,7 @@
 		<script src="assets/js/ace.min.js"></script>
 
 		<!-- inline scripts related to this page -->
-
-<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel" id="myModal">
+		<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel" id="myModal">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -2263,34 +2128,21 @@
         <h4 class="modal-title" id="gridSystemModalLabel">修改账号密码</h4>
       </div>
       <div class="modal-body">
-	  {% if hostgroups %}
-		{% for group in hostgroups%}
-			<div id='group_title'>{{group.group_name}}</div>
-			
-			{%if hostlist %}
-				{% for host in hostlist%}
-					{% if host.groupname == group.group_name %}
-					<!--	{{host.ipaddr}} <input type="checkbox" id="{{host.ipaddr}}" value="{{host.ipaddr}}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
-						<span id="hostname_span" data-toggle='tooltip' title="IP:{{host.ipaddr}} 描述:{{host.host_desc}}" data-placement="right">{{host.hostname}}</span>
-						<input type="checkbox" id="{{host.hostname}}" value="{{host.ipaddr}}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					{%endif%}
-				{%endfor%}
-			{%endif%}
-			<hr/>
-		{%endfor%}
+	  {%if hostlist %}
+	  {% for host in hostlist%}
+	  {{host.ipaddr}} <input type="checkbox" id="{{host.ipaddr}}" value="{{host.ipaddr}}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	  {% endfor %}
 	  {%endif%}
       
       </div>
-	  <hr/>
-	  <div><input type='button' value='全选' id='select_all'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='button' id='select_invert' value='反选'></div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" id="close_change_password">关闭</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
         <button type="button" class="btn btn-primary" id="change_password">修改密码</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-<a href="#" data-toggle="tooltip" title="Example tooltip" id='mytooltip'>请悬停在我的上面</a>
+
 <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" id="ajaxResult">
   <div class="modal-dialog modal-sm" role="document">
     <div class="modal-content">
@@ -2309,11 +2161,7 @@
   </div>
 </div>
 
-
-
-
 		<script type="text/javascript">
-		
 			jQuery(function($) {
 				$('.easy-pie-chart.percentage').each(function(){
 					var $box = $(this).closest('.infobox');

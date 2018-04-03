@@ -45,10 +45,15 @@ class User:
 	def DropUser(self,**kwargs):
 		if 'userid' in kwargs:
 			userid=kwargs['userid']
-			user=Users.query.filter_by(id=userid)
-			user.delete()
-			db.session.commit()
-			result={'result':1}
+			#user=Users.query.filter_by(id=userid)
+			#user.delete()
+			#db.session.commit()
+			sql="delete a,b from role_user a join users b on a.uid=b.id where b.id='%s'" % userid
+			try:
+				engine.execute(sql)
+				result={'result':1}
+			except:
+				result={'result':0}
 		else:
 			result={'result':0}
 	def ListUser(self):
@@ -100,6 +105,7 @@ class User:
 		self.status=kwargs['status']
 		
             user=Users.query.filter_by(username=self.username).first()
+	    print("Find User:%s,username:%s" % (user,self.username))
 	    if len(hash_password)!=0: 
 	    	user.password=hash_password
 	    user.status=self.status

@@ -8,7 +8,10 @@ from database import Users
 from Menu import MenuInfo
 from AuthPro import AuthPro
 from remote_user_manager import UserManager
+from remote_user_command import CmdManager
+from monitor_reporting import *
 from password_modify import *
+import json
 app=Flask(__name__,static_folder='templates', static_url_path='')
 app.config['SECRET_KEY']='automatic system'
 app.config['SQLALCHEMY_DATABASE_URI']='mysql://automatic:automatic@localhost:3306/automatic'
@@ -92,6 +95,7 @@ def setpass():
 	if request.method == 'POST':
                 username=request.form['username']
 		password=''
+		print("username:%s" %username)
 		if 'pwd' in request.form:
                 	password=request.form['pwd']
 		enable=request.form['status']
@@ -99,6 +103,7 @@ def setpass():
 		if password !='':		
 			USER.SetPass(password=password,status=enable)
 		else:
+			print(type(USER))
 			USER.SetPass(status=enable)
 		result={'result':1}
 		return jsonify(result)
@@ -366,12 +371,16 @@ def remote_user_manager():
         if request.method == 'POST':
                 remote_host=request.form['remote_host']
                 username=request.form['username']
-                passwd=request.form['passwd']
+		if 'passwd' in request.form:
+                	passwd=request.form['passwd']
 		operateId=request.form['operateId']
 		if operateId=='1':
 			usermanager=UserManager(remote_user=username,remote_host=remote_host)
 			result=usermanager.add(password=passwd)
-			print result
+			return jsonify(result)
+		elif operateId=='2':
+			usermanager=UserManager(remote_user=username,remote_host=remote_host)
+			result=usermanager.rdel()
 			return jsonify(result)
 		else:
 			return ''
@@ -392,7 +401,8 @@ def change_root_passwd():
 			passwordmanager.execute()
 			passwordmanager.clearyaml()
 			return jsonify({"result":1})
-		except:
+		except e:
+			print("error:%s" %e) 
 			return jsonify({"result":0})
 	else:
 		return ''
@@ -403,23 +413,60 @@ def change_root_passwd():
 def change_root_passwd():
 	if request.method == 'POST':
 		passwdfile=open("templates/passfile.txt","a+")
-		iplist=request.form['iplist']
-		iplist=iplist.split('!')
-		for ip in iplist:
+		iplist=request.form['iplist[]'].strip("[]").replace('},{','}!{')
+		print "iplist:%s" %iplist
+		errorlist=[]
+		IpList=iplist.split('!')
+		print("IpList:%s",IpList)
+		for ip in IpList:
 			if ip is not None:
+				IP=eval(ip.encode('utf-8'))
+				print "Host IP:%s" % IP.get('ip')
+				ip=IP.get('ip')
+				hostname=IP.get('hostName')
 				try:
 					usermanager=UserManager(remote_user='root',remote_host=ip)
 					password=mkpasswd()
                         		result=usermanager.add(password=password)
-					passwdfile.write("%s\t%s\t%s\n" %(ip,password.strip("\n"),time.strftime("%y-%m-%d %H:%M:%S",time.localtime(time.time()))) )
+					print("Error:%s" %result)
+					passwdfile.write("%s\t%s\t%s\t%s\n" %(hostname,ip,password.strip("\n"),time.strftime("%y-%m-%d %H:%M:%S",time.localtime(time.time()))) )
 			
-				except:
-					return jsonify({"result":0})
-			return jsonify({"result":1})
+				except Exception,e:
+					errorlist.append(ip)
 		passwdfile.close()
+		if len(errorlist)==0:
+			return jsonify({"result":1})
+		else:
+			msg=u"以下主机修改密码失败:</br>%s" % "  ".join(errorlist)
+			return jsonify({"result":msg})
 	else:
-			return ''
+			return jsonify({'result':0})
 		
+
+
+@app.route('/list_remote_user',methods=['POST','GET'])
+#查询远端主机上的用户
+def list_remote_User():
+	cmd="cat /etc/passwd|cut -d : -f1|grep -v root"
+	remote_host=request.form['remote_host']
+	try:
+		cmdmanager=CmdManager(remote_host=remote_host,remote_user='root')
+		result=cmdmanager.Execute(cmd=cmd)
+		results=result['result'].decode('string_escape')
+		results=results.split('"msg":')[1].replace('}]','').replace(' ','').replace('"','')
+	except:
+		results=''
+	userlist=[]
+	for user in results.split('\n'):
+		user_dict={}
+		if len(user)>0:
+			user_dict['user']=user
+			userlist.append(user_dict)
+	return jsonify(userlist)
+	
+
+	
+	
 
 @app.route('/queryUser',methods=['POST','GET'])
 def queryUser():
@@ -490,6 +537,21 @@ def queryHostGroup():
 	else:
 		return ''
 
+@app.route('/ConnectCheck',methods=['POST','GET'])
+def ConnectCheck():
+	if 'username' in session:
+		db=request.form['server_info'].split('/')[-1]
+		host=request.form['server_info'].split(':')[0]
+		port=request.form['server_info'].split(':')[1].split('/')[0]
+		user=request.form['account']
+		passwd=request.form['passwd']
+		monitor=MonitorReport(host=host,port=int(port),user=user,passwd=passwd,db=db)
+		result=monitor.ConnectCheck()
+		print 'host:%s port:%s Result:%s' % (host,port,result)
+		return jsonify({'result':result})
+		
+	else:
+		return ''
 
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 

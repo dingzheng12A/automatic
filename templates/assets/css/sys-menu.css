@@ -15,6 +15,14 @@
 	z-index:1;
 	display:none;
 }
+#remote_user_del {
+	position:absolute;
+	width:756px;
+	height:auto;
+	border:2px solid;
+	z-index:1;
+	display:none;
+}
 #Layer_DelMenu {
 	position:absolute;
 	width:449px;
@@ -67,3 +75,9 @@ td{
 	font-weight:bold;
 }
 
+#return_msg {
+	font-size:20px;
+	font-weight:bold;
+	font-family:"宋体";
+	color:#FFF2DF;
+}
