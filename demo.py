@@ -547,9 +547,64 @@ def ConnectCheck():
 		passwd=request.form['passwd']
 		monitor=MonitorReport(host=host,port=int(port),user=user,passwd=passwd,db=db)
 		result=monitor.ConnectCheck()
-		print 'host:%s port:%s Result:%s' % (host,port,result)
 		return jsonify({'result':result})
 		
+	else:
+		return ''
+
+@app.route('/queryServer',methods=['POST','GET'])
+def queryServer():
+	if 'username' in session:
+		ServiceList=[]
+		monitor=MonitorReport()
+		if 'server_id' in request.form:
+			server_id=request.form['server_id']
+			result=monitor.serviceQuery(server_id=server_id)
+		else:
+			result=monitor.serviceQuery()
+		if len(result)==0:
+			return jsonify({'result':0})
+		else:
+			for service in result:
+				Service={}
+				Service['server_id']=service.server_id
+				Service['host']=service.host
+				Service['port']=service.port
+				Service['user']=service.user
+				Service['db']=service.selectdb
+				ServiceList.append(Service)
+			return jsonify({'result':1,'servicelist':ServiceList})
+		
+	else:
+		return ''
+
+@app.route('/addServer',methods=['POST','GET'])
+def addServer():
+	if 'username' in session:
+		server_id=request.form['server_id']
+		server_name=request.form['server_info']
+		user=request.form['account']
+		passwd=request.form['passwd']
+		try:
+			monitor=MonitorReport(user=user,passwd=passwd)
+			monitor.serviceAdd(server_id=server_id,server_name=server_name)
+			return jsonify({'result':1})
+		except Exception,e:
+			return jsonify({'result':0})
+	else:
+		return ''
+
+@app.route('/delServer',methods=['POST','GET'])
+def delServer():
+	if 'username' in session:
+		server_id=request.form['server_id']
+		try:
+			monitor=MonitorReport()
+			result=monitor.serviceDel(server_id=server_id)
+			return jsonify({'result':result})
+		except Exception,e:
+			print("has an error:%s" % e)
+			return jsonify({'result':0})
 	else:
 		return ''
 

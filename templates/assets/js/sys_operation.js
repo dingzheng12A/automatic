@@ -294,31 +294,6 @@ $(document).ready(function(){
 		});
 		
 		
-		
-		// 表格处理
-		/* $("table tr").each(function(){
-			var id=$(this).children('td:eq(0)').text();
-			$(this).click(function(){
-				 $(this).addClass("selected")
-				 .siblings().removeClass('selected');
-				 $(this).find("#commit").attr("disabled",false)
-				 .siblings().find("#resetpass").attr("disabled",true);
-				 $(this).siblings().attr("disabled","disabled");
-				 console.log($(this).html());
-			})
-		});
-*/
-		//删除用户
-		
-		/*$("#deluser table tr").click(function(){
-			var $siblings = $(this).siblings('tr');
-			$siblings.removeClass("selected").find('input[id="del_single"]').prop('disabled', true);
-			$(this).addClass('selected').find('input[id="del_single"]').prop('disabled', false);
-			
-			
-		})*/
-		
-		
 		$("#deluser table").on("click","tr",function(){
 			var $siblings = $(this).siblings('tr');
 			$siblings.removeClass("selected").find('input[id="del_single"]').prop('disabled', true);
@@ -2149,6 +2124,26 @@ $(document).ready(function(){
 			var index=$("div .row #add_monitor_source").index(this);
 			$("div #add_monitor_source").eq(index).show()
 			.siblings().hide();
+			$.ajax({
+                    type: 'post',
+                    url:'/queryServer',
+                    //data:{'server_id':''},
+			        // data:iparray,
+                    cache:false,
+					async: true,
+                    dataType: 'json',
+			        success: function(data){
+						if(data.result==1){
+							$("#monitor_area").html('<table id="monitor_area" width="1661" border="1"><tr><td width="6%" align="center" bgcolor="#66b3ff">id</td><td width="6%" align="center" bgcolor="#66b3ff">服务器地址</td><td width="14%" align="center" bgcolor="#66b3ff">访问端口</td><td width="21%" align="center" bgcolor="#66b3ff">访问账号</td><td width="53%" align="center" bgcolor="#66b3ff">修改账号信息</td></tr></table>');
+							$.each(data.servicelist, function(i, data){
+								$("#monitor_area").append("<tr border='1'><td width='6%' align='center'>"+data['server_id']+"</td><td width='6%' align='center'>"+data['host']+"</td><td width='14%' align='center' >"+data['port']+"</td><td width='21%' align='center' >"+data['user']+"</td><td width='53%' align='center' ><input type='button' id='del_single' name='del_single' value='删除' disabled></td></tr>");
+							});
+							
+						}
+					},
+                         
+			});
+			
 		})
 		
 		//点击按钮新增监控源
@@ -2166,49 +2161,59 @@ $(document).ready(function(){
 			
 			
 		});
-			//检查服务器IP是否为空
-			$("#Layer2_monitor_source #server_name").bind("input propertychange change",function(event){
+			//检查服务器标识是否为空
+			$("#Layer2_monitor_source #server_identifier").bind("input propertychange change",function(event){
+				var server_identifier=$("#Layer2_monitor_source #server_identifier").val();
 				var server_name=$("#Layer2_monitor_source #server_name").val();
 				var nicename=$("#Layer2_monitor_source #nicename").val();
 				var passwd=$("#Layer2_monitor_source #passwd").val();	
-				if (username.length!=0&& nicename.length!=0&&passwd.length!=0){
-						$("#Layer2_monitor_source #add").attr("disabled",false);
+				if (server_identifier.length!=0&&server_name.length!=0&& nicename.length!=0&&passwd.length!=0){
 						$("#Layer2_monitor_source #Test_connect").attr("disabled",false);
 				}else{
-				
-						$("#Layer2_monitor_source #add").attr("disabled",true);
 						$("#Layer2_monitor_source #Test_connect").attr("disabled",true);
+						$("#Layer2_monitor_source #add").attr("disabled",true);
+				};
+			});
+			//检查服务器IP是否为空
+			$("#Layer2_monitor_source #server_name").bind("input propertychange change",function(event){
+				var server_identifier=$("#Layer2_monitor_source #server_identifier").val();
+				var server_name=$("#Layer2_monitor_source #server_name").val();
+				var nicename=$("#Layer2_monitor_source #nicename").val();
+				var passwd=$("#Layer2_monitor_source #passwd").val();	
+				if (server_identifier.length!=0&&server_name.length!=0&& nicename.length!=0&&passwd.length!=0){
+						$("#Layer2_monitor_source #Test_connect").attr("disabled",false);
+				}else{
+						$("#Layer2_monitor_source #Test_connect").attr("disabled",true);
+						$("#Layer2_monitor_source #add").attr("disabled",true);
 				};
 			});
 			
 			//检查账号是否为空
 			$("#Layer2_monitor_source #nicename").bind("input propertychange change",function(event){
+				var server_identifier=$("#Layer2_monitor_source #server_identifier").val();
 				var server_name=$("#Layer2_monitor_source #server_name").val();
 				var nicename=$("#Layer2_monitor_source #nicename").val();
 				var passwd=$("#Layer2_monitor_source #passwd").val();	
-				if (server_name.length!=0&& nicename.length!=0&&passwd.length!=0){
-					$("#Layer2_monitor_source #add").attr("disabled",false);
+				if (server_identifier.length!=0&&server_name.length!=0&& nicename.length!=0&&passwd.length!=0){
 					$("#Layer2_monitor_source #Test_connect").attr("disabled",false);
 				}else{
-				
-						$("#Layer2_monitor_source #add").attr("disabled",true);
 						$("#Layer2_monitor_source #Test_connect").attr("disabled",true);
+						$("#Layer2_monitor_source #add").attr("disabled",true);
 				};
 			});
 			
 			
 			//检查密码是否为空
 			$("#Layer2_monitor_source #passwd").bind("input propertychange change",function(event){
+				var server_identifier=$("#Layer2_monitor_source #server_identifier").val();
 				var server_name=$("#Layer2_monitor_source #server_name").val();
 				var nicename=$("#Layer2_monitor_source #nicename").val();
 				var passwd=$("#Layer2_monitor_source #passwd").val();	
-				if (server_name.length!=0&& nicename.length!=0&&passwd.length!=0){
-					$("#Layer2_monitor_source #add").attr("disabled",false);
+				if (server_identifier.length!=0&&server_name.length!=0&& nicename.length!=0&&passwd.length!=0){
 					$("#Layer2_monitor_source #Test_connect").attr("disabled",false);
 				}else{
-				
-						$("#Layer2_monitor_source #add").attr("disabled",true);
 						$("#Layer2_monitor_source #Test_connect").attr("disabled",true);
+						$("#Layer2_monitor_source #add").attr("disabled",true);
 				};
 			});
 			
@@ -2228,7 +2233,7 @@ $(document).ready(function(){
 				$.ajax({
                                 type: 'post',
                                 url:'/ConnectCheck',
-                                data:{'server_info':$("#Layer2_monitor_source #server_name").val(),'account':$("#Layer2_monitor_source #nicename").val(),'passwd':$("#Layer2_monitor_source #passwd").val()},
+                                data:{'server_info':$("#Layer2_monitor_source #server_name").val(),'account':$("#Layer2_monitor_source #nicename").val(),'passwd':$("#Layer2_monitor_source #passwd").val(),'server_id':$("Layer2_monitor_source #server_name").val()},
 								// data:iparray,
                                 cache:false,
                                 dataType: 'json',
@@ -2238,12 +2243,13 @@ $(document).ready(function(){
 										//window.location.href = /
 										//window.open('/passfile.txt', '_blank')
 										alert("测试数据库连接成功!");
+										$("#Layer2_monitor_source #add").attr("disabled",false);
 									}else{
 										alert("测试数据库连接失败!");
 										$("#Layer2_monitor_source #server_name").val('');
 										$("#Layer2_monitor_source #server_name").css("border","1px solid red");
-										$("#Layer2_monitor_source #add").attr("disabled",false);
-										$("#Layer2_monitor_source #Test_connect").attr("disabled",false);
+										$("#Layer2_monitor_source #add").attr("disabled",true);
+										$("#Layer2_monitor_source #Test_connect").attr("disabled",true);
 									}
                                 },
                              
@@ -2252,6 +2258,104 @@ $(document).ready(function(){
 				
 			});
 			
+			//添加配置信息
+			$("#Layer2_monitor_source #add").click(function(){
+				//查询是否有重复的id
+				$.ajax({
+                        type: 'post',
+                        url:'/queryServer',
+                        data:{'server_id':$("#Layer2_monitor_source #server_identifier").val()},
+				        // data:iparray,
+                        cache:false,
+						async: true,
+                        dataType: 'json',
+				        success: function(data){
+				        
+				        	if(data.result==1){
+				        		//window.location.href = /
+				        		//window.open('/passfile.txt', '_blank')
+				        		alert("服务器标识已经存在!");
+								$("#Layer2_monitor_source #server_identifier").val('');
+								$("#Layer2_monitor_source #server_identifier").focus();
+								$("#Layer2_monitor_source input[id='add']").attr('disabled',true);
+								$("#Layer2_monitor_source input[id='Test_connect']").attr('disabled',true);
+				        	}else{
+								var server_identifier=$("#Layer2_monitor_source #server_identifier").val();
+								var server_name=$("#Layer2_monitor_source #server_name").val();
+								var nicename=$("#Layer2_monitor_source #nicename").val();
+								var passwd=$("#Layer2_monitor_source #passwd").val();	
+						        $.ajax({
+                                    type: 'post',
+                                    url:'/addServer',
+                                    data:{'server_info':$("#Layer2_monitor_source #server_name").val(),'server_id':$("#Layer2_monitor_source #server_identifier").val(),'account':$("#Layer2_monitor_source #nicename").val(),'passwd':$("#Layer2_monitor_source #passwd").val()},
+				                    // data:iparray,
+                                    cache:false,
+						            async: false,
+                                    dataType: 'json',
+									success:function(data){
+										if(data.result==1){
+											alert("新增节点成功!");
+											$(".top").hide();
+											$("#Layer2_monitor_source").hide();
+														$.ajax({
+														type: 'post',
+                                                        url:'/queryServer',
+                                                        //data:{'server_id':''},
+			                                            // data:iparray,
+                                                        cache:false,
+					                                    async: true,
+                                                        dataType: 'json',
+			                                            success: function(data){
+					                                    	if(data.result==1){
+					                                    		$("#monitor_area").html('<table id="monitor_area" width="1661" border="1"><tr><td width="6%" align="center" bgcolor="#66b3ff">id</td><td width="6%" align="center" bgcolor="#66b3ff">服务器地址</td><td width="14%" align="center" bgcolor="#66b3ff">访问端口</td><td width="21%" align="center" bgcolor="#66b3ff">访问账号</td><td width="53%" align="center" bgcolor="#66b3ff">修改账号信息</td></tr></table>');
+					                                    		$.each(data.servicelist, function(i, data){
+																	$("#monitor_area").append("<tr border='1'><td width='6%' align='center'>"+data['server_id']+"</td><td width='6%' align='center'>"+data['host']+"</td><td width='14%' align='center' >"+data['port']+"</td><td width='21%' align='center' >"+data['user']+"</td><td width='53%' align='center' ><input type='button' id='del_single' name='del_single' value='删除' disabled></td></tr>");
+																});
+							
+															}
+														},
+                         
+														});
+										}
+									},
+				                });
+						        		
+							};
+						},
+                             
+				});
+				//新增
+			});
+			
+			
+			//删除监控源
+			$("table[id='monitor_area']").on("click","tr",function(){
+			      var $siblings = $(this).siblings('tr');
+			      $siblings.removeClass("selected").find('input[id="del_single"]').prop('disabled', true);
+			      $(this).addClass('selected').find('input[id="del_single"]').prop('disabled', false);
+			})
+			
+			$("table[id='monitor_area']").on("click","tr #del_single",function(){
+				var request=confirm("是否删除监控源?");
+				var $position=$(this).parent().parent();
+				var server_id=$(this).parent().parent().children("td:eq(0)").text();
+				console.log('server_id:'+server_id);
+				if(request==true){
+					$.ajax({
+                        type: 'post',
+                        url:'/delServer',
+                        data:{'server_id':server_id},
+                        cache:false,
+                        dataType: 'json',
+						success: function(data){
+							$position.hide();
+							alert("监控源"+server_id+"删除成功!");
+						
+                        }  
+					});
+					
+				}
+			});
 	
 })
 

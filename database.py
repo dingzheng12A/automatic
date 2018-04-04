@@ -108,7 +108,17 @@ class HostinGroup(db.Model):
         host_ip=db.Column(db.String(64))
         create_time=db.Column(db.DateTime,default=datetime.datetime.now())
 	
-	
+
+
+class MonitorSource(db.Model):
+	__tablename__='sys_monitor_source'
+	id=db.Column(db.Integer,primary_key=True)
+        server_id=db.Column(db.String(100),unique=True)
+        host=db.Column(db.String(64))
+        port=db.Column(db.Integer,index=True)
+        user=db.Column(db.String(64))
+        passwd=db.Column(db.String(64))
+        selectdb=db.Column(db.String(64))
 	
 
 if __name__=='__main__':
