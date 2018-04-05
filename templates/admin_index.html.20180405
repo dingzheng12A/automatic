@@ -8,7 +8,6 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<!-- basic styles -->
 		<link href="assets/css/bootstrap.min.css" rel="stylesheet" />
-		<link rel="stylesheet" type="text/css" media="all" href="assets/css/daterangepicker.css" /> 
 		<link rel="stylesheet" href="assets/css/font-awesome.min.css" />
 
 		<!--[if IE 7]>
@@ -27,8 +26,8 @@
 		<link rel="stylesheet" href="assets/css/ace-rtl.min.css" />
 		<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
 		<!--  新增时间控件 -->
-		
-
+		<link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="assets/css/datepicker.css" />
 		
 		<link rel="stylesheet" href="assets/css/user-role.css" />
 		<link rel="stylesheet" href="assets/css/sys-menu.css" />
@@ -44,10 +43,9 @@
 		
 		
 		<script src="assets/js/ace-extra.min.js"></script>
-		<script src="assets/js/jquery-2.0.3.min.js" ></script>
-		<script type="text/javascript" src="assets/js/bootstrap.min.js" ></script>  
-		<script type="text/javascript" src="assets/js/date-time/moment.min.js" ></script>  
-		<script type="text/javascript" src="assets/js/date-time/daterangepicker.min.js" ></script>  
+		<script src="assets/js/jquery-3.2.1.min.js"></script>
+		<script src="assets/js/bootstrap.min.js"></script>
+		<script src="assets/js/date-time/bootstrap-datepicker.min.js"></script>
 		
 		
 		<!--  新增时间控件 -->
@@ -1254,15 +1252,12 @@
 								<!-- <table  id='monitor_area' width='1661' border='1'>
 								<tr><td width='6%' align='center' bgcolor='#66b3ff'></td><td width='6%' align='center' bgcolor='#66b3ff'>服务器地址</td><td width='14%' align='center' bgcolor='#66b3ff'>访问端口</td><td width='21%' align='center' bgcolor='#66b3ff'>访问账号</td><td width='53%' align='center' bgcolor='#66b3ff'>修改账号信息</td></tr>
 								</table> -->
-								
-								<!-- <form class="form-inline">  -->
-								<div id="divDateId" class="pull-left dateRange">  
-								起始时间-结束时间:<input class="form-control" id="searchDate"></input>  
-								<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>  
-								</div>  
-								<!-- </form> -->
-								<hr />
-								
+								<div class="input-group date" data-provide="datepicker">
+								<input type="text" class="form-control" id="start_time">
+								<div class="input-group-addon">
+								<span class="glyphicon glyphicon-th"></span>
+								</div>
+								</div>
 								
 
 			<!--				<div class="col-xs-12" id="col-xs-12"> -->
@@ -2247,7 +2242,7 @@
 
 		<!--[if !IE]> -->
 
-		<!-- <script src="/assets/js/jquery-2.0.3.min.js"></script> -->
+		<script src="/assets/js/jquery-2.0.3.min.js"></script>
 
 		<!-- <![endif]-->
 
