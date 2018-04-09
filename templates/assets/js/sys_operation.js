@@ -2037,6 +2037,7 @@ $(document).ready(function(){
 		
 		
 		$("#change_root_passwd").click(function(){
+			
 			$('#myModal').modal('show');
 
 			
@@ -2217,11 +2218,11 @@ $(document).ready(function(){
 				};
 			});
 			
-			$("#Layer2_monitor_source #server_name").blur(function(event){
+			$("#Layer2_monitor_source #server_name").off().blur(function(event){
 			    var server_name=$("#Layer2_monitor_source #server_name").val();
 				if(isDataurl(server_name)==false){
-					alert("配置信息不正确!");
-					$("#Layer2_monitor_source #server_name").val('');
+					console.log("配置信息不正确!");
+					$("#Layer2_monitor_source #server_name").focus();
 					$("#Layer2_monitor_source #server_name").css("border","1px solid red");
 				}
 				
@@ -2249,7 +2250,7 @@ $(document).ready(function(){
 										$("#Layer2_monitor_source #server_name").val('');
 										$("#Layer2_monitor_source #server_name").css("border","1px solid red");
 										$("#Layer2_monitor_source #add").attr("disabled",true);
-										$("#Layer2_monitor_source #Test_connect").attr("disabled",true);
+										//$("#Layer2_monitor_source #Test_connect").attr("disabled",true);
 									}
                                 },
                              
@@ -2361,6 +2362,13 @@ $(document).ready(function(){
 		//生成监控报表
 		$("#Generating").click(function(){
 				var index=$("div .row #monitor_reporting").index(this);
+				$("select[id='monitor_source']").html("<select id='monitor_source'></select>");
+				$.getJSON("/queryServer",function(result){
+					console.log("result:"+result);
+					$.each(result.servicelist, function(i, data){
+						$("select[id='monitor_source']").append("<option value='"+data['server_id']+"'>"+data['server_id']+"</option>");
+					});
+				});
 				$("div #monitor_reporting").eq(index).show()
 				.siblings().hide();
 		})
@@ -2424,7 +2432,38 @@ $(document).ready(function(){
 				});
 			
         });  
+		
+		
+		$("#confirm_select").click(function(){
+			var start_date=$("input[id='searchDate']").val().split(' - ')[0];
+			var end_date=$("input[id='searchDate']").val().split(' - ')[1];
+			//统计告警总数
+			 $.ajax({
+                                type: 'post',
+                                url:'/monitor_counts',
+                                data:{'operateId':1,'start_date':start_date,'end_date':end_date,'monitor_source':$("select[id=monitor_source]").val(),'products':$("select[id='products']").val(),'country':$("select[id='as_country']").val()},
+                                //cache:false,
+                                //dataType: 'json',
+								success: function(data){
+									$("table[id='故障总数统计']").html("<table id='故障总数统计' class='table table-bordered table-striped'><tbody><tr align='center'><td>id	</td><td>所属产品</td><td>所在国家</td>	<td>服务器名称</td><td>故障次数</td></tr>");
+									if(data.result==1){
+										$.each(data.alerts, function(i, data){
+											$("table[id='故障总数统计']").append("<tr bgcolor='#66b3ff' align='center'><td>"+data['id']+"</td><td>"+$("select[id='products'] option:selected").text()+"</td><td>所在国家</td>	<td>"+data['ServerName']+"</td><td>"+data['counts']
++"</td></tr>");
+										});
+									};
+                                }
+                             
+			});
+		});
+		
+		
+		//标签页
+		/*$(function () {
+			$('#myTab li:eq(1) a').tab('show');
+		}); */
 })
+
 
 
 
@@ -2433,9 +2472,12 @@ function isInteger(obj) {
 	return re.test(obj);
 }
 
-
+//检查IP地址
 function isDataurl(obj) {
-	var re=new RegExp("^[a-zA-Z0-9][a-zA-Z1-9.]+:[1-9][0-9]{0,4}/[a-zA-Z]+$","g");
+	//var re=new RegExp("^[a-zA-Z0-9][a-zA-Z1-9.]+|([1-9][0-9]{0,2}.):[1-9][0-9]{0,4}/[a-zA-Z]+$","g");
+	//var re = new RegExp("^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$","g");
+	//var re='/^(1\d{0,2}|2[0-4]{0,1}\d{0,1}|3\d{0,2})([.](1\d{0,2}|2[0-4]{0,1}\d{0,1}|3\d{0,2}|0)){2}[.](1\d{0,2}|2[0-4]{0,1}\d{0,1}|3\d{0,2}):[1-9][0-9]{0,4}\/[a-zA-Z]+$/';
+	var re= new RegExp(/^(1\d{0,2}|2[0-4]{0,1}\d{0,1}|[3-9]\d{0,1})([.](1\d{0,2}|2[0-4]{0,1}\d{0,1}|[3-9]\d{0,1}|0)){2}[.](1\d{0,2}|2[0-4]{0,1}\d{0,1}|[3-9]\d{0,1}):[1-9][0-9]{0,4}\/[a-zA-Z]+$/);
 	return re.test(obj);
 }
 

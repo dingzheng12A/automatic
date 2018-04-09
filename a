@@ -618,7 +618,6 @@ def monitor_counts():
 		monitor_source=request.form['monitor_source']
 		products=request.form['products']
 		country=request.form['country']
-		print 'products:%s' % products
 		
                 try:
                         monitor=MonitorReport()
@@ -631,26 +630,13 @@ def monitor_counts():
 				Server['passwd']=MonitorReport.decrypt('UZeftsT2Cdj2r4B8',server.passwd)
 				Server['db']=server.selectdb
 			monitor=MonitorReport(host=Server['host'],port=Server['port'],user=Server['user'],passwd=Server['passwd'],db=Server['db'])
-			if operateId=='1':
-				results=monitor.countOfFail(start_date=start_date,end_date=end_date,products=products)
-				print 'RESULTS:%s' % results
-				if results is not None:
-					alerts=[]
-					#id 号
-					i=1
-					for result in results:
-						alert={}
-						alert['id']=i
-						alert['ServerName']=result.host
-						alert['counts']=result.cnt_event
-						alerts.append(alert)
-						i=i+1
-				else:
-					alerts=''
+			if operateId==1:
+				print 'aaa '*10
+				result=monitor.countOfFail(start_date=start_date,end_date=end_date,products=products)
 			else:
 				print 'operateId:%s' % operateId
 				pass
-                       	return jsonify({'result':1,'alerts':alerts})
+                       	return jsonify({'result':1,'server':Server})
                 except Exception,e:
                         print("has an error:%s" % e)
                         return jsonify({'result':0})

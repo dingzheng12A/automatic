@@ -19,12 +19,15 @@ class MonitorReport():
 		self.user=user
 		self.passwd=passwd
 		self.db=db
+		self.engine = create_engine("mysql://%s:%s@%s:%d/%s?charset=utf8" % (self.user,self.passwd,self.host,int(self.port),self.db), convert_unicode=True)
+		self.metadata = MetaData(bind=self.engine)
 
 	def ConnectCheck(self):
 		try:
 			self.connect=MySQLdb.connect(host=self.host,port=self.port,user=self.user,passwd=self.passwd,db=self.db,connect_timeout = 10)
 			return 1
 		except Exception,e:
+			print("has an error:%s" % e)
 			return 0
 
 	def serviceQuery(self,**kwargs):
@@ -32,7 +35,7 @@ class MonitorReport():
 		if 'server_id' in kwargs:
 			server_id=kwargs['server_id']
 		if len(server_id)>0: 
-			sql="select server_id,host,port,user,selectdb from sys_monitor_source where server_id='%s'" % server_id
+			sql="select server_id,host,port,user,passwd,selectdb from sys_monitor_source where server_id='%s'" % server_id
 		else:
 			sql="select server_id,host,port,user,selectdb from sys_monitor_source"
                 try:
@@ -74,6 +77,29 @@ class MonitorReport():
 		except Exception,e:
 			print 'has an error aaaa:%s' % e
 			return 0
+
+	def countOfFail(self,**kwargs):
+		start_date=''
+		end_date=''
+		products=''
+		if 'start_date' in kwargs:
+			start_date=kwargs['start_date']
+		if 'end_date' in kwargs:
+			end_date=kwargs['end_date']
+		if 'products' in kwargs:
+			products=kwargs['products']
+		print 'start_date:%s.end_date:%s.products:%s' %(start_date,end_date,products)
+		#sql="SELECT self.host,sum(cnt_event)as counts from (SELECT h.host,count(distinct e.eventid) AS cnt_event FROM triggers t inner join events e inner join hosts h inner join items i inner join functions f WHERE t.triggerid=e.objectid and h.hostid=i.hostid AND i.itemid=f.itemid AND f.triggerid=t.triggerid AND e.source=0 AND e.object=0 AND e.clock>=unix_timestamp('%s') AND e.clock < unix_timestamp(date_add('%s',interval 1 day )) AND t.flags IN ('0','4') AND e.value=1 AND h.host like '%s" %(start_date,end_date,products) +r"%%' GROUP BY e.objectid ORDER BY cnt_event desc)self GROUP BY self.host ORDER BY self.cnt_event;"
+		#sql="SELECT h.host,count(distinct e.eventid) AS cnt_event FROM triggers t inner join events e inner join hosts h inner join items i inner join functions f WHERE t.triggerid=e.objectid and h.hostid=i.hostid AND i.itemid=f.itemid AND f.triggerid=t.triggerid AND e.source=0 AND e.object=0 AND e.clock>=unix_timestamp('%s') AND e.clock < unix_timestamp(date_add('%s',interval 1 day )) AND t.flags IN ('0','4') AND e.value=1 AND h.host like '%s" %(start_date,end_date,products) +r"%%' GROUP BY e.objectid ORDER BY cnt_event desc;"
+		sql="SELECT h.host,count(distinct e.eventid) AS cnt_event FROM triggers t inner join events e inner join hosts h inner join items i inner join functions f WHERE t.triggerid=e.objectid and h.hostid=i.hostid AND i.itemid=f.itemid AND f.triggerid=t.triggerid AND e.source=0 AND e.object=0 AND e.clock>=unix_timestamp('%s') AND e.clock < unix_timestamp(date_add('%s',interval 1 day )) AND t.flags IN ('0','4') AND e.value=1 AND h.host like '%s" %(start_date,end_date,products) +r"%%' GROUP BY h.host ORDER BY cnt_event desc;"
+		print "Current SQL:%s" % sql
+		try:
+                	result=self.engine.execute(sql).fetchall()
+			print "Running Result:%s" % result
+		except Exception,e:
+			print "Has an error:%s" % e
+		return result
+		
 
 
 

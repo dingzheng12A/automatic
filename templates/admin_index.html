@@ -1256,13 +1256,38 @@
 								</table> -->
 								
 								<!-- <form class="form-inline">  -->
+								<div id='selectarea'>
 								<div id="divDateId" class="pull-left dateRange">  
 								起始时间-结束时间:<input class="form-control" id="searchDate"></input>  
-								<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>  
+								<!-- <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>   -->
 								</div>  
 								<!-- </form> -->
 								<hr />
+								选择监控源:<select id='monitor_source'><option value='vnnox'>监控源1</option><option value='care'>监控源2</option></select>所属产品:<select id='products'><option value='vnnox'>vnnox 产品</option><option value='care'>care 产品</option><option value='publish'>publish cloud</option></select>所属国家:<select id='as_country'><option value='all'>所有</option><option value='cn'>中国</option><option value='jp'>日本</option><option value='us'>美国</option><option value='au'>澳洲</option><option value='eu'>欧洲</option><<option value='sg'>新加坡</option></select><input type='button' value='确定' id='confirm_select'  style='background-color: #0080ff;width:50px;color:white;' name='confirm_select'></input></div>
 								
+								
+								<hr  style=" height:2px;border:1px solid;border-top:2px #185598;" />
+								<ul id="myTab" class="nav nav-tabs" style="height:40px;">
+								<li class="active"><a href="#home" data-toggle="tab">
+								故障总数统计</a>
+								</li>
+								<li><a href="#class_analyzer" data-toggle="tab">故障分类统计</a></li>
+								<li><a href="#avg_total" data-toggle="tab">平均系统资源情况</a></li>
+								</ul>
+								<div id="myTabContent"  style='top:2px;'class="tab-content">
+								<div class="tab-pane fade in active"  id="home">
+								<p> <table id='故障总数统计' class="table table-bordered table-striped"><tr bgcolor="#66b3ff" align="center"><td>id	</td><td>所属产品</td><td>所在国家</td>	<td>服务器名称</td><td>故障次数
+</td></tr></table></p>
+								</div>
+								<div class="tab-pane fade" id="class_analyzer">
+								<p><table id='故障分类统计' class="table table-bordered table-striped"><tr bgcolor="#66b3ff" align="center"><td>id</td>	<td>所属产品</td><td>所在国家</td><td>服务器名称</td><td>故障等级</td><td>故障次数
+</td></tr></table></p>
+								</div>
+								<div class="tab-pane fade" id="avg_total">
+								<p><table id='平均系统资源情况' class="table table-bordered table-striped"><tr bgcolor="#66b3ff" align="center"><td>id</td>	<td>所属产品</td><td>所在国家</td><td>服务器名称</td><td>平均内存使用量</td><td>平均cpu使用量
+</td><td>平均硬盘使用量</td><td>服务器健康指数</td></tr></table></p>
+								</div>
+								<!--</div> -->
 								
 
 			<!--				<div class="col-xs-12" id="col-xs-12"> -->
@@ -2332,9 +2357,9 @@
         <button type="button" class="btn btn-primary" id="change_password">修改密码</button>
       </div>
     </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-<a href="#" data-toggle="tooltip" title="Example tooltip" id='mytooltip'>请悬停在我的上面</a>
+  </div>
+</div>
+<a href="#" data-toggle="tooltip" title="Example tooltip" id='mytooltip'>请悬停在我的上面</a> -->
 <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" id="ajaxResult">
   <div class="modal-dialog modal-sm" role="document">
     <div class="modal-content">
