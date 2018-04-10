@@ -5,7 +5,7 @@ from sqlalchemy import create_engine, MetaData,Table
 from flask import Flask
 from database import *
 import hashlib
-engine = create_engine("mysql://automatic:automatic@localhost:3306/automatic?charset=utf8", convert_unicode=True)
+engine = create_engine("mysql://automatic:automatic@localhost:3306/automatic?charset=utf8", convert_unicode=True,pool_recycle=3600)
 metadata = MetaData(bind=engine)
 class MenuInfo:
 	def __init__(self,id='',name='',pid='',url='',db=None):

@@ -12,7 +12,7 @@ import hashlib
 #app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN']=True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=True
 #db=SQLAlchemy(app)
-engine = create_engine("mysql://automatic:automatic@localhost:3306/automatic?charset=utf8", convert_unicode=True)
+engine = create_engine("mysql://automatic:automatic@localhost:3306/automatic?charset=utf8", convert_unicode=True,pool_recycle=3600)
 metadata = MetaData(bind=engine)
 users = Table('users', metadata, autoload=True)
 

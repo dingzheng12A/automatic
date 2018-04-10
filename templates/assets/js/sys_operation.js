@@ -2437,6 +2437,8 @@ $(document).ready(function(){
 		$("#confirm_select").click(function(){
 			var start_date=$("input[id='searchDate']").val().split(' - ')[0];
 			var end_date=$("input[id='searchDate']").val().split(' - ')[1];
+			$('#loading').modal('show');
+			
 			//统计告警总数
 			 $.ajax({
                                 type: 'post',
@@ -2446,13 +2448,23 @@ $(document).ready(function(){
                                 //dataType: 'json',
 								success: function(data){
 									$("table[id='故障总数统计']").html("<table id='故障总数统计' class='table table-bordered table-striped'><tbody><tr align='center'><td>id	</td><td>所属产品</td><td>所在国家</td>	<td>服务器名称</td><td>故障次数</td></tr>");
+									$("table[id='故障分类统计']").html("<table id='故障分类统计' class='table table-bordered table-striped'><tbody><tr bgcolor='#66b3ff' align='center'><td>id</td>	<td>所属产品</td><td>所在国家</td><td>服务器名称</td><td>故障等级</td><td>故障次数</td></tr></tbody></table>");
+									$("table[id='平均系统资源情况']").html("<table id='平均系统资源情况' class='table table-bordered table-striped'><tbody><tr bgcolor='#66b3ff' align='center'><td>id</td>	<td>所属产品</td><td>所在国家</td><td>服务器名称</td><td>平均内存空闲量（MB）</td><td>平均cpu空闲时间(%)</td><td>平均硬盘空闲量（MB）</td><td>服务器健康指数</td></tr></tbody></table>");
 									if(data.result==1){
+										$('#loading').modal('hide');
 										$.each(data.alerts, function(i, data){
 											$("table[id='故障总数统计']").append("<tr bgcolor='#66b3ff' align='center'><td>"+data['id']+"</td><td>"+$("select[id='products'] option:selected").text()+"</td><td>所在国家</td>	<td>"+data['ServerName']+"</td><td>"+data['counts']
 +"</td></tr>");
 										});
+										$.each(data.levelalerts, function(i, data){
+											$("table[id='故障分类统计']").append("<tr bgcolor='#66b3ff' align='center'><td>"+data['id']+"</td><td>"+$("select[id='products'] option:selected").text()+"</td><td>所在国家</td><td>"+data['ServerName']+"</td><td>"+data['level']+"</td><td>"+data['counts']+"</td></tr>");
+										});
+										$.each(data.avg_sources, function(i, data){
+											$("table[id='平均系统资源情况']").append("<tr bgcolor='#66b3ff' align='center'><td>"+data['id']+"</td>	<td>"+$("select[id='products'] option:selected").text()+"</td><td>所在国家</td><td>"+data['ServerName']+"</td><td>"+data['memory_free']+"</td><td>"+data['cpu_free']+"</td><td>"+data['disk_free']+"</td><td>服务器健康指数</td></tr>");
+										});
 									};
                                 }
+								
                              
 			});
 		});

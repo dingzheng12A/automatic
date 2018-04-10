@@ -1250,7 +1250,7 @@
 								
 								<!--  生成监控报表 -->
 							<div id='monitor_reporting' class="adduser">
-								<div id='monitor_title'>添加监控源</div>
+								<div id='monitor_title'>监控报表</div>
 								<!-- <table  id='monitor_area' width='1661' border='1'>
 								<tr><td width='6%' align='center' bgcolor='#66b3ff'></td><td width='6%' align='center' bgcolor='#66b3ff'>服务器地址</td><td width='14%' align='center' bgcolor='#66b3ff'>访问端口</td><td width='21%' align='center' bgcolor='#66b3ff'>访问账号</td><td width='53%' align='center' bgcolor='#66b3ff'>修改账号信息</td></tr>
 								</table> -->
@@ -1263,7 +1263,7 @@
 								</div>  
 								<!-- </form> -->
 								<hr />
-								选择监控源:<select id='monitor_source'><option value='vnnox'>监控源1</option><option value='care'>监控源2</option></select>所属产品:<select id='products'><option value='vnnox'>vnnox 产品</option><option value='care'>care 产品</option><option value='publish'>publish cloud</option></select>所属国家:<select id='as_country'><option value='all'>所有</option><option value='cn'>中国</option><option value='jp'>日本</option><option value='us'>美国</option><option value='au'>澳洲</option><option value='eu'>欧洲</option><<option value='sg'>新加坡</option></select><input type='button' value='确定' id='confirm_select'  style='background-color: #0080ff;width:50px;color:white;' name='confirm_select'></input></div>
+								选择监控源:<select id='monitor_source'><option value='vnnox'>监控源1</option><option value='care'>监控源2</option></select>所属产品:<select id='products'><option value='vnnox'>vnnox 产品</option><option value='care'>care 产品</option><option value='publish'>publish cloud</option></select>所属国家:<select id='as_country'><option value='all'>所有</option><option value='cn'>中国</option><option value='jp'>日本</option><option value='us'>美国</option><option value='au'>澳洲</option><option value='eu'>欧洲</option><<option value='sg'>新加坡</option></select><input type='button' value='确定' id='confirm_select'  style='background-color: #0080ff;width:50px;color:white;' name='confirm_select'></input>&nbsp;&nbsp;&nbsp;<input type='button' value='导出' id='export_report'  style='background-color: #00802f;width:50px;color:white;' name='export_report'></input></div>
 								
 								
 								<hr  style=" height:2px;border:1px solid;border-top:2px #185598;" />
@@ -1284,8 +1284,8 @@
 </td></tr></table></p>
 								</div>
 								<div class="tab-pane fade" id="avg_total">
-								<p><table id='平均系统资源情况' class="table table-bordered table-striped"><tr bgcolor="#66b3ff" align="center"><td>id</td>	<td>所属产品</td><td>所在国家</td><td>服务器名称</td><td>平均内存使用量</td><td>平均cpu使用量
-</td><td>平均硬盘使用量</td><td>服务器健康指数</td></tr></table></p>
+								<p><table id='平均系统资源情况' class="table table-bordered table-striped"><tr bgcolor="#66b3ff" align="center"><td>id</td>	<td>所属产品</td><td>所在国家</td><td>服务器名称</td><td>平均内存空闲量（MB）</td><td>平均cpu空闲时间(%)
+</td><td>平均硬盘空闲量（MB）</td><td>服务器健康指数</td></tr></table></p>
 								</div>
 								<!--</div> -->
 								
@@ -2374,6 +2374,23 @@
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary">Save changes</button>
       </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" id="loading">
+  <div class="modal-dialog modal-sm" role="document" style="margin-top:40vh;">
+    <div class="modal-content" style="background:rgba(0,0,0,0);border:none;box-shadow:none;text-align:center;">
+	  <img src="./images/loading.svg">
+      <!--<div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body" id="ajaxResultContent">
+        处理中，请稍后...
+      </div>
+	  -->
     </div>
   </div>
 </div>

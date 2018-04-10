@@ -9,7 +9,11 @@ from Crypto.Cipher import AES
 from binascii import a2b_hex,b2a_hex
 import hashlib
 import MySQLdb
-engine = create_engine("mysql://automatic:automatic@localhost:3306/automatic?charset=utf8", convert_unicode=True)
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8') 
+#超时3600s
+engine = create_engine("mysql://automatic:automatic@localhost:3306/automatic?charset=utf8", convert_unicode=True,pool_recycle=3600)
 metadata = MetaData(bind=engine)
 
 class MonitorReport():
@@ -19,7 +23,7 @@ class MonitorReport():
 		self.user=user
 		self.passwd=passwd
 		self.db=db
-		self.engine = create_engine("mysql://%s:%s@%s:%d/%s?charset=utf8" % (self.user,self.passwd,self.host,int(self.port),self.db), convert_unicode=True)
+		self.engine = create_engine("mysql://%s:%s@%s:%d/%s?charset=utf8" % (self.user,self.passwd,self.host,int(self.port),self.db), convert_unicode=True,pool_recycle=3600)
 		self.metadata = MetaData(bind=self.engine)
 
 	def ConnectCheck(self):
@@ -77,7 +81,7 @@ class MonitorReport():
 		except Exception,e:
 			print 'has an error aaaa:%s' % e
 			return 0
-
+	#统计故障次数
 	def countOfFail(self,**kwargs):
 		start_date=''
 		end_date=''
@@ -92,13 +96,80 @@ class MonitorReport():
 		#sql="SELECT self.host,sum(cnt_event)as counts from (SELECT h.host,count(distinct e.eventid) AS cnt_event FROM triggers t inner join events e inner join hosts h inner join items i inner join functions f WHERE t.triggerid=e.objectid and h.hostid=i.hostid AND i.itemid=f.itemid AND f.triggerid=t.triggerid AND e.source=0 AND e.object=0 AND e.clock>=unix_timestamp('%s') AND e.clock < unix_timestamp(date_add('%s',interval 1 day )) AND t.flags IN ('0','4') AND e.value=1 AND h.host like '%s" %(start_date,end_date,products) +r"%%' GROUP BY e.objectid ORDER BY cnt_event desc)self GROUP BY self.host ORDER BY self.cnt_event;"
 		#sql="SELECT h.host,count(distinct e.eventid) AS cnt_event FROM triggers t inner join events e inner join hosts h inner join items i inner join functions f WHERE t.triggerid=e.objectid and h.hostid=i.hostid AND i.itemid=f.itemid AND f.triggerid=t.triggerid AND e.source=0 AND e.object=0 AND e.clock>=unix_timestamp('%s') AND e.clock < unix_timestamp(date_add('%s',interval 1 day )) AND t.flags IN ('0','4') AND e.value=1 AND h.host like '%s" %(start_date,end_date,products) +r"%%' GROUP BY e.objectid ORDER BY cnt_event desc;"
 		sql="SELECT h.host,count(distinct e.eventid) AS cnt_event FROM triggers t inner join events e inner join hosts h inner join items i inner join functions f WHERE t.triggerid=e.objectid and h.hostid=i.hostid AND i.itemid=f.itemid AND f.triggerid=t.triggerid AND e.source=0 AND e.object=0 AND e.clock>=unix_timestamp('%s') AND e.clock < unix_timestamp(date_add('%s',interval 1 day )) AND t.flags IN ('0','4') AND e.value=1 AND h.host like '%s" %(start_date,end_date,products) +r"%%' GROUP BY h.host ORDER BY cnt_event desc;"
-		print "Current SQL:%s" % sql
+
 		try:
+                	result=self.engine.execute(sql).fetchall()
+		except Exception,e:
+			print "Has an error:%s" % e
+		return result
+
+	#根据故障等级统计故障次数
+	def countOfFailLevel(self,**kwargs):
+		start_date=''
+		end_date=''
+		products=''
+		if 'start_date' in kwargs:
+			start_date=kwargs['start_date']
+		if 'end_date' in kwargs:
+			end_date=kwargs['end_date']
+		if 'products' in kwargs:
+			products=kwargs['products']
+
+
+		sql="SELECT h.host,case t.priority when 5 then '灾难' when 4 then '严重'  when 3 then '一般严重' when 2 then '警告' else '资讯' END as level,count(distinct e.eventid) AS cnt_event FROM triggers t inner join events e inner join hosts h inner join items i inner join functions f WHERE t.triggerid=e.objectid and h.hostid=i.hostid AND i.itemid=f.itemid AND f.triggerid=t.triggerid AND e.source=0 AND e.object=0 AND e.clock>=unix_timestamp('%s') AND e.clock < unix_timestamp(date_add('%s',interval 1 day )) AND t.flags IN ('0','4') AND e.value=1 AND h.host like '%s" %(start_date,end_date,products) +r"%%' GROUP BY  h.host,t.priority  ORDER BY h.host desc;"
+
+		try:
+                	result=self.engine.execute(sql).fetchall()
+		except Exception,e:
+			print "Has an error:%s" % e
+		return result
+
+
+	#统计系统资源情况
+	def analyzer_source(self,**kwargs):
+		start_date=''
+		end_date=''
+		products=''
+		if 'start_date' in kwargs:
+			start_date=kwargs['start_date']
+		if 'end_date' in kwargs:
+			end_date=kwargs['end_date']
+		if 'products' in kwargs:
+			products=kwargs['products']
+
+		#查询sql
+		sql="select h.hostid,h.host,it_1.itemid,sum(case when it_1.key_='vm.memory.size[available]' then t.value_avg else 0 end)/count(case when it_1.key_='vm.memory.size[available]' then t.value_avg else null end)/1024/1024 as mem,sum(case when it_1.key_='vfs.fs.size[/data,free]' then t.value_avg else 0 end )/count(case when it_1.key_='vfs.fs.size[/data,free]' then t.value_avg else null end)/1024/1024  as disk  from (select distinct(itemid),hostid,key_ from items where key_='vm.memory.size[available]' or key_='vfs.fs.size[/data,free]' or key_='system.cpu.util[,idle]') it_1 inner join hosts h inner join trends_uint t  on h.hostid=it_1.hostid  and it_1.itemid=t.itemid  and t.clock>=unix_timestamp('%s') and t.clock < unix_timestamp(date_add('%s',interval 1 day )) group by h.hostid  having h.host like '%s" %(start_date,end_date,products)+r"%%"+"'order by h.host desc"
+		try:
+			print "Running SQL avg is:%s" % sql
                 	result=self.engine.execute(sql).fetchall()
 			print "Running Result:%s" % result
 		except Exception,e:
 			print "Has an error:%s" % e
 		return result
+
+	
+	#统计系统CPU资源情况
+	def analyzer_source_cpu(self,**kwargs):
+		start_date=''
+		end_date=''
+		products=''
+		if 'start_date' in kwargs:
+			start_date=kwargs['start_date']
+		if 'end_date' in kwargs:
+			end_date=kwargs['end_date']
+		if 'products' in kwargs:
+			products=kwargs['products']
+
+		#查询sql
+		sql="select h.hostid,h.host,it_1.itemid,sum(case when it_1.key_='system.cpu.util[,idle]' then t.value_avg else 0 end )/count(case when it_1.key_='system.cpu.util[,idle]' then t.value_avg else NULL end)  as cpu  from (select distinct(itemid),hostid,key_ from items where key_='vm.memory.size[available]' or key_='vfs.fs.size[/data,free]' or key_='system.cpu.util[,idle]') it_1 inner join hosts h inner join trends t  on h.hostid=it_1.hostid  and it_1.itemid=t.itemid  and t.clock>=unix_timestamp('%s') and t.clock < unix_timestamp(date_add('%s',interval 1 day )) and h.host like '%s" %(start_date,end_date,products)+r"%%"+"'group by h.hostid  order by h.host desc;"
+		try:
+			print "Running SQL avgCPU is:%s" % sql
+                	result=self.engine.execute(sql).fetchall()
+			print "Running Result:%s" % result
+		except Exception,e:
+			print "Has an error:%s" % e
+		return result
+
 		
 
 

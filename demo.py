@@ -647,10 +647,58 @@ def monitor_counts():
 						i=i+1
 				else:
 					alerts=''
+				#统计错误等级
+				levelresults=monitor.countOfFailLevel(start_date=start_date,end_date=end_date,products=products)
+                                if levelresults is not None:
+                                        levelalerts=[]
+                                        #id 号
+                                        i=1
+					print ""
+                                        for result in levelresults:
+                                                alert={}
+                                                alert['id']=i
+                                                alert['ServerName']=result.host
+						#解决中文编码
+						alert['level']=result.level
+                                                alert['counts']=result.cnt_event
+                                                levelalerts.append(alert)
+                                                i=i+1
+                                else:
+                                        levelalerts=''
+				#统计服务器平均资源
+				avg_source=monitor.analyzer_source(start_date=start_date,end_date=end_date,products=products)
+				#统计CPU使用情况
+				avg_source_cpu=monitor.analyzer_source_cpu(start_date=start_date,end_date=end_date,products=products)
+				print 'RESULTS:%s' % avg_source
+                                if avg_source is not None:
+                                        avg_sources=[]
+                                        #id 号
+                                        i=1
+                                        print ""
+                                        for source in avg_source:
+                                                alert={}
+                                                alert['id']=i
+                                                alert['ServerName']=source.host
+						if source.mem is not None:
+                                                	alert['memory_free']=int(source.mem)
+						else:
+							alert['memory_free']=''
+						if source.disk is not None:
+                                                	alert['disk_free']=int(source.disk)
+						else:
+							alert['disk_free']=''
+
+						for source_cpu in avg_source_cpu:
+							if source_cpu.host==source.host:
+								alert['cpu_free']=source_cpu.cpu
+                                                avg_sources.append(alert)
+                                                i=i+1
+                                else:
+                                        avg_sources=''
 			else:
 				print 'operateId:%s' % operateId
 				pass
-                       	return jsonify({'result':1,'alerts':alerts})
+                       	return jsonify({'result':1,'alerts':alerts,'levelalerts':levelalerts,'avg_sources':avg_sources})
                 except Exception,e:
                         print("has an error:%s" % e)
                         return jsonify({'result':0})
