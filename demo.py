@@ -636,6 +636,7 @@ def monitor_counts():
 				print 'RESULTS:%s' % results
 				if results is not None:
 					alerts=[]
+					rep_alerts=[]
 					#id 号
 					i=1
 					for result in results:
@@ -644,6 +645,11 @@ def monitor_counts():
 						alert['ServerName']=result.host
 						alert['counts']=result.cnt_event
 						alerts.append(alert)
+
+						rep_alert={}
+                                                rep_alert['ServerName']=result.host
+                                                rep_alert['counts']=result.cnt_event
+                                                rep_alerts.append(rep_alert)
 						i=i+1
 				else:
 					alerts=''
@@ -651,10 +657,12 @@ def monitor_counts():
 				levelresults=monitor.countOfFailLevel(start_date=start_date,end_date=end_date,products=products)
                                 if levelresults is not None:
                                         levelalerts=[]
+					rep_levelalerts=[]
                                         #id 号
                                         i=1
 					print ""
                                         for result in levelresults:
+						rep_alert={}
                                                 alert={}
                                                 alert['id']=i
                                                 alert['ServerName']=result.host
@@ -662,6 +670,14 @@ def monitor_counts():
 						alert['level']=result.level
                                                 alert['counts']=result.cnt_event
                                                 levelalerts.append(alert)
+
+
+                                                rep_alert['ServerName']=result.host
+                                                #解决中文编码
+                                                rep_alert['counts']=result.cnt_event
+                                                rep_alert['servelevel']=result.level
+						print "NNN:%s" % rep_alert
+                                                rep_levelalerts.append(rep_alert)	
                                                 i=i+1
                                 else:
                                         levelalerts=''
@@ -669,13 +685,14 @@ def monitor_counts():
 				avg_source=monitor.analyzer_source(start_date=start_date,end_date=end_date,products=products)
 				#统计CPU使用情况
 				avg_source_cpu=monitor.analyzer_source_cpu(start_date=start_date,end_date=end_date,products=products)
-				print 'RESULTS:%s' % avg_source
                                 if avg_source is not None:
                                         avg_sources=[]
+                                        rep_avg_sources=[]
                                         #id 号
                                         i=1
                                         print ""
                                         for source in avg_source:
+						rep_alert={}
                                                 alert={}
                                                 alert['id']=i
                                                 alert['ServerName']=source.host
@@ -690,11 +707,34 @@ def monitor_counts():
 
 						for source_cpu in avg_source_cpu:
 							if source_cpu.host==source.host:
-								alert['cpu_free']=source_cpu.cpu
+								alert['cpu_free']=float('%.2f' % source_cpu.cpu)
                                                 avg_sources.append(alert)
+
+                                                rep_alert['ServerName']=source.host
+						if source.mem is not None:
+                                                	rep_alert['memory_free']=int(source.mem)
+						else:
+							rep_alert['memory_free']=''
+						if source.disk is not None:
+                                                	rep_alert['disk_free']=int(source.disk)
+						else:
+							rep_alert['disk_free']=''
+
+						for source_cpu in avg_source_cpu:
+							if source_cpu.host==source.host:
+								rep_alert['cpu_free']=float('%.2f' % source_cpu.cpu)
+							
+                                                rep_avg_sources.append(rep_alert)
                                                 i=i+1
                                 else:
                                         avg_sources=''
+
+				#导出到xlsx
+				#data=[{'title':u'故障总数统计','keys':['id',u'所属产品',u'所在国家',u'服务器名称',u'故障次数'],'data':alerts},{'title':u'故障分类统计','keys':['id',u'所属产品',u'所在国家',u'服务器名称',u'故障等级',u'故障次数'],'data':levelalerts},{'title':u'平均系统资源情况','keys':['id',u'所属产品',u'所在国家',u'服务器名称',u'平均内存空闲量（MB）',u'平均cpu空闲时间(%)',u'平均硬盘空闲量（MB）'],'data':avg_source}]
+				data=[{'title':u'故障总数统计','keys':[u'服务器名称',u'故障次数'],'data':rep_alerts},{'title':u'故障分类统计','keys':[u'服务器名称',u'故障等级',u'故障次数'],'data':rep_levelalerts},{'title':u'平均系统资源情况','keys':[u'服务器名称',u'平均cpu空闲时间(%)',u'平均内存空闲量（MB）',u'平均硬盘空闲量（MB）'],'data':rep_avg_sources}
+				]
+				monitor.export(filename='zabbix_'+start_date+'_'+end_date+'.xlsx',data=data)
+				
 			else:
 				print 'operateId:%s' % operateId
 				pass
@@ -704,6 +744,20 @@ def monitor_counts():
                         return jsonify({'result':0})
         else:
                 return ''
+
+
+@app.route('/download',methods=['GET','POST'])
+def download():
+	if 'username' in session:
+		start_date=request.form['start_date']
+		end_date=request.form['end_date']
+		filename='zabbix_'+start_date+'_'+end_date+'.xlsx'
+		if os.path.isfile(os.path.join(BASE_DIR,filename)):
+			return jsonify({'result':1,'url':'/'+filename})
+		else:
+			return jsonify({'result':0})
+	else:
+		return ''
 
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 

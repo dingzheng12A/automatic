@@ -9,12 +9,17 @@ from Crypto.Cipher import AES
 from binascii import a2b_hex,b2a_hex
 import hashlib
 import MySQLdb
-import sys
+import xlsxwriter
+import sys,os
 reload(sys)
 sys.setdefaultencoding('utf-8') 
 #超时3600s
 engine = create_engine("mysql://automatic:automatic@localhost:3306/automatic?charset=utf8", convert_unicode=True,pool_recycle=3600)
 metadata = MetaData(bind=engine)
+
+#定义当前路径
+#BASE_DIR=os.getcwd()
+BASE_DIR='/root/automatic/templates'
 
 class MonitorReport():
 	def __init__(self,host='127.0.0.1',port=3306,user='root',passwd='root',db='zabbix'):
@@ -43,9 +48,7 @@ class MonitorReport():
 		else:
 			sql="select server_id,host,port,user,selectdb from sys_monitor_source"
                 try:
-			print 'Running SQL is:%s' % sql
                         result=engine.execute(sql).fetchall()
-			print 'Running SQL Result:%s' % result
 			return result
 		except:
 			return ''
@@ -66,7 +69,6 @@ class MonitorReport():
                         result=engine.execute(sql).fetchall()
 			print 'Result:%s' % result
 		except Exception,e:
-			print 'has an error aaaa:%s' % e
 			return ''
 
 	def serviceDel(self,**kwargs):
@@ -74,12 +76,10 @@ class MonitorReport():
 		if 'server_id' in kwargs:
 			server_id=kwargs['server_id']
 		sql="DELETE FROM  sys_monitor_source WHERE server_id='%s'" %(server_id)
-		print "RUNNING SQL :%s" % sql
                 try:
                         result=engine.execute(sql).fetchall()
 			return 1
 		except Exception,e:
-			print 'has an error aaaa:%s' % e
 			return 0
 	#统计故障次数
 	def countOfFail(self,**kwargs):
@@ -92,9 +92,6 @@ class MonitorReport():
 			end_date=kwargs['end_date']
 		if 'products' in kwargs:
 			products=kwargs['products']
-		print 'start_date:%s.end_date:%s.products:%s' %(start_date,end_date,products)
-		#sql="SELECT self.host,sum(cnt_event)as counts from (SELECT h.host,count(distinct e.eventid) AS cnt_event FROM triggers t inner join events e inner join hosts h inner join items i inner join functions f WHERE t.triggerid=e.objectid and h.hostid=i.hostid AND i.itemid=f.itemid AND f.triggerid=t.triggerid AND e.source=0 AND e.object=0 AND e.clock>=unix_timestamp('%s') AND e.clock < unix_timestamp(date_add('%s',interval 1 day )) AND t.flags IN ('0','4') AND e.value=1 AND h.host like '%s" %(start_date,end_date,products) +r"%%' GROUP BY e.objectid ORDER BY cnt_event desc)self GROUP BY self.host ORDER BY self.cnt_event;"
-		#sql="SELECT h.host,count(distinct e.eventid) AS cnt_event FROM triggers t inner join events e inner join hosts h inner join items i inner join functions f WHERE t.triggerid=e.objectid and h.hostid=i.hostid AND i.itemid=f.itemid AND f.triggerid=t.triggerid AND e.source=0 AND e.object=0 AND e.clock>=unix_timestamp('%s') AND e.clock < unix_timestamp(date_add('%s',interval 1 day )) AND t.flags IN ('0','4') AND e.value=1 AND h.host like '%s" %(start_date,end_date,products) +r"%%' GROUP BY e.objectid ORDER BY cnt_event desc;"
 		sql="SELECT h.host,count(distinct e.eventid) AS cnt_event FROM triggers t inner join events e inner join hosts h inner join items i inner join functions f WHERE t.triggerid=e.objectid and h.hostid=i.hostid AND i.itemid=f.itemid AND f.triggerid=t.triggerid AND e.source=0 AND e.object=0 AND e.clock>=unix_timestamp('%s') AND e.clock < unix_timestamp(date_add('%s',interval 1 day )) AND t.flags IN ('0','4') AND e.value=1 AND h.host like '%s" %(start_date,end_date,products) +r"%%' GROUP BY h.host ORDER BY cnt_event desc;"
 
 		try:
@@ -140,9 +137,7 @@ class MonitorReport():
 		#查询sql
 		sql="select h.hostid,h.host,it_1.itemid,sum(case when it_1.key_='vm.memory.size[available]' then t.value_avg else 0 end)/count(case when it_1.key_='vm.memory.size[available]' then t.value_avg else null end)/1024/1024 as mem,sum(case when it_1.key_='vfs.fs.size[/data,free]' then t.value_avg else 0 end )/count(case when it_1.key_='vfs.fs.size[/data,free]' then t.value_avg else null end)/1024/1024  as disk  from (select distinct(itemid),hostid,key_ from items where key_='vm.memory.size[available]' or key_='vfs.fs.size[/data,free]' or key_='system.cpu.util[,idle]') it_1 inner join hosts h inner join trends_uint t  on h.hostid=it_1.hostid  and it_1.itemid=t.itemid  and t.clock>=unix_timestamp('%s') and t.clock < unix_timestamp(date_add('%s',interval 1 day )) group by h.hostid  having h.host like '%s" %(start_date,end_date,products)+r"%%"+"'order by h.host desc"
 		try:
-			print "Running SQL avg is:%s" % sql
                 	result=self.engine.execute(sql).fetchall()
-			print "Running Result:%s" % result
 		except Exception,e:
 			print "Has an error:%s" % e
 		return result
@@ -163,12 +158,55 @@ class MonitorReport():
 		#查询sql
 		sql="select h.hostid,h.host,it_1.itemid,sum(case when it_1.key_='system.cpu.util[,idle]' then t.value_avg else 0 end )/count(case when it_1.key_='system.cpu.util[,idle]' then t.value_avg else NULL end)  as cpu  from (select distinct(itemid),hostid,key_ from items where key_='vm.memory.size[available]' or key_='vfs.fs.size[/data,free]' or key_='system.cpu.util[,idle]') it_1 inner join hosts h inner join trends t  on h.hostid=it_1.hostid  and it_1.itemid=t.itemid  and t.clock>=unix_timestamp('%s') and t.clock < unix_timestamp(date_add('%s',interval 1 day )) and h.host like '%s" %(start_date,end_date,products)+r"%%"+"'group by h.hostid  order by h.host desc;"
 		try:
-			print "Running SQL avgCPU is:%s" % sql
                 	result=self.engine.execute(sql).fetchall()
-			print "Running Result:%s" % result
 		except Exception,e:
 			print "Has an error:%s" % e
 		return result
+
+
+	def export(self,**kwargs):
+		if 'filename' in kwargs:
+			filename=kwargs['filename']
+		else:
+			filename='demo.xlsx'
+
+		if 'data' in kwargs:
+			data=kwargs['data']
+
+		else:
+			data=''
+
+		self.workbook=xlsxwriter.Workbook(os.path.join(BASE_DIR,filename))
+		bold=self.workbook.add_format({'bold':True})
+		self.worksheet=[]
+
+		if len(data)>0:
+			i=0
+			while i<len(data):
+				self.worksheet=self.workbook.add_worksheet(data[i]['title'])
+				j=0
+				while j<len(data[i]['keys']):
+					self.worksheet.write(0,j,data[i]['keys'][j],bold)
+					j=j+1
+			
+				#定义行数
+				h=0
+				while h<len(data[i]['data']):
+					#定义列
+					k=0
+					for name,value in data[i]['data'][h].items():
+						self.worksheet.set_column(h+1,k,20)
+						self.worksheet.write(h+1,k,value)
+						k=k+1
+					h=h+1
+				else:
+					pass
+
+				del self.worksheet
+				i=i+1
+		self.workbook.close()
+		
+					
 
 		
 
