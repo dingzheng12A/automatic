@@ -1,17 +1,17 @@
-$("#Add_Menu").click(function(){
-                // $(".col-xs-12").html("添加用户");
-                var index=$("div .row #add_menu").index(this);
-                $("div #add_menu").eq(index).show()
-                .siblings().hide();
-				
-				
-				
-
-        });
-		
-$("#add_menu").find("#confirm").click(function(){
-	alert('aaaa');
-});
-$("#add_menu").find("#cancle").click(function(){
-	alert('aaaa');
+$(document).ready(function(){
+	
+	var index=$("div .row #application_deploy").index(this);
+	$("#custom_service").click(function(){
+		$("div #application_deploy").eq(index).show()
+		.siblings().hide();
+	});
+	
+	
+	$("#addproduct_btn").click(function(){
+		$("#productModal").css({'margin-top': Math.max(0, ($(window).height() - $(this).height()) / 2) });
+		$("#productModal").modal("show");
+	});
+	$("#product_manager").find("#cancle").click(function(){
+		$("#productModal").modal("hide");
+	});
 });

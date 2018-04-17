@@ -11,6 +11,7 @@ from remote_user_manager import UserManager
 from remote_user_command import CmdManager
 from monitor_reporting import *
 from password_modify import *
+from app_deploy import *
 import json
 app=Flask(__name__,static_folder='templates', static_url_path='')
 app.config['SECRET_KEY']='automatic system'
@@ -758,6 +759,19 @@ def download():
 			return jsonify({'result':0})
 	else:
 		return ''
+
+
+
+@app.route('/add_product',methods=['GET','POST'])
+def addproduct():
+        if 'username' in session:
+                product=request.form['product']
+		newapp=AppDeploy()
+		result=newapp.add_product(product=product)
+		return jsonify(result)
+		
+        else:
+                return ''
 
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 

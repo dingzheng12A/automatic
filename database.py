@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+#coding:utf-8
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask
@@ -109,7 +110,7 @@ class HostinGroup(db.Model):
         create_time=db.Column(db.DateTime,default=datetime.datetime.now())
 	
 
-
+#监控源表
 class MonitorSource(db.Model):
 	__tablename__='sys_monitor_source'
 	id=db.Column(db.Integer,primary_key=True)
@@ -120,6 +121,18 @@ class MonitorSource(db.Model):
         passwd=db.Column(db.String(64))
         selectdb=db.Column(db.String(64))
 	
+
+#产品表
+class Products(db.Model):
+	__tablename__='sys_products'
+	id=db.Column(db.Integer,primary_key=True)
+	#产品名称
+        pname=db.Column(db.String(100),unique=True)
+
+	def __repr__(self): 
+        	return '<Products {}>'.format(self.id) 
+	
+
 
 if __name__=='__main__':
 	db.create_all()

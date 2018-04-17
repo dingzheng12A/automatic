@@ -1,4 +1,18 @@
 $(document).ready(function(){
+	$(".icon-caret-down").click(function(){
+		$(this).parent().siblings().show();
+	}).mouseout(function(e){
+		var left=$(".light-blue").offset().left;
+		var width=$(".light-blue").width();
+		var tops=$(".light-blue").offset().top;
+		var height=$(".light-blue").height();
+		console.log("x:"+e.originalEvent.x+"y:"+e.originalEvent.y);
+		if(e.originalEvent.x<left||e.originalEvent.x>left+width||e.originalEvent.y<tops|e.originalEvent.y>tops+height){
+			$(".light-blue").siblings().hide();
+		}
+	});
+
+	
 	$("#quit").click(function(){
 		 $.ajax({
                                 type: 'get',
