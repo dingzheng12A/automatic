@@ -12,6 +12,7 @@ from remote_user_command import CmdManager
 from monitor_reporting import *
 from password_modify import *
 from app_deploy import *
+from Product import *
 import json
 app=Flask(__name__,static_folder='templates', static_url_path='')
 app.config['SECRET_KEY']='automatic system'
@@ -762,16 +763,54 @@ def download():
 
 
 
-@app.route('/add_product',methods=['GET','POST'])
+@app.route('/addProduct',methods=['GET','POST'])
 def addproduct():
         if 'username' in session:
-                product=request.form['product']
-		newapp=AppDeploy()
-		result=newapp.add_product(product=product)
+                productName=request.form['productName']
+		product=Product(productName)
+		result=product.addProduct()
 		return jsonify(result)
 		
         else:
                 return ''
+
+
+
+@app.route('/getProduct',methods=['GET','POST'])
+def getproduct():
+        if 'username' in session:
+		product=Product()
+		results=product.getProduct()
+		ProductList=[]
+		for result in results:
+			product={}
+			product['id']=result.id
+			product['proname']=result.pname
+			ProductList.append(product)
+			
+		return jsonify(ProductList)
+		
+        else:
+                return ''
+
+
+@app.route('/upload',methods=['GET','POST'])
+def upload():
+        if 'username' in session:
+		packetFile=request.files['packetFile']
+		product=request.form['product']
+		appName=request.form['appName']
+		version=request.form['version']
+		unzipPath=request.form['unzipPath']
+		runCommand=request.form['runCommand']
+		appDeploy=AppDeploy()
+		result=appDeploy.upload_packet(packetFile=packetFile,product=product,appName=appName,version=version,unzipPath=unzipPath,runCommand=runCommand)
+		
+		return jsonify(result)
+		
+        else:
+                return ''
+
 
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 

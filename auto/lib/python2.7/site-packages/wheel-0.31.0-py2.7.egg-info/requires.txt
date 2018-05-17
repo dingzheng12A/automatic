@@ -1,0 +1,15 @@
+
+
+[test]
+pytest >= 3.0.0
+pytest-cov
+
+[signatures]
+keyring
+keyrings.alt
+
+[faster-signatures]
+ed25519ll
+
+[signatures:sys_platform!="win32"]
+pyxdg

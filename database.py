@@ -131,6 +131,24 @@ class Products(db.Model):
 
 	def __repr__(self): 
         	return '<Products {}>'.format(self.id) 
+
+
+class Appdeploy(db.Model):
+	__tablename__='sys_appdeploy'
+	id=db.Column(db.Integer,primary_key=True)
+	#应用名称
+	product=db.Column(db.String(100))
+	appname=db.Column(db.String(100))
+	version=db.Column(db.String(100))
+	package_path=db.Column(db.String(200))
+	#解压路径
+	unzippath=db.Column(db.String(100))
+	#安装命令
+	command=db.Column(db.String(100))
+	
+	
+
+
 	
 
 

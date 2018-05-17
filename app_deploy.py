@@ -7,6 +7,7 @@ from flask import Flask
 from database import *
 from Crypto.Cipher import AES
 from binascii import a2b_hex,b2a_hex
+from config.settings import *
 import hashlib
 import MySQLdb
 import xlsxwriter
@@ -37,6 +38,48 @@ class AppDeploy():
 			result={'result':1}
 		except Exception,e:
 			print "Has an error:%s" % e
+			result={'result':0}
+		return result
+
+
+	def upload_packet(self,**kwargs):
+		product=''
+		if 'product' in kwargs:
+			product=kwargs['product'].encode('utf-8')
+		appName=''
+		if 'appName' in kwargs:
+			appName=kwargs['appName']
+		version=''
+		if 'version' in kwargs:
+			version=kwargs['version']
+		unzipPath=''
+		if 'unzipPath' in kwargs:
+			unzipPath=kwargs['unzipPath']
+		runCommand=''
+		if 'runCommand' in kwargs:
+			runCommand=kwargs['runCommand']
+		packetFile=None
+		if 'packetFile' in kwargs:
+			packetFile=kwargs['packetFile']
+		try:
+			basePath=Install_app['Package_path']
+			uploadPath=os.path.join(basePath,product,appName,version)
+			print "uploadPath:%s" % uploadPath
+			if not os.path.exists(uploadPath):
+				os.makedirs(uploadPath)
+			else:
+				pass
+			FilePath=os.path.join(uploadPath,packetFile.filename)
+			file=open(FilePath,'wb')
+			packetFile.save(file)
+			sql="INSERT INTO sys_appdeploy(product,appname,version,package_path,unzippath,command)values('%s','%s','%s','%s','%s','%s')" %(product,appName,version,FilePath,unzipPath,runCommand)
+			print "Running SQL:%s" % sql
+			engine.execute(sql)
+			
+			result={'result':1}
+			
+		except Exception,e:
+			print "Has an Error:%s" % e
 			result={'result':0}
 		return result
 

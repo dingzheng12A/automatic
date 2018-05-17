@@ -93,6 +93,7 @@ class MonitorReport():
 		if 'products' in kwargs:
 			products=kwargs['products']
 		sql="SELECT h.host,count(distinct e.eventid) AS cnt_event FROM triggers t inner join events e inner join hosts h inner join items i inner join functions f WHERE t.triggerid=e.objectid and h.hostid=i.hostid AND i.itemid=f.itemid AND f.triggerid=t.triggerid AND e.source=0 AND e.object=0 AND e.clock>=unix_timestamp('%s') AND e.clock < unix_timestamp(date_add('%s',interval 1 day )) AND t.flags IN ('0','4') AND e.value=1 AND h.host like '%s" %(start_date,end_date,products) +r"%%' GROUP BY h.host ORDER BY cnt_event desc;"
+		print "countOfFail SQL:%s" % sql
 
 		try:
                 	result=self.engine.execute(sql).fetchall()

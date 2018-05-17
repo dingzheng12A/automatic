@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>控制台 - Bootstrap后台管理系统模版Ace下载</title>
+		<title>Star-River 运维自动化平台</title>
 		<meta name="keywords" content="Bootstrap模版,Bootstrap模版下载,Bootstrap教程,Bootstrap中文" />
 		<meta name="description" content="站长素材提供Bootstrap模版,Bootstrap教程,Bootstrap中文翻译等相关Bootstrap插件下载" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -1263,7 +1263,7 @@
 								</div>  
 								<!-- </form> -->
 								<hr />
-								选择监控源:<select id='monitor_source'><option value='vnnox'>监控源1</option><option value='care'>监控源2</option></select>所属产品:<select id='products'><option value='vnnox'>vnnox 产品</option><option value='care'>care 产品</option><option value='publish'>publish cloud</option></select>所属国家:<select id='as_country'><option value='all'>所有</option><option value='cn'>中国</option><option value='jp'>日本</option><option value='us'>美国</option><option value='au'>澳洲</option><option value='eu'>欧洲</option><<option value='sg'>新加坡</option></select><input type='button' value='确定' id='confirm_select'  style='background-color: #0080ff;width:50px;color:white;' name='confirm_select'></input>&nbsp;&nbsp;&nbsp;<input type='button' value='导出' id='export_report'  style='background-color: #00802f;width:50px;color:white;' name='export_report'></input></div>
+								选择监控源:<select id='monitor_source'><option value='vnnox'>监控源1</option><option value='care'>监控源2</option></select>所属产品:<select id='products'><option value='c5-'>vnnox 产品</option><option value='care'>care 产品</option><option value='publish'>publish cloud</option></select>所属国家:<select id='as_country'><option value='all'>所有</option><option value='cn'>中国</option><option value='jp'>日本</option><option value='us'>美国</option><option value='au'>澳洲</option><option value='eu'>欧洲</option><<option value='sg'>新加坡</option></select><input type='button' value='确定' id='confirm_select'  style='background-color: #0080ff;width:50px;color:white;' name='confirm_select'></input>&nbsp;&nbsp;&nbsp;<input type='button' value='导出' id='export_report'  style='background-color: #00802f;width:50px;color:white;' name='export_report'></input></div>
 								
 								
 								<hr  style=" height:2px;border:1px solid;border-top:2px #185598;" />
@@ -1423,16 +1423,16 @@
 								
 								
 								<hr />
-								<tr  align="center"><td>	</td><td></td><td></td>	<td></td><td></td><td></td><td></td></tr><tr  align="center"><td>	</td><td></td><td>所属产品</td><td align="left"><select width="28px;"><option><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">vnnox</font></font></option></select></td><td></td><td></td><td></td></tr>
-								<tr  align="center"><td>	</td><td></td><td></td>	<td></td><td></td><td></td><td></td></tr><tr align="center"><td>	</td><td></td><td>版本定义</td><td align="left"><select><option>v1.0.0.1</option></select></td><td></td><td></td><td></td></tr>
+								<tr  align="center"><td>	</td><td></td><td></td>	<td></td><td></td><td></td><td></td></tr><tr  align="center"><td>	</td><td></td><td>所属产品</td><td align="left"><select id="Belonged_products" width="28px;"><option><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">vnnox</font></font></option></select></td><td></td><td></td><td></td></tr>
+								<tr  align="center"><td>	</td><td></td><td></td>	<td></td><td></td><td></td><td></td></tr><tr align="center"><td>	</td><td></td><td>软件名称</td><td align="left"><input type='text' id='appName'></td><td></td><td></td><td></td></tr><tr align="center"><td>	</td><td></td><td>版本定义</td><td align="left"><input id='appVersion' placeholder='定义软件版本，如v1.0.0'></td><td></td><td></td><td></td></tr>
 								
 								<tr  align="center"><td>	</td><td></td><td></td>	<td></td><td></td><td></td><td></td></tr><tr align="center"><td>	</td><td></td><td>解压路径</td><td align="left"><input id="unzip_path" type="text" placeholder="/usr/local/src"></td><td></td><td></td><td></td></tr>
 								
 								
-								<tr  align="center"><td>	</td><td></td><td></td>	<td></td><td></td><td></td><td></td></tr><tr  align="center"><td>	</td><td></td><td>安装命令</td><td align="left"><textarea style="padding:5px 8px;" placeholder="多行输入"></textarea></td><td></td><td></td><td></td></tr>
+								<tr  align="center"><td>	</td><td></td><td></td>	<td></td><td></td><td></td><td></td></tr><tr  align="center"><td>	</td><td></td><td>安装命令</td><td align="left"><textarea  id="runCommand" style="padding:5px 8px;" placeholder="安装执行命令，长度不能超过100个字符，包含空格"></textarea></td><td></td><td></td><td></td></tr>
 								
 								
-								<tr  align="center"><td>	</td><td></td><td></td>	<td></td><td></td><td></td><td></td></tr><tr  align="center"><td>	</td><td></td><td>上传软件包</td><td align="left"><input type="file" onclick="MB.config.fileSelecting = true;"></td><td><input type="button" id="upload_package" value="上传"></td><td></td><td></td></tr>
+								<tr  align="center"><td>	</td><td></td><td></td>	<td></td><td></td><td></td><td></td></tr><tr  align="center"><td>	</td><td></td><td>上传软件包</td><td align="left"><input type="file" id="packetFile"  multiple></td><td><input type="button" id="upload_package" value="上传"></td><td></td><td></td></tr>
 								
 								</table></p>
 								</div>
@@ -2180,8 +2180,8 @@
 <!-- 新增产品 -->
 
   <div class="modal-dialog" role="document" style="top:50%;">
-<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel" id="productModal">
-    <div class="modal-content" >
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel" id="productModal" style="width:600px;left:50%">
+    <div class="modal-content" style="left:20%;">
 	<table id='product_manager' class="table table-bordered table-striped" style="display:block;border:none;">
 	<tr align="center"><td>	</td><td></td><td></td>	<td></td><td></td><td></td><td></td></tr>
 	<tr align="center"><td>	</td><td></td><td>新增产品</td><td align="left"><input type="text" placeholder="产品名称" id="product"></td><td></td><td><input type='button' id="add_product" value="新增产品"></td><td><input type='button' id="cancle" value="取消"></td></tr>
@@ -2259,6 +2259,20 @@
 	  -->
     </div>
   </div>
+</div>
+
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel" id="processUpload">
+	<div class="modal-dialog modal-sm" role="document" style="margin-top:40vh;">
+		<div class="modal-content">
+			<div class="progress progress-striped active">
+				<div class="progress-bar progress-bar-success" role="progressbar"
+         aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+         style="width: 100%;">
+				</div>
+			</div>
+	    </div>
+	</div>
 </div>
 
 
