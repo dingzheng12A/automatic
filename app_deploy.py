@@ -73,7 +73,6 @@ class AppDeploy():
 			file=open(FilePath,'wb')
 			packetFile.save(file)
 			sql="INSERT INTO sys_appdeploy(product,appname,version,package_path,unzippath,command)values('%s','%s','%s','%s','%s','%s')" %(product,appName,version,FilePath,unzipPath,runCommand)
-			print "Running SQL:%s" % sql
 			engine.execute(sql)
 			
 			result={'result':1}
@@ -84,3 +83,7 @@ class AppDeploy():
 		return result
 
 	
+	def appList(self,**kwargs):
+		sql="select product,appname,version,package_path from sys_appdeploy;"
+		result=engine.execute(sql).fetchall()
+		return result

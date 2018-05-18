@@ -13,6 +13,7 @@ from monitor_reporting import *
 from password_modify import *
 from app_deploy import *
 from Product import *
+from config.settings import *
 import json
 app=Flask(__name__,static_folder='templates', static_url_path='')
 app.config['SECRET_KEY']='automatic system'
@@ -810,6 +811,24 @@ def upload():
 		
         else:
                 return ''
+
+
+@app.route('/appList',methods=['GET','POST'])
+def appList():
+	if 'username' in session:
+		appDeploy=AppDeploy()
+		results=appDeploy.appList()
+		AppList=[]
+                for result in results:
+                        applist={}
+			applist['product']=result.product
+			applist['appname']=result.appname
+			applist['version']=result.version
+			package_path=result.package_path
+			basePath=os.path.join(os.getcwd(),'templates')
+			applist['downloadPath']=package_path.replace(basePath,'')
+			AppList.append(applist)
+                return jsonify(AppList)
 
 
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'

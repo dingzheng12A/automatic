@@ -15,6 +15,16 @@ $(document).ready(function(){
 		
 			});
 		});
+		
+		$.getJSON("/appList",function(result){
+			$("div .row table[id='application_list']").html("<table id='application_list' class='table table-bordered table-striped' style='border:none'><tr align='center'><td>	</td><td></td><td></td>	<td></td></tr><tr align='center'><td>所属产品</td><td>应用名称</td><td>版本号</td><td>软件包下载</td></tr></p></table>");
+			$.each(result, function(i, data){
+				$("div .row table[id='application_list']").append("<tr align='center'><td>"+data['product']+"</td><td>"+data['appname']+"</td><td>"+data['version']+"</td><td><a href='"+data['downloadPath']+"'>下载<a/></td></tr>");
+				
+				
+		
+			});
+		});
 	});
 	
 	
@@ -61,7 +71,7 @@ $(document).ready(function(){
 										$("div .row table[id='productarea']").append("<tr border='1'><td width='6%' align='center'>"+data['id']+"</td><td width='6%' align='center'>"+data['proname']+"</td></tr>");
 										$("select[id='Belonged_products']").append("<option value='"+data['id']+"'>"+data['proname']+"</option>");
 									});
-		});
+									});
 						}
                     }
                  
@@ -96,6 +106,14 @@ $(document).ready(function(){
                         success:function(data){
 								if(data.result==1){
 									$("#processUpload").modal("hide");
+									$.getJSON("/appList",function(result){
+										$("div .row table[id='application_list']").html("<table id='application_list' class='table table-bordered table-striped' style='border:none'><tr align='center'><td>	</td><td></td><td></td>	<td></td></tr><tr align='center'><td>所属产品</td><td>应用名称</td><td>版本号</td><td>软件包下载</td></tr></p></table>");
+										$.each(result, function(i, data){
+											$("div .row table[id='application_list']").append("<tr align='center'><td>"+data['product']+"</td><td>"+data['appname']+"</td><td>"+data['version']+"</td><td><a href='"+data['downloadPath']+"'>下载<a/></td></tr>");
+				
+		
+										});
+									});
 								}else{
 									alert("上传失败!");
 								}
