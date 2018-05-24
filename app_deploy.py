@@ -126,9 +126,13 @@ class AppDeploy():
 		try:
 			params='src="%s" dest="%s" force=yes mode=644' %(source,dest)
 			msg=ansibletask.ansiblePlay('copy',params)
+                	msg=msg.replace(',','</br>')
+                	msg=msg.replace('\n','</br>')
+			result={'result':1,'message':msg}
 		except Exception,e:
 			print "xxxx:%s" % e
-                #msg=msg.replace(',','</br>')
+			result={'result':0,message:e}
+		return result
 
 	def unzipPacket(self,**kwargs):
 		source=""
@@ -140,9 +144,13 @@ class AppDeploy():
 		try:
 			params='src="%s" dest="%s" copy=no mode=0755' %(source,dest)
 			msg=ansibletask.ansiblePlay('unarchive',params)
+                	msg=msg.replace(',','</br>')
+                	msg=msg.replace('\n','</br>')
+			result={'result':1,'message':msg}
 		except Exception,e:
 			print "xxxx:%s" % e
-                #msg=msg.replace(',','</br>')
+			result={'result':0,message:e}
+		return result
 
 
 	def runDeploy(self,**kwargs):
@@ -151,6 +159,13 @@ class AppDeploy():
 		if 'cmd' in kwargs:
 			cmd=kwargs['cmd']
 		params='%s' %(cmd)
-		msg=ansibletask.ansiblePlay('shell',params)
-                #msg=msg.replace(',','</br>')
+		try:
+			msg=ansibletask.ansiblePlay('shell',params)
+                	msg=msg.replace(',','</br>')
+                	msg=msg.replace('\n','</br>')
+			result={'result':1,'message':msg}
+		except Exception,e:
+			print "xxxx:%s" % e
+                        result={'result':0,message:e}
+		return result
 

@@ -896,7 +896,6 @@ def syncPacket():
                         appDeploy=AppDeploy(remote_host=HostList)
                         result=appDeploy.syncPacket(source=package_path,dest=unzippath)
                         print("Error:%s" %result)
-			result={'result':1}
 
                 except Exception,e:
 			print("Has an Error:%s" % e) 
@@ -926,7 +925,6 @@ def unzipPacket():
                        appDeploy=AppDeploy(remote_host=HostList)
                        result=appDeploy.unzipPacket(source=os.path.join(unzippath,os.path.basename(package_path)),dest=unzippath)
                        print("Error:%s" %result)
-		       result={'result':1}
 
                 except Exception,e:
 		       print("Has an Error:%s" % e) 
@@ -956,7 +954,6 @@ def runDeploy():
                         appDeploy=AppDeploy(remote_host=HostList)
                         result=appDeploy.runDeploy(cmd=runCommand)
                         print("Error:%s" %result)
-		  	result={'result':1}
 
                 except Exception,e:
 		  	print("Has an Error:%s" % e) 

@@ -237,6 +237,7 @@ $(document).ready(function(){
                                 cache:false,
                                 dataType: 'json',
 								success: function(data){
+									$(".modal-footer #processMessage").append(data.message);
 									if(data.result==1){
 										onProgress(0, 25);
 										//for(var value=0;value<=25;value++){
@@ -254,6 +255,7 @@ $(document).ready(function(){
 													cache:false,
 													dataType: 'json',
 													success: function(data){
+														$(".modal-footer #processMessage").append(data.message);
 														if(data.result==1){
 															onProgress(25, 50, null, function () {
 																//onProgress(50, 90, 10000)
@@ -269,8 +271,10 @@ $(document).ready(function(){
 																	cache:false,
 																	dataType: 'json',
 																	success: function(data){
+																		$(".modal-footer #processMessage").append(data.message);
 																		if(data.result==1){
 																			onProgress(ProgressValue, 100);
+																			
 														
 										
 																		}else{
@@ -278,6 +282,7 @@ $(document).ready(function(){
 																			$("#progressMain").addClass("progress-bar-danger");
 																			$("#progressMain")
 																			clearInterval(Timer);
+																		
 																		}
 																	},
                              
