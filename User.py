@@ -9,6 +9,7 @@ from paramiko.rsakey import RSAKey
 import paramiko
 import StringIO
 import hashlib
+import subprocess
 import os
 #app=Flask(__name__)
 #app.config['SECRET_KEY']='automatic system'
@@ -241,6 +242,8 @@ class Host():
 				sftp.chdir('/tmp')
 				sftp.put(os.path.join(LocalUserHome,'.ssh/id_rsa.pub'),'id_rsa.pub')
 				ssh.exec_command('cat /tmp/id_rsa.pub >>  %s && chmod 600 %s' % (os.path.join(RemoteUserHome,'.ssh','authorized_keys'),os.path.join(RemoteUserHome,'.ssh','authorized_keys')))
+				ssh.save_host_keys('/tmp/known_hosts')
+				subprocess.Popen('cat /tmp/known_hosts >> %s && chmod 600 %s' % (os.path.join(LocalUserHome,'.ssh/known_hosts'),os.path.join(LocalUserHome,'.ssh/*')),shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 
 			except Exception,e:
 				print "Test Has an Error:%s" % e
@@ -318,6 +321,7 @@ class Host():
 					keyFile=open(os.path.join(LocalUserHome,'.ssh/id_rsa.pub'))
 					keyIdentifier=keyFile.readlines()[0].split(' ')[-1].strip()
 					stdin,stdout,stderr=ssh.exec_command('sed -i "/%s$/d" $HOME/.ssh/authorized_keys' % keyIdentifier)
+					subprocess.Popen('sed -i "/^%s /d" %s' %(host_ip,os.path.join(LocalUserHome,".ssh/known_hosts")),shell=True)
 					print "clearKey:%s" % stdout.readlines()
 				except Exception,e:
 					print "clearKey Error:%s" % e
