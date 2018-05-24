@@ -127,7 +127,7 @@ class AppDeploy():
 			params='src="%s" dest="%s" force=yes mode=644' %(source,dest)
 			msg=ansibletask.ansiblePlay('copy',params)
                 	msg=msg.replace(',','</br>')
-                	msg=msg.replace('\n','</br>')
+                	msg=msg.replace('\\n','</br>')
 			result={'result':1,'message':msg}
 		except Exception,e:
 			print "xxxx:%s" % e
@@ -145,7 +145,7 @@ class AppDeploy():
 			params='src="%s" dest="%s" copy=no mode=0755' %(source,dest)
 			msg=ansibletask.ansiblePlay('unarchive',params)
                 	msg=msg.replace(',','</br>')
-                	msg=msg.replace('\n','</br>')
+                	msg=msg.replace('\\n','</br>')
 			result={'result':1,'message':msg}
 		except Exception,e:
 			print "xxxx:%s" % e
@@ -162,7 +162,7 @@ class AppDeploy():
 		try:
 			msg=ansibletask.ansiblePlay('shell',params)
                 	msg=msg.replace(',','</br>')
-                	msg=msg.replace('\n','</br>')
+                	msg=msg.replace('\\n','</br>')
 			result={'result':1,'message':msg}
 		except Exception,e:
 			print "xxxx:%s" % e

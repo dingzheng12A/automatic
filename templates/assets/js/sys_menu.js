@@ -214,6 +214,7 @@ $(document).ready(function(){
 					$("#progressMain").hasClass("progress-bar-success")
 			}
 			$("#progressMain").css({"width":"0%"}).text("0%").removeClass("progress-bar-success").addClass("progress-bar-info active");
+			$(".modal-footer #processMessage").html("<span id='processMessage'></span>");
 			$("#remoteDeploy").find("input").each(function(){
 				// debugger
 				if ($(this).is(":checked")){
@@ -238,6 +239,7 @@ $(document).ready(function(){
                                 dataType: 'json',
 								success: function(data){
 									$(".modal-footer #processMessage").append(data.message);
+									$('.modal-footer').scrollTop($('#processMessage').height());
 									if(data.result==1){
 										onProgress(0, 25);
 										//for(var value=0;value<=25;value++){
@@ -256,6 +258,7 @@ $(document).ready(function(){
 													dataType: 'json',
 													success: function(data){
 														$(".modal-footer #processMessage").append(data.message);
+														$('.modal-footer').scrollTop($('#processMessage').height());
 														if(data.result==1){
 															onProgress(25, 50, null, function () {
 																//onProgress(50, 90, 10000)
@@ -272,6 +275,7 @@ $(document).ready(function(){
 																	dataType: 'json',
 																	success: function(data){
 																		$(".modal-footer #processMessage").append(data.message);
+																		$('.modal-footer').scrollTop($('#processMessage').height());
 																		if(data.result==1){
 																			onProgress(ProgressValue, 100);
 																			
