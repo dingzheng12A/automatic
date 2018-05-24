@@ -1,0 +1,12 @@
+---
+- hosts: Test
+  remote_user: root
+  tasks:
+  -  name: change password for root
+     user: name=root password="{{ item.password|password_hash('sha512') }}" update_password=always
+     when: ansible_ens33.ipv4.address == "{{ item.ip }}"
+     with_items:
+      - {ip:'127.0.0.1',password:'aaa'}
+      - {ip:'host1',password:'aaa'}
+      - {ip:'host2',password:'aaa'}
+

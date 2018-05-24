@@ -1,0 +1,248 @@
+#add_menu {
+	position:absolute;
+	width:756px;
+	height:auto;
+	border:2px solid;
+	z-index:1;
+	display:none;
+}
+
+#remote_user_add {
+	position:absolute;
+	width:756px;
+	height:auto;
+	border:2px solid;
+	z-index:1;
+	display:none;
+}
+#remote_user_del {
+	position:absolute;
+	width:756px;
+	height:auto;
+	border:2px solid;
+	z-index:1;
+	display:none;
+}
+#Layer_DelMenu {
+	position:absolute;
+	width:449px;
+	height:115px;
+	z-index:1;
+	display:none;
+	
+}
+#Layer_auth {
+	position:absolute;
+	width:449px;
+	height:115px;
+	z-index:1;
+	display:none;
+	
+}
+
+#authlist {
+	position:absolute;
+	left:30%;
+	top:20%;
+	border:2px solid #3366CC;
+	width:449px;
+	height:auto;
+	z-index:55;
+	display:none;
+	text-align:left;
+	background-color:#D2E9FF;
+}
+td{
+	
+}
+
+
+
+#addhost{
+	position:absolute;
+	display:none;
+}
+
+#group_title{
+	position:related;
+	display:block;
+	background-color:#D2E9FF;
+	border:2px solid #D2E9FF;
+	width:449px;
+	height:auto;
+	text-align:left;
+	font-size:15px;
+	font-weight:bold;
+}
+
+#return_msg {
+	font-size:20px;
+	font-weight:bold;
+	font-family:"宋体";
+	color:#FFF2DF;
+}
+
+
+ html, body {
+    font-family: -apple-system, "SF UI Text", "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Zen Hei", sans-serif;
+    font-size: 12px;
+    font-weight: normal;
+    line-height: 18px;
+    overflow: hidden;
+    height: 100%; }
+  
+  body {
+    background: whitesmoke;
+    color: #525e71; }
+    body.mobile {
+      height: 100vh;
+      background-color: white; }
+  
+  #download, #header {
+    display: none; }
+  
+  #notification {
+    position: fixed;
+    top: -70px;
+    left: 0; }
+  
+  .notice {
+    padding: 10px;
+    font-size: 14px; }
+    .notice p {
+      margin-bottom: 10px; }
+  
+  .spinner {
+    width: 30px;
+    height: 30px;
+    border-width: 3px;
+    border-style: solid;
+    border-color: rgba(51, 54, 58, 0.6) transparent;
+    border-radius: 100%;
+    transform-origin: 50% 50% 0px;
+    -webkit-animation: mb-spin 0.8s infinite linear;
+    animation: mb-spin 0.8s infinite linear;
+    display: inline-block; }
+  
+  @-webkit-keyframes mb-spin {
+    0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg); }
+  
+    100% {
+      -webkit-transform: rotate(359deg);
+      transform: rotate(359deg); } }
+  
+  @keyframes mb-spin {
+    0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg); }
+  
+    100% {
+      -webkit-transform: rotate(359deg);
+      transform: rotate(359deg); } }
+  
+  #safemode, #logo, #device {
+    display: none; }
+  
+  #font-preload {
+    position: absolute;
+    top: -65535px;
+    left: -65535px;
+    font-size: 12px;
+    pointer-events: none; }
+    #font-preload .aw {
+      position: absolute;
+      width: auto;
+      white-space: nowrap; }
+    #font-preload .ah {
+      position: absolute;
+      height: auto;
+      word-break: break-word;
+      word-wrap: break-word; }
+      #font-preload .ah p {
+        margin-bottom: 5px;
+        white-space: pre-wrap; }
+        #font-preload .ah p:last-child {
+          margin-bottom: 0px; }
+  
+  #loading {
+    width: 86px;
+    height: 86px;
+    z-index: 2;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    margin-left: -43px;
+    text-align: center;
+    font-size: 12px; }
+    #loading .logo, #loading .indicator {
+      position: absolute;
+      top: -3px;
+      left: -3px;
+      width: 86px;
+      height: 86px;
+      overflow: hidden;
+      background: url("images/logo-lg.svg");
+      background-size: 86px 86px; }
+    #loading .logo {
+      opacity: 0.3; }
+    #loading .indicator {
+      opacity: 1;
+      -webkit-transition: all 0.5s ease-in-out;
+      -moz-transition: all 0.5s ease-in-out;
+      transition: all 0.5s ease-in-out;
+      height: 0%; }
+    #loading span {
+      position: absolute;
+      width: 300px;
+      left: 50%;
+      top: 110px;
+      margin-left: -150px;
+      font-size: 14px;
+      line-height: 28px;
+      color: #f77d77; }
+</style>
+<style>
+  ::-webkit-scrollbar-track {
+    background-color: transparent; }
+  
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px; }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: #dedee4;
+    border-radius: 4px; }
+  
+  ::-webkit-scrollbar-corner {
+    background-color: transparent; }
+</style>
+
+<style>
+  #splash {
+    position: absolute;
+    z-index: 3;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #f0f0f2; }
+    #splash.is-landscape img {
+      top: 50%;
+      left: 50%;
+      width: 100vh;
+      height: 100vw;
+      transform: translate(-50%, -50%) rotate(-90deg); }
+    #splash img {
+      position: absolute;
+      top: 0px;
+      left: 0;
+      width: 100%;
+      height: 100%; }
+    #splash .spinner {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin-top: -15px;
+      margin-left: -15px; }

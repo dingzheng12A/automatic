@@ -1,0 +1,2587 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>Star-River 运维自动化平台</title>
+		<meta name="keywords" content="Bootstrap模版,Bootstrap模版下载,Bootstrap教程,Bootstrap中文" />
+		<meta name="description" content="站长素材提供Bootstrap模版,Bootstrap教程,Bootstrap中文翻译等相关Bootstrap插件下载" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<!-- basic styles -->
+		<link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" media="all" href="assets/css/daterangepicker.css" /> 
+		<link rel="stylesheet" href="assets/css/font-awesome.min.css" />
+
+		<!--[if IE 7]>
+		  <link rel="stylesheet" href="assets/css/font-awesome-ie7.min.css" />
+		<![endif]-->
+
+		<!-- page specific plugin styles -->
+
+		<!-- fonts -->
+
+		<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300" />
+
+		<!-- ace styles -->
+
+		<link rel="stylesheet" href="assets/css/ace.min.css" />
+		<link rel="stylesheet" href="assets/css/ace-rtl.min.css" />
+		<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
+		<!--  新增时间控件 -->
+		
+
+		
+		<link rel="stylesheet" href="assets/css/user-role.css" />
+		<link rel="stylesheet" href="assets/css/sys-menu.css" />
+		
+		
+		<!--[if lte IE 8]>
+		  <link rel="stylesheet" href="assets/css/ace-ie.min.css" />
+		<![endif]-->
+
+		<!-- inline styles related to this page -->
+
+		<!-- ace settings handler -->
+		
+		
+		<script src="assets/js/ace-extra.min.js"></script>
+		<script src="assets/js/jquery-2.0.3.min.js" ></script>
+		<script type="text/javascript" src="assets/js/bootstrap.min.js" ></script>  
+		<script type="text/javascript" src="assets/js/date-time/moment.min.js" ></script>  
+		<script type="text/javascript" src="assets/js/date-time/daterangepicker.min.js" ></script>  
+		
+		
+		<!--  新增时间控件 -->
+		<!-- <script type="text/javascript" src="assets/js/date-time/moment.min.js"></script> -->
+		 
+		<!-- <script type="text/javascript" src="assets/js/date-time/bootstrap-datepicker.min.js"></script> --> 
+		<script src="assets/js/sys_operation.js"></script>
+		<script src="assets/js/ansible_operator.js"></script>
+		<script src="assets/js/sys_menu.js"></script>
+		
+		
+		
+		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+
+		<!--[if lt IE 9]>
+		<script src="assets/js/html5shiv.js"></script>
+		<script src="assets/js/respond.min.js"></script>
+		<![endif]-->
+
+
+	</head>
+
+	<body>
+	<div class='top'>
+	</div>
+<!-- 分配权限 -->
+<div  id='authlist'>
+<table border='1' id='autharea'>
+{%for menu in menulist%}
+<tr>
+<td colspan="2"><li><span id='li_parent_menu'>{{menu.name}}<input type="checkbox" id="p_menu_{{menu.id}}" value="{{menu.id}}"></span><hr /><ul>{%for menu1 in menulist1%}{%if menu1.parent_id==menu.id%}<li>{{menu1.name}}<input type="checkbox" id="sub_menu_{{menu1.id}}" value="{{menu1.id}}"></span></li>{%endif%}{%endfor%}</ul></li></td>
+</tr>
+{%endfor%}
+<tr>
+  <td width="154"><input name="Confirm" type="button" id="Confirm" value="确定" /></td>
+  <td width="277"><input name="Cancle" type="button" id="Cancle" value="取消" /></td>
+</tr>
+</table>
+</div>
+<!-- 重置密码 -->
+	<div  class="resetpass">
+  <table width="23%" border="1" align="center" cellspacing="0" cellpadding="0"  >
+    <tr>
+      <td width="41%">用户名：</td>
+      <td width="59%"><label>
+        <input name="username" type="text" id="username" size="15" value="{{username}}" readonly>
+      </label></td>
+    </tr>
+    <tr>
+      <td>原始密码：</td>
+      <td><label>
+        <input name="oldpass" type="password" id="oldpass" size="15">
+      </label></td>
+    </tr>
+    <tr>
+      <td>新密码:</td>
+      <td><label>
+        <input name="newpass" type="password" id="newpass" size="15">
+      </label></td>
+    </tr>
+    <tr>
+      <td>重复输入密码</td>
+      <td><input name="reptpass" type="password" id="reptpass" size="15"></td>
+    </tr>
+    <tr>
+      <td><input name="modify" type="submit" id="modify" value="修改" disabled></td>
+      <td><input name="cancle" type="button" id="cancle" value="取消"></td>
+    </tr>
+  </table>
+</div>
+
+<!-- 添加主机表单 -->
+	 <div id="Layer_host">
+    <table  width="50%" border="1" align="center">
+      <tr>
+        <td colspan="2"><span class="STYLE5">添加主机</span></td>
+      </tr>
+      <tr>
+        <td width="27%">IP地址：</td>
+        <td width="73%"><label>
+          <input name="ipaddr" type="text" id="ipaddr" />
+        </label></td>
+      </tr>
+	  <tr>
+        <td width="27%">主机名：</td>
+        <td width="73%"><label>
+          <input name="hostname" type="text" id="hostname" />
+        </label></td>
+      </tr>
+      <tr>
+        <td>SSH 端口：</td>
+        <td><label>
+          <input name="sshport" type="text" id="sshport" placeholder="默认端口是22" />
+        </label></td>
+      </tr>
+      <tr>
+        <td>远端执行用户：</td>
+        <td><label>
+          <input name="remote_user" type="text" id="remote_user" />
+        </label></td>
+      </tr>
+	  <tr>
+        <td>远端用户密码：</td>
+        <td><label>
+          <input name="remote_userPassword" type="password" id="remote_userPassword" />
+        </label></td>
+      </tr>
+	  <tr>
+        <td>所属区域:</td>
+        <td><label>
+          <select>
+			<option value ="" selected></option>
+			{% for group in hostgroups%}
+			<option value ={{group.id}}>{{group.group_name}}</option>
+			{% endfor%}
+		  </select>
+        </label></td>
+      </tr>
+      <tr>
+        <td>主机描述:</td>
+        <td><label>
+          <input type="textarea" name="host_desc" id="host_desc" rows="" cols="" style="overflow:scroll;" />
+        </label></td>
+      </tr>
+      <tr>
+		<td align="center"><label>
+          <input name="testConnect" type="button" id="testConnect" value="测试连接" />
+        </label></td>
+        <td><label>
+          <input name="add" type="button" id="add" value="添加" disabled/>
+        </label></td>
+        <td align="center"><label>
+          <input name="cancle" type="button" id="cancle" value="取消" />
+        </label></td>
+      </tr>
+    </table>
+  </div>
+  
+<!--   添加主机组表单 -->
+  <div id="Layer_hostgroup">
+    <table  width="50%" border="1" align="center">
+      <tr>
+        <td colspan="2"><span class="STYLE5">添加主机组</span></td>
+      </tr>
+      <tr>
+        <td width="27%">主机组名称：</td>
+        <td width="73%"><label>
+          <input name="hostgroup_name" type="text" id="hostgroup_name" />
+        </label></td>
+      </tr>
+      <tr>
+        <td>主机组描述信息：</td>
+        <td><label>
+          <input name="hostgroup_desc" type="textarea" id="hostgroup_desc"  rows="3" cols="20"/>
+        </label></td>
+      </tr>
+      <tr>
+        <td><label>
+          <input name="add" type="button" id="add" value="添加" disabled/>
+        </label></td>
+        <td align="center"><label>
+          <input name="cancle" type="button" id="cancle" value="取消" />
+        </label></td>
+      </tr>
+    </table>
+  </div>
+  
+  
+<!-- 关联主机到主机组 -->
+  <div id="Layerhost_assign">
+  <table width="17%" border="1" id="hostassign">
+  <tr>
+    <td colspan="2">添加主机到主机组</td>
+    <td width="88%">&nbsp;</td>
+  </tr>
+  <tr>
+    <td colspan="2">当前包含的主机</td>
+    <td><input type="text" name="current_host" id="current_host"></td>
+  </tr>
+  <tr>
+    <td colspan="3"><hr /></td>
+  </tr>
+  <tr>
+    <td colspan="2">主机列表</td>
+    <td><select name="select_host" id="select_host">
+	{% if hostlist %}
+	{%for host in hostlist%}
+    <option value='{{ host.ipaddr }}'>{{ host.ipaddr }}</option>
+	{% endfor %}
+	{% endif %}
+	</select>
+	</td>
+  </tr>
+  <tr>
+    <td width="7%"><input name="add" type="button" id="add" value="添加"></td>
+    <td width="5%"><input name="confirm" type="button" id="confirm" value="确定"></td>
+    <td><input name="cancle" type="button" id="cancle" value="取消"></td>
+  </tr>
+</table>
+  </div>  
+<!-- 取消用户和角色的关联关系 -->  
+<div id="Layerhost_remove">
+  <table width="17%" border="1" id="hostassign">
+  <tr>
+    <td colspan="2">移除关联</td>
+    <td width="88%">&nbsp;</td>
+  </tr>
+  <tr>
+    <td colspan="2">当前包含的主机</td>
+    <td><input type="text" name="current_host" id="rm_current_host"></td>
+  </tr>
+  <tr>
+    <td colspan="3"><hr /></td>
+  </tr>
+  <tr>
+    <td colspan="2">原主机列表</td>
+    <td><select name="select_host" id="rm_select_host">
+	{% if hostlist %}
+	{%for host in hostlist%}
+    <option value='{{ host.ipaddr }}'>{{ host.ipaddr }}</option>
+	{% endfor %}
+	{% endif %}
+	</select>
+	</td>
+  </tr>
+  <tr>
+    <td width="7%"><input name="remove_assign" type="button" id="remove_assign" value="移除"></td>
+    <td width="5%"><input name="confirm" type="button" id="confirm" value="确定"></td>
+    <td><input name="cancle" type="button" id="cancle" value="取消"></td>
+  </tr>
+</table>
+</div> 
+
+<!--  添加用户表单 -->
+	 <div id="Layer2">
+    <table  width="50%" border="1" align="center">
+      <tr>
+        <td colspan="2"><span class="STYLE5">添加用户</span></td>
+      </tr>
+      <tr>
+        <td width="27%">账号：</td>
+        <td width="73%"><label>
+          <input name="username" type="text" id="username" />
+        </label></td>
+      </tr>
+      <tr>
+        <td>用户名：</td>
+        <td><label>
+          <input name="nicename" type="text" id="nicename" />
+        </label></td>
+      </tr>
+      <tr>
+        <td>密码：</td>
+        <td><label>
+          <input name="passwd" type="password" id="passwd" />
+        </label></td>
+      </tr>
+      <tr>
+        <td>密码确认:</td>
+        <td><label>
+          <input type="password" name="reptpass" id="reptpass" />
+        </label></td>
+      </tr>
+      <tr>
+        <td>邮箱地址:</td>
+        <td><label>
+          <input name="email" type="text" id="email" />
+        </label></td>
+      </tr>
+      <tr>
+        <td><label>
+          <input name="add" type="button" id="add" value="添加" disabled/>
+        </label></td>
+        <td align="center"><label>
+          <input name="cancle" type="button" id="cancle" value="取消" />
+        </label></td>
+      </tr>
+    </table>
+  </div>
+  <!--  添加角色表单 -->
+  <div id="Layer_role">
+    <table  width="50%" border="1" align="center">
+      <tr>
+        <td colspan="2"><span class="STYLE5">添加角色</span></td>
+      </tr>
+      <tr>
+        <td width="27%">角色名称：</td>
+        <td width="73%"><label>
+          <input name="rolename" type="text" id="rolename" />
+        </label></td>
+      </tr>
+      <tr>
+        <td>描述信息：</td>
+        <td><label>
+          <input name="role_desc" type="textarea" id="role_desc"  rows="3" cols="20"/>
+        </label></td>
+      </tr>
+      <tr>
+        <td><label>
+          <input name="add" type="button" id="add" value="添加" disabled/>
+        </label></td>
+        <td align="center"><label>
+          <input name="cancle" type="button" id="cancle" value="取消" />
+        </label></td>
+      </tr>
+    </table>
+  </div>
+<!-- 关联用户到角色 -->
+  <div id="Layer_assign">
+  <table width="17%" border="1" id="userassign">
+  <tr>
+    <td colspan="2">关联用户到组</td>
+    <td width="88%">&nbsp;</td>
+  </tr>
+  <tr>
+    <td colspan="2">当前用户</td>
+    <td><input type="text" name="current_user" id="current_user"></td>
+  </tr>
+  <tr>
+    <td colspan="3"><hr /></td>
+  </tr>
+  <tr>
+    <td colspan="2">用户列表</td>
+    <td><select name="select_user" id="select_user">
+	{% if userlist %}
+	{%for user in userlist%}
+    <option value='{{ user.username }}'>{{ user.username }}</option>
+	{% endfor %}
+	{% endif %}
+	</select>
+	</td>
+  </tr>
+  <tr>
+    <td width="7%"><input name="add" type="button" id="add" value="添加"></td>
+    <td width="5%"><input name="confirm" type="button" id="confirm" value="确定"></td>
+    <td><input name="cancle" type="button" id="cancle" value="取消"></td>
+  </tr>
+</table>
+  </div>  
+  
+  
+<div id="Layer2_monitor_source">
+    <table  width="75%" border="1" align="center">
+      <tr>
+        <td colspan="2"><span class="STYLE5">监控服务器设置</span></td>
+      </tr>
+	  <tr>
+        <td width="27%">服务器标识:</td>
+        <td width="73%"><label>
+          <input name="server_identifier" type="text" id="server_identifier" placeholder="服务器标识"/>
+        </label></td>
+      </tr>
+      <tr>
+        <td width="27%">服务器IP:</td>
+        <td width="73%"><label>
+          <input name="server_name" type="text" id="server_name" placeholder="13.228.136.199:3306/zabbix"/>
+        </label></td>
+      </tr>
+      <tr>
+        <td>账号：</td>
+        <td><label>
+          <input name="nicename" type="text" id="nicename" />
+        </label></td>
+      </tr>
+      <tr>
+        <td>密码：</td>
+        <td><label>
+          <input name="passwd" type="password" id="passwd" />
+        </label></td>
+      </tr>
+      <tr>
+        <td><label>
+          <input name="add" type="button" id="add" value="添加" disabled/>
+        </label></td>
+        <td align="center"><label>
+          <input name="cancle" type="button" id="cancle" value="取消" />
+        </label></td><td align="center"><label>
+          <input name="Test_connect" type="button" id="Test_connect" value="测试连接" />
+        </label></td>
+      </tr>
+    </table>
+  </div> 
+
+ 
+<!-- 取消用户和角色的关联关系 -->  
+<div id="Layer_remove">
+  <table width="17%" border="1" id="userassign">
+  <tr>
+    <td colspan="2">移除关联</td>
+    <td width="88%">&nbsp;</td>
+  </tr>
+  <tr>
+    <td colspan="2">当前用户</td>
+    <td><input type="text" name="current_user" id="rm_current_user"></td>
+  </tr>
+  <tr>
+    <td colspan="3"><hr /></td>
+  </tr>
+  <tr>
+    <td colspan="2">原用户列表</td>
+    <td><select name="select_user" id="rm_select_user">
+	{% if userlist %}
+	{%for user in userlist%}
+    <option value='{{ user.username }}'>{{ user.username }}</option>
+	{% endfor %}
+	{% endif %}
+	</select>
+	</td>
+  </tr>
+  <tr>
+    <td width="7%"><input name="remove_assign" type="button" id="remove_assign" value="移除"></td>
+    <td width="5%"><input name="confirm" type="button" id="confirm" value="确定"></td>
+    <td><input name="cancle" type="button" id="cancle" value="取消"></td>
+  </tr>
+</table>
+</div> 
+
+		<div class="navbar navbar-default" id="navbar">
+			<script type="text/javascript">
+				try{ace.settings.check('navbar' , 'fixed')}catch(e){}
+			</script>
+
+			<div class="navbar-container" id="navbar-container">
+				<div class="navbar-header pull-left">
+					<a href="#" class="navbar-brand">
+						<small>
+							<i class="icon-leaf"></i>
+							<!-- ACE后台管理系统	 -->
+							自动化运维平台					</small>					</a><!-- /.brand -->
+				</div><!-- /.navbar-header -->
+
+				<div class="navbar-header pull-right" role="navigation">
+					<ul class="nav ace-nav">
+						<li class="grey">
+							<a data-toggle="dropdown" class="dropdown-toggle" href="#">
+								<i class="icon-tasks"></i>
+								<span class="badge badge-grey">4</span>							</a>
+
+							<ul class="pull-right dropdown-navbar dropdown-menu dropdown-caret dropdown-close">
+								<li class="dropdown-header">
+									<i class="icon-ok"></i>
+									还有4个任务完成								</li>
+
+								<li>
+									<a href="#">
+										<div class="clearfix">
+											<span class="pull-left">软件更新</span>
+											<span class="pull-right">65%</span>										</div>
+
+										<div class="progress progress-mini ">
+											<div style="width:65%" class="progress-bar "></div>
+										</div>
+									</a>								</li>
+
+								<li>
+									<a href="#">
+										<div class="clearfix">
+											<span class="pull-left">硬件更新</span>
+											<span class="pull-right">35%</span>										</div>
+
+										<div class="progress progress-mini ">
+											<div style="width:35%" class="progress-bar progress-bar-danger"></div>
+										</div>
+									</a>								</li>
+
+								<li>
+									<a href="#">
+										<div class="clearfix">
+											<span class="pull-left">单元测试</span>
+											<span class="pull-right">15%</span>										</div>
+
+										<div class="progress progress-mini ">
+											<div style="width:15%" class="progress-bar progress-bar-warning"></div>
+										</div>
+									</a>								</li>
+
+								<li>
+									<a href="#">
+										<div class="clearfix">
+											<span class="pull-left">错误修复</span>
+											<span class="pull-right">90%</span>										</div>
+
+										<div class="progress progress-mini progress-striped active">
+											<div style="width:90%" class="progress-bar progress-bar-success"></div>
+										</div>
+									</a>								</li>
+
+								<li>
+									<a href="#">
+										查看任务详情
+										<i class="icon-arrow-right"></i>									</a>								</li>
+							</ul>
+						</li>
+
+						<li class="purple">
+							<a data-toggle="dropdown" class="dropdown-toggle" href="#">
+								<i class="icon-bell-alt icon-animated-bell"></i>
+								<span class="badge badge-important">8</span>							</a>
+
+							<ul class="pull-right dropdown-navbar navbar-pink dropdown-menu dropdown-caret dropdown-close">
+								<li class="dropdown-header">
+									<i class="icon-warning-sign"></i>
+									8条通知								</li>
+
+								<li>
+									<a href="#">
+										<div class="clearfix">
+											<span class="pull-left">
+												<i class="btn btn-xs no-hover btn-pink icon-comment"></i>
+												新闻评论											</span>
+											<span class="pull-right badge badge-info">+12</span>										</div>
+									</a>								</li>
+
+								<li>
+									<a href="#">
+										<i class="btn btn-xs btn-primary icon-user"></i>
+										切换为编辑登录..									</a>								</li>
+
+								<li>
+									<a href="#">
+										<div class="clearfix">
+											<span class="pull-left">
+												<i class="btn btn-xs no-hover btn-success icon-shopping-cart"></i>
+												新订单											</span>
+											<span class="pull-right badge badge-success">+8</span>										</div>
+									</a>								</li>
+
+								<li>
+									<a href="#">
+										<div class="clearfix">
+											<span class="pull-left">
+												<i class="btn btn-xs no-hover btn-info icon-twitter"></i>
+												粉丝											</span>
+											<span class="pull-right badge badge-info">+11</span>										</div>
+									</a>								</li>
+
+								<li>
+									<a href="#">
+										查看所有通知
+										<i class="icon-arrow-right"></i>									</a>								</li>
+							</ul>
+						</li>
+
+						<li class="green">
+							<a data-toggle="dropdown" class="dropdown-toggle" href="#">
+								<i class="icon-envelope icon-animated-vertical"></i>
+								<span class="badge badge-success">5</span>							</a>
+
+							<ul class="pull-right dropdown-navbar dropdown-menu dropdown-caret dropdown-close">
+								<li class="dropdown-header">
+									<i class="icon-envelope-alt"></i>
+									5条消息								</li>
+
+								<li>
+									<a href="#">
+										<img src="assets/avatars/avatar.png" class="msg-photo" alt="Alex's Avatar" />
+										<span class="msg-body">
+											<span class="msg-title">
+												<span class="blue">Alex:</span>
+												不知道写啥 ...											</span>
+
+											<span class="msg-time">
+												<i class="icon-time"></i>
+												<span>1分钟以前</span>											</span>										</span>									</a>								</li>
+
+								<li>
+									<a href="#">
+										<img src="assets/avatars/avatar3.png" class="msg-photo" alt="Susan's Avatar" />
+										<span class="msg-body">
+											<span class="msg-title">
+												<span class="blue">Susan:</span>
+												不知道翻译...											</span>
+
+											<span class="msg-time">
+												<i class="icon-time"></i>
+												<span>20分钟以前</span>											</span>										</span>									</a>								</li>
+
+								<li>
+									<a href="#">
+										<img src="assets/avatars/avatar4.png" class="msg-photo" alt="Bob's Avatar" />
+										<span class="msg-body">
+											<span class="msg-title">
+												<span class="blue">Bob:</span>
+												到底是不是英文 ...											</span>
+
+											<span class="msg-time">
+												<i class="icon-time"></i>
+												<span>下午3:15</span>											</span>										</span>									</a>								</li>
+
+								<li>
+									<a href="inbox.html">
+										查看所有消息
+										<i class="icon-arrow-right"></i>									</a>								</li>
+							</ul>
+						</li>
+
+						<li class="light-blue">
+							<a data-toggle="dropdown" href="#" class="dropdown-toggle">
+								<img class="nav-user-photo" src="assets/avatars/user.jpg" alt="Jason's Photo" />
+								<span class="user-info">
+									<small>欢迎光临,</small>
+									{{username}}								</span>
+
+								<i class="icon-caret-down"></i>							</a>
+
+							<ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+								<li>
+									<a href="#">
+										<i class="icon-cog"></i>
+										<span id="settings" name="settings">设置</span>									</a>								</li>
+
+								<li>
+									<a href="#">
+										<i class="icon-user"></i>
+										个人资料									</a>								</li>
+
+								<li class="divider"></li>
+
+								<li>
+									<a href="#">
+										<i class="icon-off"></i>
+										<span id="quit" name="quit">退出</span>									</a>								</li>
+							</ul>
+						</li>
+					</ul><!-- /.ace-nav -->
+				</div><!-- /.navbar-header -->
+			</div><!-- /.container -->
+		</div>
+
+		<div class="main-container" id="main-container">
+			<script type="text/javascript">
+				try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+			</script>
+
+			<div class="main-container-inner">
+				<a class="menu-toggler" id="menu-toggler" href="#">
+					<span class="menu-text"></span>				</a>
+
+				<div class="sidebar" id="sidebar">
+					<script type="text/javascript">
+						try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
+					</script>
+
+					<div class="sidebar-shortcuts" id="sidebar-shortcuts">
+						<div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
+							<button class="btn btn-success">
+								<i class="icon-signal"></i>							</button>
+
+							<button class="btn btn-info">
+								<i class="icon-pencil"></i>							</button>
+
+							<button class="btn btn-warning">
+								<i class="icon-group"></i>							</button>
+
+							<button class="btn btn-danger">
+								<i class="icon-cogs"></i>							</button>
+						</div>
+
+						<div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini">
+							<span class="btn btn-success"></span>
+
+							<span class="btn btn-info"></span>
+
+							<span class="btn btn-warning"></span>
+
+							<span class="btn btn-danger"></span>						</div>
+					</div><!-- #sidebar-shortcuts -->
+
+					<ul class="nav nav-list">
+						<li class="active">
+							<a href="#">
+								<i class="icon-dashboard"></i>
+								<span class="menu-text"> 控制台 </span>							</a>						</li>
+
+						<li>
+							<a href="#" class="dropdown-toggle">
+								<i class="icon-text-width"></i>
+							<span class="menu-text">用户管理</span></a>						
+							<ul class="submenu">
+								<li>
+									<a href="#">
+										<i class="icon-double-angle-right"></i>
+										<span id="adduser">添加用户</span>									</a>								</li>
+
+								<li>
+									<a href="#">
+										<i class="icon-double-angle-right"></i>
+										<span id="deluser">删除用户	</span>								</a>								</li>
+								<li>
+									<a href="#">
+										<i class="icon-double-angle-right"></i>
+										<span id="associate">关联到角色</span>									</a>								</li>
+
+								<li>
+							</ul></li>
+
+						<li>
+							<a href="#" class="dropdown-toggle">
+								<i class="icon-desktop"></i>
+								<span class="menu-text"> 角色管理 </span>
+
+								<b class="arrow icon-angle-down"></b>							</a>
+
+							<ul class="submenu">
+								<li>
+									<a href="#">
+										<i class="icon-double-angle-right"></i>
+										<span id="addrole">添加角色</span>								</a>								</li>
+
+								<li>
+									<a href="#">
+										<i class="icon-double-angle-right"></i>
+										<span id="delrole">删除角色</span>									</a>								</li>
+<!--
+								<li>
+									<a href="#">
+										<i class="icon-double-angle-right"></i>
+										关联到用户									</a>								</li> -->
+
+									<li>
+									<a href="#">
+										<i class="icon-double-angle-right"></i>
+										<span id="alloc_auth">分配权限</span>									</a>								</li> 
+
+						
+						
+							</ul>
+						</li>
+
+						<!-- <li>
+							<a href="#" class="dropdown-toggle">
+								<i class="icon-list"></i>
+								<span class="menu-text"> 权限管理 </span>
+
+								<b class="arrow icon-angle-down"></b>							</a>
+
+							<ul class="submenu">
+								<li>
+									<a href="#">
+										<i class="icon-double-angle-right"></i>
+										添加权限									</a>								</li>
+
+								<li>
+									<a href="#">
+										<i class="icon-double-angle-right"></i>
+										删除权限									</a>								</li>
+							</ul>
+						</li> -->
+						<li>
+							<a href="#" class="dropdown-toggle">
+								<i class="icon-list"></i>
+								<span class="menu-text"> 菜单管理 </span>
+
+								<b class="arrow icon-angle-down"></b>							</a>
+
+							<ul class="submenu">
+								<li>
+									<a href="#">
+										<i class="icon-double-angle-right"></i>
+										<span id="Add_Menu">添加菜单</span>									</a>								</li>
+
+								<li>
+									<a href="#">
+										<i class="icon-double-angle-right"></i>
+										<span id="Del_Menu">删除菜单</span>								</a>								</li>
+								<li>
+									<a href="#">
+										<i class="icon-double-angle-right"></i>
+										编辑菜单								</a>								</li>
+							</ul>
+						</li>
+						{% for menu in menulist %}
+							{% if menu.id > 5 %}
+							<li id='menu_{{menu.id}}'>
+							<a href="#" class="dropdown-toggle">
+								<i class="icon-list"></i>
+								<span class="menu-text"> {{menu.name}} </span>
+
+								<b class="arrow icon-angle-down"></b>							</a>
+
+							<ul class="submenu">
+							
+							{% for menu1 in menulist1 %}
+
+
+							{% if menu1.parent_id==menu.id %}
+							
+							<li>
+									<a href="#">
+										<i class="icon-double-angle-right"></i>
+										<span id='{{menu1.span_id}}'>{{menu1.name}}</span>
+									</a>								</li>
+							{%endif%}
+							{%endfor%}
+							</ul>
+						</li>
+							{%endif%}
+						{%endfor%}
+						<span id='add_a_new'></span>
+
+						<li></li>
+
+						<li></li>
+
+						<li></li>
+
+					<!--	<li>
+						  <ul class="submenu">
+								<li>
+									<a href="profile.html">
+										<i class="icon-double-angle-right"></i>
+										用户信息									</a>								</li>
+
+								<li>
+									<a href="inbox.html">
+										<i class="icon-double-angle-right"></i>
+										收件箱									</a>								</li>
+
+								<li>
+									<a href="pricing.html">
+										<i class="icon-double-angle-right"></i>
+										售价单									</a>								</li>
+
+								<li>
+									<a href="invoice.html">
+										<i class="icon-double-angle-right"></i>
+										购物车									</a>								</li>
+
+								<li>
+									<a href="timeline.html">
+										<i class="icon-double-angle-right"></i>
+										时间轴									</a>								</li>
+
+								<li>
+									<a href="login.html">
+										<i class="icon-double-angle-right"></i>
+										登录 &amp; 注册									</a>								</li>
+							</ul>
+						</li> 
+
+						<li>
+						  <ul class="submenu">
+								<li>
+									<a href="faq.html">
+										<i class="icon-double-angle-right"></i>
+										帮助									</a>								</li>
+
+								<li>
+									<a href="error-404.html">
+										<i class="icon-double-angle-right"></i>
+										404错误页面									</a>								</li>
+
+								<li>
+									<a href="error-500.html">
+										<i class="icon-double-angle-right"></i>
+										500错误页面									</a>								</li>
+
+								<li>
+									<a href="grid.html">
+										<i class="icon-double-angle-right"></i>
+										网格									</a>								</li>
+
+								<li>
+									<a href="blank.html">
+										<i class="icon-double-angle-right"></i>
+										空白页面									</a>								</li>
+							</ul>
+						</li>  -->
+					</ul>
+					<!-- /.nav-list -->
+
+					<div class="sidebar-collapse" id="sidebar-collapse">
+						<i class="icon-double-angle-left" data-icon1="icon-double-angle-left" data-icon2="icon-double-angle-right"></i>					</div>
+
+					<script type="text/javascript">
+						try{ace.settings.check('sidebar' , 'collapsed')}catch(e){}
+					</script>
+				</div>
+
+				<div class="main-content">
+					<div class="breadcrumbs" id="breadcrumbs">
+						<script type="text/javascript">
+							try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+						</script>
+
+						<ul class="breadcrumb">
+							<li>
+								<i class="icon-home home-icon"></i>
+								<a href="#">首页</a>							</li>
+							<li class="active">控制台</li>
+						</ul><!-- .breadcrumb -->
+
+						<div class="nav-search" id="nav-search">
+							<form class="form-search">
+								<span class="input-icon">
+									<input type="text" placeholder="Search ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
+									<i class="icon-search nav-search-icon"></i>								</span>
+							</form>
+						</div><!-- #nav-search -->
+					</div>
+
+					<div class="page-content">
+						<div class="page-header">
+							<h1>
+								控制台
+								<small>
+									<i class="icon-double-angle-right"></i>
+									 查看								</small>							</h1>
+						</div><!-- /.page-header -->
+
+						<div class="row">
+						<!-- 分配权限 -->
+						<div id="Layer_auth">
+  <table width="72%" height="261" border="1" align="center">
+    <tr>
+      <td height="46" colspan="2"><span class="STYLE3">&nbsp;分配权限</span></td>
+    </tr>
+    <tr>
+      <td width="41%" height="71"><span class="STYLE2">角色列表
+          <select name="rolelist" id="rolelist">
+		  {%if rolelist%}
+		  {% for role in rolelist%}
+		  <option value='{{role.id}}'>{{role.name}}</option>
+		  {%endfor%}
+		  {%endif%}
+		  </select>
+      </span></td>
+      <td width="59%"><input name="alloc_auth_btn" type="button" id="alloc_auth_btn" value="分配权限" /></td>
+    </tr>
+
+    <tr>
+      <td height="96" colspan="2">&nbsp;</td>
+    </tr>
+  </table>
+</div>
+						<!-- 删除菜单 -->
+						<div id="Layer_DelMenu">
+  <table width="72%" height="261" border="1" align="center">
+    <tr>
+      <td height="46"><span class="STYLE2">删除菜单</span></td>
+    </tr>
+    <tr>
+      <td height="71"><span class="STYLE2">父菜单
+          
+			<select name="parent_menu" id="parent_menu">
+			{%for menu in menulist%}
+			<option value='{{menu.id}}'>{{menu.name}}</option>
+			{%endfor%}
+        </select>        
+        <input name="del_p_menu" type="button" id="del_p_menu" value="删除父菜单" />
+      </span></td>
+    </tr>
+
+    <tr>
+      <td height="96"><span class="STYLE2">子菜单
+          <select name="child_menu" id="child_menu">
+          </select>      
+          <input type="button" name="del_c_menu" id="del_c_menu" value="删除子菜单" />
+      </span></td>
+    </tr>
+  </table>
+</div>
+							<!-- 添加菜单 -->
+							<div id="add_menu">
+  <table width="92%" height="175" border="1">
+    <tr>
+      <td colspan="5"><div align="center">添加菜单</div></td>
+    </tr>
+    <tr>
+      <td width="10%">上级菜单</td>
+      <td colspan="4"><select name="add_parent_menu" id="add_parent_menu">
+	   <option value=1>/root</option>
+	  {%for menu in menulist%}
+	  <option value='{{menu.id}}'>{{menu.name}}</option>
+	  {%endfor%}
+      </select>      </td>
+    </tr>
+    <tr>
+      <td>菜单名称</td>
+      <td colspan="4"><input name="menu_name" type="text" id="menu_name" /></td>
+    </tr>
+	<tr>
+      <td>菜单ID</td>
+      <td colspan="4"><input name="menu_id" type="text" id="menu_id" /></td>
+    </tr>
+    <tr>
+      <td>url地址</td>
+      <td colspan="4"><input name="url" type="text" id="url" /></td>
+    </tr>
+    <tr>
+      <td>显示顺序</td>
+      <td colspan="4"><input type="text" name="textfield" /></td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td width="25%">&nbsp;</td>
+      <td width="44%">&nbsp;</td>
+      <td width="10%">&nbsp;</td>
+      <td width="11%">&nbsp;</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td><input name="confirm" type="button" id="confirm" value="确定" disabled /></td>
+      <td><input name="cancle" type="button" id="cancle" value="取消" /></td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+  </table>
+</div>
+							<!-- 删除用户 -->
+							<div id='deluser' class="deluser">
+								<div id='add'><input name='del_btn' type='button' id='del_btn' value='批量删除用户' disabled/></div>
+								<table  id='userlist' width='1661' border='1'>
+								<tr><td width='6%' align='center' bgcolor='#66b3ff'>id</td><td width='6%' align='center' bgcolor='#66b3ff'>用户名</td><td width='14%' align='center' bgcolor='#66b3ff'>邮箱地址</td><td width='21%' align='center' bgcolor='#66b3ff'>用户状态</td><td width='53%' align='center' bgcolor='#66b3ff'>修改</td></tr>
+								{%if userlist %}
+								{% for user in userlist%}
+								<tr border='1'><td width='6%' align='center'><input type='checkbox' id='id' value='{{user.id}}'></td><td width='6%' align='center'>{{user.username}}</td><td width='14%' align='center' >{{user.email}}</td><td width='21%' align='center' >{% if user.status == 1%}启用{%else%}禁用{% endif %}</td><td width='53%' align='center' ><input type='button' id='del_single' name='del_single' value='删除' disabled></td></tr>
+								{% endfor %}
+								{%endif%}
+								</table>
+								</div>
+							<!-- 添加主机 -->
+							<div id='addhost' class="addhost">
+								<div id='add'><input name='add_host_btn' type='button' id='add_host_btn' value='添加主机' /></div>
+								<table  id='hostarea' width='1661' border='1'>
+								<tr><td width='6%' align='center' bgcolor='#66b3ff'>id</td><td width='6%' align='center' bgcolor='#66b3ff'>HostName</td><td width='6%' align='center' bgcolor='#66b3ff'>ip地址</td><td width='14%' align='center' bgcolor='#66b3ff'>ssh端口</td><td width='21%' align='center' bgcolor='#66b3ff'>远端用户</td><td width='53%' align='center' bgcolor='#66b3ff'>主机描述信息</td></tr>
+								{%if hostlist %}
+								{% for host in hostlist%}
+								<tr border='1'><td width='6%' align='center'>{{host.id}}</td><td width='6%' align='center'>{{host.hostname}}</td><td width='6%' align='center'>{{host.ipaddr}}</td><td width='14%' align='center' >{{host.sshport}}</td><td width='21%' align='center' >{{host.remote_user}}</td><td width='53%' align='center' >{{host.host_desc}}</td></tr>
+								{% endfor %}
+								{%endif%}
+								</table>
+							</div>
+							
+							<!-- 删除主机 -->
+							<div id='delhost' class="delhost">
+								<div id='add'><input name='del_host_btn' type='button' id='del_host_btn' value='批量删除主机' disabled/></div>
+								<table  id='hostlist' width='1661' border='1'>
+								<tr><td width='6%' align='center' bgcolor='#66b3ff'>主机ID</td><td width='6%' align='center' bgcolor='#66b3ff'>HostName</td><td width='6%' align='center' bgcolor='#66b3ff'>主机IP<</td><td width='14%' align='center' bgcolor='#66b3ff'>SSH端口</td><td width='21%' align='center' bgcolor='#66b3ff'>远端用户</td><td width='53%' align='center' bgcolor='#66b3ff'>删除操作</td></tr>
+								{%if hostlist %}
+								{% for host in hostlist%}
+								<tr border='1'><td width='6%' align='center'><input type='checkbox' id='id' value='{{host.id}}'></td><td width='6%' align='center'>{{host.hostname}}</td><td width='6%' align='center'>{{host.ipaddr}}</td><td width='14%' align='center' >{{host.sshport}}</td><td width='21%' align='center' >{{host.remote_user}}</td><td width='53%' align='center' ><input type='button' id='del_single' name='del_single' value='删除' disabled></td></tr>
+								{% endfor %}
+								{%endif%}
+								</table>
+								</div>
+								
+								
+							<!-- 添加主机组界面 -->
+							<div id='addhostgroup' class="addhostgroup">
+								<div id='add'><input name='addhostgroup_btn' type='button' id='addhostgroup_btn' value='添加主机组' /></div>
+								<table  id='grouparea' width='1661' border='1'>
+								<tr><td width='6%' align='center' bgcolor='#66b3ff'>GroupId</td><td width='6%' align='center' bgcolor='#66b3ff'>主机组</td><td width='14%' align='center' bgcolor='#66b3ff'>主机组描述信息</td><td width='21%' align='center' bgcolor='#66b3ff'>主机组中的主机</td><td width='53%' align='center' bgcolor='#66b3ff'>关联主机</td></tr>
+								{%if hostgroups %}
+								{% for group in hostgroups%}
+								<tr border='1'><td width='6%' align='center'>{{group.id}}</td><td width='6%' align='center'>{{group.group_name}}</td><td width='14%' align='center' >{{group.group_desc}}</td><td width='21%' align='center' >{% if group.hostlist %}{{group.hostlist}}{%endif%}</td><td width='53%' align='center' ><img  src='/images/add_btn.jpg' id='assign' name='assign' height='20' width='20'>&nbsp;&nbsp;&nbsp;<img src='/images/remove.jpg' id='remove' name='remove' height='20' width='20'></td></td></tr>
+								{% endfor %}
+								{%endif%}
+								</table>
+								</div>
+							<!-- 设置页面 -->
+							<!-- 添加主机表单 
+							<div id='Layer_addhost' class="addhost">
+								<div id='add'><input name='add_host_btn' type='button' id='add_host_btn' value='添加主机' /></div>
+								<table  id='userarea' width='1661' border='1'>
+								<tr><td width='6%' align='center' bgcolor='#66b3ff'>主机ID</td><td width='6%' align='center' bgcolor='#66b3ff'>主机IP</td><td width='14%' align='center' bgcolor='#66b3ff'>SSH 端口</td><td width='21%' align='center' bgcolor='#66b3ff'>远程用户</td><td width='53%' align='center' bgcolor='#66b3ff'>描述信息</td></tr>
+								{%if hostslist %}
+								{% for host in hostlist%}
+								<tr border='1'><td width='6%' align='center'>{{host.id}}</td><td width='6%' align='center'>{{host.ipaddr}}</td><td width='14%' align='center' >{{host.sshport}}</td><td width='21%' align='center' >{{host.remote_user}}</td><td width='53%' align='center' >{{host.host_desc}}</td></tr>
+								{% endfor %}
+								{%endif%}
+								</table>
+								</div> -->
+							<!-- 添加用户界面 -->
+							<div id='adduser' class="adduser">
+								<div id='add'><input name='add_btn' type='button' id='add_btn' value='添加用户' /></div>
+								<table  id='userarea' width='1661' border='1'>
+								<tr><td width='6%' align='center' bgcolor='#66b3ff'>id</td><td width='6%' align='center' bgcolor='#66b3ff'>用户名</td><td width='14%' align='center' bgcolor='#66b3ff'>描述信息</td><td width='21%' align='center' bgcolor='#66b3ff'>用户管理</td><td width='53%' align='center' bgcolor='#66b3ff'>修改用户信息</td></tr>
+								{%if userlist %}
+								{% for user in userlist%}
+								<tr border='1'><td width='6%' align='center'>{{user.id}}</td><td width='6%' align='center'>{{user.username}}</td><td width='14%' align='center' >{{user.email}}</td><td width='21%' align='center' >{% if user.status == 1%}启用{%else%}禁用{% endif %}</td><td width='53%' align='center' >修改密码:<input type='password' id='resetpass' name='resetpass' placeholder='重置密码'/>启用/禁用:<input type='checkbox' {% if user.status==1%}checked{%endif%} id='enable'>&nbsp;&nbsp;&nbsp;&nbsp;<input type='button' id='commit' name='commit' value='修改' disabled></td></tr>
+								{% endfor %}
+								{%endif%}
+								</table>
+								</div>
+								
+							<!-- 添加角色界面 -->
+							<div id='addrole' class="addrole">
+								<div id='add'><input name='addrole_btn' type='button' id='addrole_btn' value='添加角色' /></div>
+								<table  id='rolearea' width='1661' border='1'>
+								<tr><td width='6%' align='center' bgcolor='#66b3ff'>id</td><td width='6%' align='center' bgcolor='#66b3ff'>组名</td><td width='14%' align='center' bgcolor='#66b3ff'>描述信息</td><td width='21%' align='center' bgcolor='#66b3ff'>所有用户</td><td width='53%' align='center' bgcolor='#66b3ff'>关联用户</td></tr>
+								{%if rolelist %}
+								{% for role in rolelist%}
+								<tr border='1'><td width='6%' align='center'>{{role.id}}</td><td width='6%' align='center'>{{role.name}}</td><td width='14%' align='center' >{{role.desc}}</td><td width='21%' align='center' >{% if role.userlist %}{{role.userlist}}{%endif%}</td><td width='53%' align='center' ><img  src='/images/add_btn.jpg' id='assign' name='assign' height='20' width='20'>&nbsp;&nbsp;&nbsp;<img src='/images/remove.jpg' id='remove' name='remove' height='20' width='20'></td></td></tr>
+								{% endfor %}
+								{%endif%}
+								</table>
+							</div>
+								
+								
+								
+							<!-- 删除角色界面 -->
+							<div id='delrole' class="delrole">
+								<div id='add'><input name='del_btn' type='button' id='del_btn' value='批量删除角色' disabled/></div>
+								<table  id='rolelist' width='1661' border='1'>
+								<tr><td width='6%' align='center' bgcolor='#66b3ff'>id</td><td width='6%' align='center' bgcolor='#66b3ff'>角色</td><td width='14%' align='center' bgcolor='#66b3ff'>描述信息</td><td width='21%' align='center' bgcolor='#66b3ff'>所有用户</td><td width='53%' align='center' bgcolor='#66b3ff'>删除</td></tr>
+								{%if rolelist %}
+								{% for role in rolelist%}
+								<tr border='1'><td width='6%' align='center'><input type='checkbox' id='role_id' value='{{role.id}}' {%if role.userlist %}disabled{%endif%}></td><td width='6%' align='center'>{{role.name}}</td><td width='14%' align='center' >{{role.desc}}</td><td width='21%' align='center' >{% if role.userlist %}{{role.userlist}}{%endif%}</td><td width='53%' align='center' >&nbsp;&nbsp;&nbsp;&nbsp;<input type='button' id='delrole_commit' name='delrole_commit' value='删除' disabled></td></td></tr>
+								{% endfor %}
+								{%endif%}
+								</table>
+								</div>
+								
+								<!-- 删除主机组界面 -->
+							<div id='delhostgroup' class="delhostgroup">
+								<div id='add'><input name='delhostgroup_btn' type='button' id='delhostgroup_btn' value='批量删除主机组' disabled/></div>
+								<table  id='rolelist' width='1661' border='1'>
+								<tr><td width='6%' align='center' bgcolor='#66b3ff'>主机组Id</td><td width='6%' align='center' bgcolor='#66b3ff'>主机组</td><td width='14%' align='center' bgcolor='#66b3ff'>描述信息</td><td width='21%' align='center' bgcolor='#66b3ff'>组内含有的主机</td><td width='53%' align='center' bgcolor='#66b3ff'>删除</td></tr>
+								{%if hostgroups %}
+								{% for group in hostgroups%}
+								<tr border='1'><td width='6%' align='center'><input type='checkbox' id='group_id' value='{{group.id}}'></td><td width='6%' align='center'>{{group.group_name}}</td><td width='14%' align='center' >{{group.group_desc}}</td><td width='21%' align='center' >{% if group.hostlist %}{{group.hostlist}}{%endif%}</td><td width='53%' align='center' >&nbsp;&nbsp;&nbsp;&nbsp;<input type='button' id='delhostgroup_commit' name='delhostgroup_commit' value='删除' disabled></td></td></tr>
+								{% endfor %}
+								{%endif%}
+								</table>
+								</div>
+								
+							<!-- 批量用户添加 -->
+<div id="remote_user_add">
+  <table width="92%" height="175" border="1">
+    <tr>
+      <td colspan="5"><div align="center">批量添加用户</div></td>
+    </tr>
+    <tr>
+      <td width="10%">远端主机</td>
+      <td colspan="4"><select name="remote_hosts" id="remote_hosts">
+	   <option value=1></option>
+	  {%for host in hostlist%}
+	  <option value='{{host.ipaddr}}'>{{host.ipaddr}}</option>
+	  {%endfor%}
+      </select>      </td>
+    </tr>
+    <tr>
+      <td>用户名：</td>
+      <td colspan="4"><input name="username" type="text" id="username" /></td>
+    </tr>
+	<tr>
+      <td>密码：</td>
+      <td colspan="4"><input name="passwd" type="password" id="passwd" /></td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td><input name="confirm" type="button" id="confirm" value="确定" disabled /></td>
+      <td><input name="cancle" type="button" id="cancle" value="取消" /></td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+	<tr>
+	</tr>
+	<tr><div></div></tr>
+	
+  </table>
+  <hr />
+  <div id='return_msg'></div>
+</div>
+<div id="remote_user_del">
+  <table width="92%" height="175" border="1">
+    <tr>
+      <td colspan="5"><div align="center">删除远端用户</div></td>
+    </tr>
+    <tr>
+      <td width="10%">远端主机</td>
+      <td colspan="4"><select name="remote_hosts" id="remote_hosts">
+	   <option value=1></option>
+	  {%for host in hostlist%}
+	  <option value='{{host.ipaddr}}'>{{host.ipaddr}}</option>
+	  {%endfor%}
+      </select>      </td>
+    </tr>
+    <tr>
+      <td>用户名：</td>
+      <td colspan="4"><select name="remote_user" id="remote_user">
+      </select></td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td><input name="confirm" type="button" id="confirm" value="确定" disabled /></td>
+      <td><input name="cancle" type="button" id="cancle" value="取消" /></td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+	<tr>
+	</tr>
+	<tr><div></div></tr>
+	
+  </table>
+  <hr />
+  <div id='return_msg'></div>
+</div>
+
+
+							<!-- 添加监控源 -->
+							<div id='add_monitor_source' class="adduser">
+								<div id='add'><input name='add_btn' type='button' id='add_btn' value='添加监控源' /></div>
+								<table  id='monitor_area' width='1661' border='1'>
+								<tr><td width='6%' align='center' bgcolor='#66b3ff'>id</td><td width='6%' align='center' bgcolor='#66b3ff'>服务器地址</td><td width='14%' align='center' bgcolor='#66b3ff'>访问端口</td><td width='21%' align='center' bgcolor='#66b3ff'>访问账号</td><td width='53%' align='center' bgcolor='#66b3ff'>修改账号信息</td></tr>
+								</table>
+								</div>
+								
+								<!--  生成监控报表 -->
+							<div id='monitor_reporting' class="adduser">
+								<div id='monitor_title'>监控报表</div>
+								<!-- <table  id='monitor_area' width='1661' border='1'>
+								<tr><td width='6%' align='center' bgcolor='#66b3ff'></td><td width='6%' align='center' bgcolor='#66b3ff'>服务器地址</td><td width='14%' align='center' bgcolor='#66b3ff'>访问端口</td><td width='21%' align='center' bgcolor='#66b3ff'>访问账号</td><td width='53%' align='center' bgcolor='#66b3ff'>修改账号信息</td></tr>
+								</table> -->
+								
+								<!-- <form class="form-inline">  -->
+								<div id='selectarea'>
+								<div id="divDateId" class="pull-left dateRange">  
+								起始时间-结束时间:<input class="form-control" id="searchDate"></input>  
+								<!-- <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>   -->
+								</div>  
+								<!-- </form> -->
+								<hr />
+								选择监控源:<select id='monitor_source'><option value='vnnox'>监控源1</option><option value='care'>监控源2</option></select>所属产品:<select id='products'><option value='c5-'>vnnox 产品</option><option value='care'>care 产品</option><option value='publish'>publish cloud</option></select>所属国家:<select id='as_country'><option value='all'>所有</option><option value='cn'>中国</option><option value='jp'>日本</option><option value='us'>美国</option><option value='au'>澳洲</option><option value='eu'>欧洲</option><<option value='sg'>新加坡</option></select><input type='button' value='确定' id='confirm_select'  style='background-color: #0080ff;width:50px;color:white;' name='confirm_select'></input>&nbsp;&nbsp;&nbsp;<input type='button' value='导出' id='export_report'  style='background-color: #00802f;width:50px;color:white;' name='export_report'></input></div>
+								
+								
+								<hr  style=" height:2px;border:1px solid;border-top:2px #185598;" />
+								<ul id="myTab" class="nav nav-tabs" style="height:40px;">
+								<li class="active"><a href="#home" data-toggle="tab">
+								故障总数统计</a>
+								</li>
+								<li><a href="#class_analyzer" data-toggle="tab">故障分类统计</a></li>
+								<li><a href="#avg_total" data-toggle="tab">平均系统资源情况</a></li>
+								</ul>
+								<div id="myTabContent"  style='top:2px;'class="tab-content">
+								<div class="tab-pane fade in active"  id="home">
+								<p> <table id='故障总数统计' class="table table-bordered table-striped"><tr bgcolor="#66b3ff" align="center"><td>id	</td><td>所属产品</td><td>所在国家</td>	<td>服务器名称</td><td>故障次数
+</td></tr></table></p>
+								</div>
+								<div class="tab-pane fade" id="class_analyzer">
+								<p><table id='故障分类统计' class="table table-bordered table-striped"><tr bgcolor="#66b3ff" align="center"><td>id</td>	<td>所属产品</td><td>所在国家</td><td>服务器名称</td><td>故障等级</td><td>故障次数
+</td></tr></table></p>
+								</div>
+								<div class="tab-pane fade" id="avg_total">
+								<p><table id='平均系统资源情况' class="table table-bordered table-striped"><tr bgcolor="#66b3ff" align="center"><td>id</td>	<td>所属产品</td><td>所在国家</td><td>服务器名称</td><td>平均CPU空限量（%）</td><td>平均内存空闲量（MB）
+</td><td>平均硬盘空闲量（MB）</td><td>服务器健康指数</td></tr></table></p>
+								</div>
+								
+
+								
+									</div> <!-- /span 
+								</div><!-- /row 
+						
+								<div class="hr hr32 hr-dotted"></div>
+
+								<div class="row">
+									<div class="col-sm-5"> 
+										<div class="widget-box transparent">
+											<div class="widget-header widget-header-flat">
+												<h4 class="lighter">
+													<i class="icon-star orange"></i>
+													热门域名												</h4>
+
+												<div class="widget-toolbar">
+													<a href="#" data-action="collapse">
+														<i class="icon-chevron-up"></i>													</a>												</div>
+											</div>
+
+											<div class="widget-body">
+												<div class="widget-main no-padding">
+													<table class="table table-bordered table-striped">
+														<thead class="thin-border-bottom">
+															<tr>
+																<th>
+																	<i class="icon-caret-right blue"></i>
+																	名称																</th>
+
+																<th>
+																	<i class="icon-caret-right blue"></i>
+																	价格																</th>
+
+																<th class="hidden-480">
+																	<i class="icon-caret-right blue"></i>
+																	状态																</th>
+															</tr>
+														</thead>
+
+														<tbody>
+															<tr>
+																<td>internet.com</td>
+
+																<td>
+																	<small>
+																		<s class="red">$29.99</s>																	</small>
+																	<b class="green">$19.99</b>																</td>
+
+																<td class="hidden-480">
+																	<span class="label label-info arrowed-right arrowed-in">销售中</span>																</td>
+															</tr>
+
+															<tr>
+																<td>online.com</td>
+
+																<td>
+																	<small>
+																		<s class="red"></s>																	</small>
+																	<b class="green">$16.45</b>																</td>
+
+																<td class="hidden-480">
+																	<span class="label label-success arrowed-in arrowed-in-right">可用</span>																</td>
+															</tr>
+
+															<tr>
+																<td>newnet.com</td>
+
+																<td>
+																	<small>
+																		<s class="red"></s>																	</small>
+																	<b class="green">$15.00</b>																</td>
+
+																<td class="hidden-480">
+																	<span class="label label-danger arrowed">待定</span>																</td>
+															</tr>
+
+															<tr>
+																<td>web.com</td>
+
+																<td>
+																	<small>
+																		<s class="red">$24.99</s>																	</small>
+																	<b class="green">$19.95</b>																</td>
+
+																<td class="hidden-480">
+																	<span class="label arrowed">
+																		<s>无货</s>																	</span>																</td>
+															</tr>
+
+															<tr>
+																<td>domain.com</td>
+
+																<td>
+																	<small>
+																		<s class="red"></s>																	</small>
+																	<b class="green">$12.00</b>																</td>
+
+																<td class="hidden-480">
+																	<span class="label label-warning arrowed arrowed-right">售完</span>																</td>
+															</tr>
+														</tbody>
+													</table>
+												</div><!-- /widget-main -->
+											</div><!-- /widget-body -->
+											
+								<!--    -->
+								<div id="application_deploy" class="adduser">
+								<ul id="myAppTab" class="nav nav-tabs" style="height:40px;">
+								<li class="active"><a href="#product_manage" data-toggle="tab">
+								产品管理</a>
+								</li>
+								<li><a href="#app_manage" data-toggle="tab">
+								应用管理</a>
+								</li>
+								<li><a href="#app_deploy" data-toggle="tab">应用部署</a></li>
+								</ul>
+								<div id="myAppContent"  style='top:2px;'class="tab-content">
+								<div class="tab-pane fade in active"  id="product_manage">
+								<div id='add_product' class="addproduct">
+								<div id='add'><input name='addproduct_btn' type='button' id='addproduct_btn' value='添加产品'/></div>
+								<table  id='productarea' width='1221' border='1'>
+								<tr><td align='center' bgcolor='#66b3ff'>id</td><td align='center' bgcolor='#66b3ff'>产品名称</td></tr>
+								{%if productlist %}
+								{% for product in productlist%}
+								<tr border='1'><td  align='center'>{{product.id}}</td><td  align='center'>{{product.name}}</td><td width='20%' align='center' ><img  src='/images/add_btn.jpg' id='assign' name='assign' height='20' width='20'>&nbsp;&nbsp;&nbsp;<img src='/images/remove.jpg' id='remove' name='remove' height='20' width='20'></td></tr>
+								{% endfor %}
+								{%endif%}
+								</table>
+							</div>
+								</div>
+								<div class="tab-pane fade"  id="app_manage">
+								<p> 	<table id='application_list' class="table table-bordered table-striped" style="border:none"><tr align="center"><td>	</td><td></td><td></td>	<td></td></tr><tr align="center"><td>所属产品</td><td>应用名称</td><td>版本号</td><td>软件包下载</td></tr></p></table>
+								<p> 	<table id='application_manager' class="table table-bordered table-striped" style="border:none"><tr align="center"><td>	</td><td></td><td></td>	<td></td><td></td><td></td><td></td></tr>
+								
+								
+								<hr />
+								<tr  align="center"><td>	</td><td></td><td></td>	<td></td><td></td><td></td><td></td></tr><tr  align="center"><td>	</td><td></td><td>所属产品</td><td align="left"><select id="Belonged_products" width="28px;"><option><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">vnnox</font></font></option></select></td><td></td><td></td><td></td></tr>
+								<tr  align="center"><td>	</td><td></td><td></td>	<td></td><td></td><td></td><td></td></tr><tr align="center"><td>	</td><td></td><td>软件名称</td><td align="left"><input type='text' id='appName'></td><td></td><td></td><td></td></tr><tr align="center"><td>	</td><td></td><td>版本定义</td><td align="left"><input id='appVersion' placeholder='定义软件版本，如v1.0.0'></td><td></td><td></td><td></td></tr>
+								
+								<tr  align="center"><td>	</td><td></td><td></td>	<td></td><td></td><td></td><td></td></tr><tr align="center"><td>	</td><td></td><td>解压路径</td><td align="left"><input id="unzip_path" type="text" placeholder="/usr/local/src"></td><td></td><td></td><td></td></tr>
+								
+								
+								<tr  align="center"><td>	</td><td></td><td></td>	<td></td><td></td><td></td><td></td></tr><tr  align="center"><td>	</td><td></td><td>安装命令</td><td align="left"><textarea  id="runCommand" style="padding:5px 8px;" placeholder="安装执行命令，长度不能超过100个字符，包含空格"></textarea></td><td></td><td></td><td></td></tr>
+								
+								
+								<tr  align="center"><td>	</td><td></td><td></td>	<td></td><td></td><td></td><td></td></tr><tr  align="center"><td>	</td><td></td><td>上传软件包</td><td align="left"><input type="file" id="packetFile"  multiple></td><td><input type="button" id="upload_package" value="上传"></td><td></td><td></td></tr>
+								
+								</table></p>
+								</div>
+								<div class="tab-pane fade" id="app_deploy">
+								<p><table id='applicationDeploy' class="table table-bordered table-striped" style="border:none"><tr align="center"><td>	</td><td></td><td></td>	<td></td><td></td><td></td><td></td></tr>
+								
+								
+								<hr />
+								<tr  align="center"><td>	</td><td></td><td></td>	<td></td><td></td><td></td><td></td></tr><tr  align="center"><td>	</td><td></td><td>所属产品</td><td align="left"><select id="Belonged_products" width="28px;"><option><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">vnnox</font></font></option></select></td><td></td><td></td><td></td></tr>
+								<tr align="center"><td>	</td><td></td><td>应用程序</td><td align="left"><select id="selectApp" width="28px;"><option><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"></font></font></option></select></td><td></td><td><input type="button" id="Deploy" value="部署" disabled></td><td></td></tr>
+								<tr  align="center"><td>	</td><td></td><td></td>	<td></td><td></td><td></td><td></td></tr>
+								</table></p>
+								</div>
+								</div> 
+								</div>
+								</div>
+								
+			
+								
+
+								<!--  class="col-sm-7">
+										<div class="widget-box transparent">
+											<div class="widget-header widget-header-flat">
+												<h4 class="lighter">
+													<i class="icon-signal"></i>
+													销售统计												</h4>
+
+												<div class="widget-toolbar">
+													<a href="#" data-action="collapse">
+														<i class="icon-chevron-up"></i>													</a>												</div>
+											</div>
+
+											<div class="widget-body">
+												<div class="widget-main padding-4">
+													<div id="sales-charts"></div>
+												</div><!-- /widget-main 
+											</div><!-- /widget-body 
+										</div><!-- /widget-box 
+									</div>
+								</div>
+
+								<div class="hr hr32 hr-dotted"></div>
+
+								<div class="row">
+									<div class="col-sm-6">
+										<div class="widget-box transparent" id="recent-box">
+											<div class="widget-header">
+												<h4 class="lighter smaller">
+													<i class="icon-rss orange"></i>
+													最近												</h4>
+
+												<div class="widget-toolbar no-border">
+													<ul class="nav nav-tabs" id="recent-tab">
+														<li class="active">
+															<a data-toggle="tab" href="#task-tab">任务</a>														</li>
+
+														<li>
+															<a data-toggle="tab" href="#member-tab">会员</a>														</li>
+
+														<li>
+															<a data-toggle="tab" href="#comment-tab">评论</a>														</li>
+													</ul>
+												</div>
+											</div>
+
+											<div class="widget-body">
+												<div class="widget-main padding-4">
+													<div class="tab-content padding-8 overflow-visible">
+														<div id="task-tab" class="tab-pane active">
+															<h4 class="smaller lighter green">
+																<i class="icon-list"></i>
+																可拖拽排序列表															</h4>
+
+															<ul id="tasks" class="item-list">
+																<li class="item-orange clearfix">
+																	<label class="inline">
+																		<input type="checkbox" class="ace" />
+																		<span class="lbl"> 问答</span>																	</label>
+
+																	<div class="pull-right easy-pie-chart percentage" data-size="30" data-color="#ECCB71" data-percent="42">
+																		<span class="percent">42</span>%																	</div>
+																</li>
+
+																<li class="item-red clearfix">
+																	<label class="inline">
+																		<input type="checkbox" class="ace" />
+																		<span class="lbl"> BUG修复</span>																	</label>
+
+																	<div class="pull-right action-buttons">
+																		<a href="#" class="blue">
+																			<i class="icon-pencil bigger-130"></i>																		</a>
+
+																		<span class="vbar"></span>
+
+																		<a href="#" class="red">
+																			<i class="icon-trash bigger-130"></i>																		</a>
+
+																		<span class="vbar"></span>
+
+																		<a href="#" class="green">
+																			<i class="icon-flag bigger-130"></i>																		</a>																	</div>
+																</li>
+
+																<li class="item-default clearfix">
+																	<label class="inline">
+																		<input type="checkbox" class="ace" />
+																		<span class="lbl">添加新的特征</span>																	</label>
+
+																	<div class="inline pull-right position-relative dropdown-hover">
+																		<button class="btn btn-minier bigger btn-primary">
+																			<i class="icon-cog icon-only bigger-120"></i>																		</button>
+
+																		<ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-caret dropdown-close pull-right">
+																			<li>
+																				<a href="#" class="tooltip-success" data-rel="tooltip" title="Mark&nbsp;as&nbsp;done">
+																					<span class="green">
+																						<i class="icon-ok bigger-110"></i>																					</span>																				</a>																			</li>
+
+																			<li>
+																				<a href="#" class="tooltip-error" data-rel="tooltip" title="Delete">
+																					<span class="red">
+																						<i class="icon-trash bigger-110"></i>																					</span>																				</a>																			</li>
+																		</ul>
+																	</div>
+																</li>
+
+																<li class="item-blue clearfix">
+																	<label class="inline">
+																		<input type="checkbox" class="ace" />
+																		<span class="lbl"> 更新模版脚本</span>																	</label>
+																</li>
+
+																<li class="item-grey clearfix">
+																	<label class="inline">
+																		<input type="checkbox" class="ace" />
+																		<span class="lbl"> 添加新皮肤</span>																	</label>
+																</li>
+
+																<li class="item-green clearfix">
+																	<label class="inline">
+																		<input type="checkbox" class="ace" />
+																		<span class="lbl"> 升级服务端</span>																	</label>
+																</li>
+
+																<li class="item-pink clearfix">
+																	<label class="inline">
+																		<input type="checkbox" class="ace" />
+																		<span class="lbl"> 清理垃圾</span>																	</label>
+																</li>
+															</ul>
+														</div>
+
+														<div id="member-tab" class="tab-pane">
+															<div class="clearfix">
+																<div class="itemdiv memberdiv">
+																	<div class="user">
+																		<img alt="Bob Doe's avatar" src="assets/avatars/user.jpg" />																	</div>
+
+																	<div class="body">
+																		<div class="name">
+																			<a href="#">Bob Doe</a>																		</div>
+
+																		<div class="time">
+																			<i class="icon-time"></i>
+																			<span class="green">20 min</span>																		</div>
+
+																		<div>
+																			<span class="label label-warning label-sm">pending</span>
+
+																			<div class="inline position-relative">
+																				<button class="btn btn-minier bigger btn-yellow btn-no-border dropdown-toggle" data-toggle="dropdown">
+																					<i class="icon-angle-down icon-only bigger-120"></i>																				</button>
+
+																				<ul class="dropdown-menu dropdown-only-icon dropdown-yellow pull-right dropdown-caret dropdown-close">
+																					<li>
+																						<a href="#" class="tooltip-success" data-rel="tooltip" title="Approve">
+																							<span class="green">
+																								<i class="icon-ok bigger-110"></i>																							</span>																						</a>																					</li>
+
+																					<li>
+																						<a href="#" class="tooltip-warning" data-rel="tooltip" title="Reject">
+																							<span class="orange">
+																								<i class="icon-remove bigger-110"></i>																							</span>																						</a>																					</li>
+
+																					<li>
+																						<a href="#" class="tooltip-error" data-rel="tooltip" title="Delete">
+																							<span class="red">
+																								<i class="icon-trash bigger-110"></i>																							</span>																						</a>																					</li>
+																				</ul>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+
+																<div class="itemdiv memberdiv">
+																	<div class="user">
+																		<img alt="Joe Doe's avatar" src="assets/avatars/avatar2.png" />																	</div>
+
+																	<div class="body">
+																		<div class="name">
+																			<a href="#">Joe Doe</a>																		</div>
+
+																		<div class="time">
+																			<i class="icon-time"></i>
+																			<span class="green">1 hour</span>																		</div>
+
+																		<div>
+																			<span class="label label-warning label-sm">pending</span>
+
+																			<div class="inline position-relative">
+																				<button class="btn btn-minier bigger btn-yellow btn-no-border dropdown-toggle" data-toggle="dropdown">
+																					<i class="icon-angle-down icon-only bigger-120"></i>																				</button>
+
+																				<ul class="dropdown-menu dropdown-only-icon dropdown-yellow pull-right dropdown-caret dropdown-close">
+																					<li>
+																						<a href="#" class="tooltip-success" data-rel="tooltip" title="Approve">
+																							<span class="green">
+																								<i class="icon-ok bigger-110"></i>																							</span>																						</a>																					</li>
+
+																					<li>
+																						<a href="#" class="tooltip-warning" data-rel="tooltip" title="Reject">
+																							<span class="orange">
+																								<i class="icon-remove bigger-110"></i>																							</span>																						</a>																					</li>
+
+																					<li>
+																						<a href="#" class="tooltip-error" data-rel="tooltip" title="Delete">
+																							<span class="red">
+																								<i class="icon-trash bigger-110"></i>																							</span>																						</a>																					</li>
+																				</ul>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+
+																<div class="itemdiv memberdiv">
+																	<div class="user">
+																		<img alt="Jim Doe's avatar" src="assets/avatars/avatar.png" />																	</div>
+
+																	<div class="body">
+																		<div class="name">
+																			<a href="#">Jim Doe</a>																		</div>
+
+																		<div class="time">
+																			<i class="icon-time"></i>
+																			<span class="green">2 hour</span>																		</div>
+
+																		<div>
+																			<span class="label label-warning label-sm">pending</span>
+
+																			<div class="inline position-relative">
+																				<button class="btn btn-minier bigger btn-yellow btn-no-border dropdown-toggle" data-toggle="dropdown">
+																					<i class="icon-angle-down icon-only bigger-120"></i>																				</button>
+
+																				<ul class="dropdown-menu dropdown-only-icon dropdown-yellow pull-right dropdown-caret dropdown-close">
+																					<li>
+																						<a href="#" class="tooltip-success" data-rel="tooltip" title="Approve">
+																							<span class="green">
+																								<i class="icon-ok bigger-110"></i>																							</span>																						</a>																					</li>
+
+																					<li>
+																						<a href="#" class="tooltip-warning" data-rel="tooltip" title="Reject">
+																							<span class="orange">
+																								<i class="icon-remove bigger-110"></i>																							</span>																						</a>																					</li>
+
+																					<li>
+																						<a href="#" class="tooltip-error" data-rel="tooltip" title="Delete">
+																							<span class="red">
+																								<i class="icon-trash bigger-110"></i>																							</span>																						</a>																					</li>
+																				</ul>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+
+																<div class="itemdiv memberdiv">
+																	<div class="user">
+																		<img alt="Alex Doe's avatar" src="assets/avatars/avatar5.png" />																	</div>
+
+																	<div class="body">
+																		<div class="name">
+																			<a href="#">Alex Doe</a>																		</div>
+
+																		<div class="time">
+																			<i class="icon-time"></i>
+																			<span class="green">3 hour</span>																		</div>
+
+																		<div>
+																			<span class="label label-danger label-sm">blocked</span>																		</div>
+																	</div>
+																</div>
+
+																<div class="itemdiv memberdiv">
+																	<div class="user">
+																		<img alt="Bob Doe's avatar" src="assets/avatars/avatar2.png" />																	</div>
+
+																	<div class="body">
+																		<div class="name">
+																			<a href="#">Bob Doe</a>																		</div>
+
+																		<div class="time">
+																			<i class="icon-time"></i>
+																			<span class="green">6 hour</span>																		</div>
+
+																		<div>
+																			<span class="label label-success label-sm arrowed-in">approved</span>																		</div>
+																	</div>
+																</div>
+
+																<div class="itemdiv memberdiv">
+																	<div class="user">
+																		<img alt="Susan's avatar" src="assets/avatars/avatar3.png" />																	</div>
+
+																	<div class="body">
+																		<div class="name">
+																			<a href="#">Susan</a>																		</div>
+
+																		<div class="time">
+																			<i class="icon-time"></i>
+																			<span class="green">yesterday</span>																		</div>
+
+																		<div>
+																			<span class="label label-success label-sm arrowed-in">approved</span>																		</div>
+																	</div>
+																</div>
+
+																<div class="itemdiv memberdiv">
+																	<div class="user">
+																		<img alt="Phil Doe's avatar" src="assets/avatars/avatar4.png" />																	</div>
+
+																	<div class="body">
+																		<div class="name">
+																			<a href="#">Phil Doe</a>																		</div>
+
+																		<div class="time">
+																			<i class="icon-time"></i>
+																			<span class="green">2 days ago</span>																		</div>
+
+																		<div>
+																			<span class="label label-info label-sm arrowed-in arrowed-in-right">online</span>																		</div>
+																	</div>
+																</div>
+
+																<div class="itemdiv memberdiv">
+																	<div class="user">
+																		<img alt="Alexa Doe's avatar" src="assets/avatars/avatar1.png" />																	</div>
+
+																	<div class="body">
+																		<div class="name">
+																			<a href="#">Alexa Doe</a>																		</div>
+
+																		<div class="time">
+																			<i class="icon-time"></i>
+																			<span class="green">3天以前</span>																		</div>
+
+																		<div>
+																			<span class="label label-success label-sm arrowed-in">approved</span>																		</div>
+																	</div>
+																</div>
+															</div>
+
+															<div class="center">
+																<i class="icon-group icon-2x green"></i>
+
+																&nbsp;
+																<a href="#">
+																	查看所有会员 &nbsp;
+																	<i class="icon-arrow-right"></i>																</a>															</div>
+
+															<div class="hr hr-double hr8"></div>
+														</div><!-- member-tab 
+
+														<div id="comment-tab" class="tab-pane">
+															<div class="comments">
+																<div class="itemdiv commentdiv">
+																	<div class="user">
+																		<img alt="Bob Doe's Avatar" src="assets/avatars/avatar.png" />																	</div>
+
+																	<div class="body">
+																		<div class="name">
+																			<a href="#">Bob Doe</a>																		</div>
+
+																		<div class="time">
+																			<i class="icon-time"></i>
+																			<span class="green">6 min</span>																		</div>
+
+																		<div class="text">
+																			<i class="icon-quote-left"></i>
+																			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque commodo massa sed ipsum porttitor facilisis&hellip;																		</div>
+																	</div>
+
+																	<div class="tools">
+																		<div class="inline position-relative">
+																			<button class="btn btn-minier bigger btn-yellow dropdown-toggle" data-toggle="dropdown">
+																				<i class="icon-angle-down icon-only bigger-120"></i>																			</button>
+
+																			<ul class="dropdown-menu dropdown-only-icon dropdown-yellow pull-right dropdown-caret dropdown-close">
+																				<li>
+																					<a href="#" class="tooltip-success" data-rel="tooltip" title="Approve">
+																						<span class="green">
+																							<i class="icon-ok bigger-110"></i>																						</span>																					</a>																				</li>
+
+																				<li>
+																					<a href="#" class="tooltip-warning" data-rel="tooltip" title="Reject">
+																						<span class="orange">
+																							<i class="icon-remove bigger-110"></i>																						</span>																					</a>																				</li>
+
+																				<li>
+																					<a href="#" class="tooltip-error" data-rel="tooltip" title="Delete">
+																						<span class="red">
+																							<i class="icon-trash bigger-110"></i>																						</span>																					</a>																				</li>
+																			</ul>
+																		</div>
+																	</div>
+																</div>
+
+																<div class="itemdiv commentdiv">
+																	<div class="user">
+																		<img alt="Jennifer's Avatar" src="assets/avatars/avatar1.png" />																	</div>
+
+																	<div class="body">
+																		<div class="name">
+																			<a href="#">Jennifer</a>																		</div>
+
+																		<div class="time">
+																			<i class="icon-time"></i>
+																			<span class="blue">15 min</span>																		</div>
+
+																		<div class="text">
+																			<i class="icon-quote-left"></i>
+																			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque commodo massa sed ipsum porttitor facilisis&hellip;																		</div>
+																	</div>
+
+																	<div class="tools">
+																		<div class="action-buttons bigger-125">
+																			<a href="#">
+																				<i class="icon-pencil blue"></i>																			</a>
+
+																			<a href="#">
+																				<i class="icon-trash red"></i>																			</a>																		</div>
+																	</div>
+																</div>
+
+																<div class="itemdiv commentdiv">
+																	<div class="user">
+																		<img alt="Joe's Avatar" src="assets/avatars/avatar2.png" />																	</div>
+
+																	<div class="body">
+																		<div class="name">
+																			<a href="#">Joe</a>																		</div>
+
+																		<div class="time">
+																			<i class="icon-time"></i>
+																			<span class="orange">22 min</span>																		</div>
+
+																		<div class="text">
+																			<i class="icon-quote-left"></i>
+																			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque commodo massa sed ipsum porttitor facilisis&hellip;																		</div>
+																	</div>
+
+																	<div class="tools">
+																		<div class="action-buttons bigger-125">
+																			<a href="#">
+																				<i class="icon-pencil blue"></i>																			</a>
+
+																			<a href="#">
+																				<i class="icon-trash red"></i>																			</a>																		</div>
+																	</div>
+																</div>
+
+																<div class="itemdiv commentdiv">
+																	<div class="user">
+																		<img alt="Rita's Avatar" src="assets/avatars/avatar3.png" />																	</div>
+
+																	<div class="body">
+																		<div class="name">
+																			<a href="#">Rita</a>																		</div>
+
+																		<div class="time">
+																			<i class="icon-time"></i>
+																			<span class="red">50 min</span>																		</div>
+
+																		<div class="text">
+																			<i class="icon-quote-left"></i>
+																			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque commodo massa sed ipsum porttitor facilisis&hellip;																		</div>
+																	</div>
+
+																	<div class="tools">
+																		<div class="action-buttons bigger-125">
+																			<a href="#">
+																				<i class="icon-pencil blue"></i>																			</a>
+
+																			<a href="#">
+																				<i class="icon-trash red"></i>																			</a>																		</div>
+																	</div>
+																</div>
+															</div>
+
+															<div class="hr hr8"></div>
+
+															<div class="center">
+																<i class="icon-comments-alt icon-2x green"></i>
+
+																&nbsp;
+																<a href="#">
+																	See all comments &nbsp;
+																	<i class="icon-arrow-right"></i>																</a>															</div>
+
+															<div class="hr hr-double hr8"></div>
+														</div>
+													</div>
+												</div><!-- /widget-main 
+											</div><!-- /widget-body 
+										</div><!-- /widget-box 
+									</div><!-- /span 
+
+									<div class="col-sm-6">
+										<div class="widget-box ">
+											<div class="widget-header">
+												<h4 class="lighter smaller">
+													<i class="icon-comment blue"></i>
+													会话												</h4>
+											</div>
+
+											<div class="widget-body">
+												<div class="widget-main no-padding">
+													<div class="dialogs">
+														<div class="itemdiv dialogdiv">
+															<div class="user">
+																<img alt="Alexa's Avatar" src="assets/avatars/avatar1.png" />															</div>
+
+															<div class="body">
+																<div class="time">
+																	<i class="icon-time"></i>
+																	<span class="green">4秒钟前</span>																</div>
+
+																<div class="name">
+																	<a href="#">Alexa</a>																</div>
+																<div class="text">大家好啊</div>
+
+																<div class="tools">
+																	<a href="#" class="btn btn-minier btn-info">
+																		<i class="icon-only icon-share-alt"></i>																	</a>																</div>
+															</div>
+														</div>
+
+														<div class="itemdiv dialogdiv">
+															<div class="user">
+																<img alt="John's Avatar" src="assets/avatars/avatar.png" />															</div>
+
+															<div class="body">
+																<div class="time">
+																	<i class="icon-time"></i>
+																	<span class="blue">38秒以前</span>																</div>
+
+																<div class="name">
+																	<a href="#">John</a>																</div>
+																<div class="text">框架很好用嘛</div>
+
+																<div class="tools">
+																	<a href="#" class="btn btn-minier btn-info">
+																		<i class="icon-only icon-share-alt"></i>																	</a>																</div>
+															</div>
+														</div>
+
+														<div class="itemdiv dialogdiv">
+															<div class="user">
+																<img alt="Bob's Avatar" src="assets/avatars/user.jpg" />															</div>
+
+															<div class="body">
+																<div class="time">
+																	<i class="icon-time"></i>
+																	<span class="orange">2分钟以前</span>																</div>
+
+																<div class="name">
+																	<a href="#">Bob</a>
+																	<span class="label label-info arrowed arrowed-in-right">admin</span>																</div>
+																<div class="text">欢迎大家使用ACE后台管理系统.</div>
+
+																<div class="tools">
+																	<a href="#" class="btn btn-minier btn-info">
+																		<i class="icon-only icon-share-alt"></i>																	</a>																</div>
+															</div>
+														</div>
+
+														<div class="itemdiv dialogdiv">
+															<div class="user">
+																<img alt="Jim's Avatar" src="assets/avatars/avatar4.png" />															</div>
+
+															<div class="body">
+																<div class="time">
+																	<i class="icon-time"></i>
+																	<span class="grey">3分钟以前</span>																</div>
+
+																<div class="name">
+																	<a href="#">Jim</a>																</div>
+																<div class="text">大家多提提BUG</div>
+
+																<div class="tools">
+																	<a href="#" class="btn btn-minier btn-info">
+																		<i class="icon-only icon-share-alt"></i>																	</a>																</div>
+															</div>
+														</div>
+
+														<div class="itemdiv dialogdiv">
+															<div class="user">
+																<img alt="Alexa's Avatar" src="assets/avatars/avatar1.png" />															</div>
+
+															<div class="body">
+																<div class="time">
+																	<i class="icon-time"></i>
+																	<span class="green">4分钟以前</span>																</div>
+
+																<div class="name">
+																	<a href="#">Alexa</a>																</div>
+																<div class="text">继续支持ACE后台系统</div>
+
+																<div class="tools">
+																	<a href="#" class="btn btn-minier btn-info">
+																		<i class="icon-only icon-share-alt"></i>																	</a>																</div>
+															</div>
+														</div>
+													</div>
+
+													<form>
+														<div class="form-actions">
+															<div class="input-group">
+																<input placeholder="Type your message here ..." type="text" class="form-control" name="message" />
+																<span class="input-group-btn">
+																	<button class="btn btn-sm btn-info no-radius" type="button">
+																		<i class="icon-share-alt"></i>
+																		发送																	</button>
+																</span>															</div>
+														</div>
+													</form>
+												</div><!-- /widget-main 
+											</div><!-- /widget-body 
+										</div><!-- /widget-box 
+									</div><!-- /span 
+								</div><!-- /row -->
+
+								<!-- PAGE CONTENT ENDS 
+							</div><!-- /.col 
+						</div><!-- /.row 
+					</div><!-- /.page-content 
+				</div><!-- /.main-content 
+
+				<div class="ace-settings-container" id="ace-settings-container">
+					<div class="btn btn-app btn-xs btn-warning ace-settings-btn" id="ace-settings-btn">
+						<i class="icon-cog bigger-150"></i>					</div>
+
+					<div class="ace-settings-box" id="ace-settings-box">
+						<div>
+							<div class="pull-left">
+								<select id="skin-colorpicker" class="hide">
+									<option data-skin="default" value="#438EB9">#438EB9</option>
+									<option data-skin="skin-1" value="#222A2D">#222A2D</option>
+									<option data-skin="skin-2" value="#C6487E">#C6487E</option>
+									<option data-skin="skin-3" value="#D0D0D0">#D0D0D0</option>
+								</select>
+							</div>
+							<span>&nbsp; 选择皮肤</span>						</div>
+
+						<div>
+							<input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-navbar" />
+							<label class="lbl" for="ace-settings-navbar"> 固定导航条</label>
+						</div>
+
+						<div>
+							<input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-sidebar" />
+							<label class="lbl" for="ace-settings-sidebar"> 固定滑动条</label>
+						</div>
+
+						<div>
+							<input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-breadcrumbs" />
+							<label class="lbl" for="ace-settings-breadcrumbs">固定面包屑</label>
+						</div>
+
+						<div>
+							<input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-rtl" />
+							<label class="lbl" for="ace-settings-rtl">切换到左边</label>
+						</div>
+
+						<div>
+							<input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-add-container" />
+							<label class="lbl" for="ace-settings-add-container">
+								切换窄屏
+								<b></b>							</label>
+						</div>
+					</div>
+				</div><!-- /#ace-settings-container 
+			</div><!-- /.main-container-inner 
+
+			<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+				<i class="icon-double-angle-up icon-only bigger-110"></i>			</a>		</div><!-- /.main-container -->
+
+		<!-- basic scripts -->
+
+		<!--[if !IE]> -->
+
+		<!-- <script src="/assets/js/jquery-2.0.3.min.js"></script> -->
+
+		<!-- <![endif]-->
+
+		<!--[if IE]>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<![endif]-->
+
+		<!--[if !IE]> -->
+
+		<script type="text/javascript">
+			window.jQuery || document.write("<script src='assets/js/jquery-2.0.3.min.js'>"+"<"+"script>");
+		</script>
+
+		<!-- <![endif]-->
+
+		
+</script>
+		<!--[if IE]>
+<script type="text/javascript">
+ window.jQuery || document.write("<script src='assets/js/jquery-1.10.2.min.js'>"+"<"+"script>");
+</script>
+<![endif]-->
+
+		<script type="text/javascript">
+			if("ontouchend" in document) document.write("<script src='assets/js/jquery.mobile.custom.min.js'>"+"<"+"script>");
+		</script>
+		<script src="assets/js/bootstrap.min.js"></script>
+		<script src="assets/js/typeahead-bs2.min.js"></script>
+
+		<!-- page specific plugin scripts -->
+
+		<!--[if lte IE 8]>
+		  <script src="assets/js/excanvas.min.js"></script>
+		<![endif]-->
+
+		<script src="assets/js/jquery-ui-1.10.3.custom.min.js"></script>
+		<script src="assets/js/jquery.ui.touch-punch.min.js"></script>
+		<script src="assets/js/jquery.slimscroll.min.js"></script>
+		<script src="assets/js/jquery.easy-pie-chart.min.js"></script>
+		<script src="assets/js/jquery.sparkline.min.js"></script>
+		<script src="assets/js/flot/jquery.flot.min.js"></script>
+		<script src="assets/js/flot/jquery.flot.pie.min.js"></script>
+		<script src="assets/js/flot/jquery.flot.resize.min.js"></script>
+
+		<!-- ace scripts -->
+
+		<script src="assets/js/ace-elements.min.js"></script>
+		<script src="assets/js/ace.min.js"></script>
+
+		<!-- inline scripts related to this page -->
+
+<!-- 新增产品 -->
+
+  <div class="modal-dialog" role="document" style="top:50%;">
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel" id="productModal" style="width:600px;left:50%">
+    <div class="modal-content" style="left:20%;">
+	<table id='product_manager' class="table table-bordered table-striped" style="display:block;border:none;">
+	<tr align="center"><td>	</td><td></td><td></td>	<td></td><td></td><td></td><td></td></tr>
+	<tr align="center"><td>	</td><td></td><td>新增产品</td><td align="left"><input type="text" placeholder="产品名称" id="product"></td><td></td><td><input type='button' id="add_product" value="新增产品"></td><td><input type='button' id="cancle" value="取消"></td></tr>
+	</table>
+    </div><!-- /.modal-content -->
+  </div>
+</div>		
+		
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel" id="myModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="gridSystemModalLabel">修改账号密码</h4>
+      </div>
+      <div class="modal-body">
+	  {% if hostgroups %}
+		{% for group in hostgroups%}
+			<div id='group_title'>{{group.group_name}}</div>
+			
+			{%if hostlist %}
+				{% for host in hostlist%}
+					{% if host.groupname == group.group_name %}
+					<!--	{{host.ipaddr}} <input type="checkbox" id="{{host.ipaddr}}" value="{{host.ipaddr}}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
+						<span id="hostname_span" data-toggle='tooltip' title="IP:{{host.ipaddr}} 描述:{{host.host_desc}}" data-placement="right">{{host.hostname}}</span>
+						<input type="checkbox" id="{{host.hostname}}" value="{{host.ipaddr}}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					{%endif%}
+				{%endfor%}
+			{%endif%}
+			<hr/>
+		{%endfor%}
+	  {%endif%}
+      
+      </div>
+	  <hr/>
+	  <div><input type='button' value='全选' id='select_all'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='button' id='select_invert' value='反选'></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" id="close_change_password">关闭</button>
+        <button type="button" class="btn btn-primary" id="change_password">修改密码</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div>
+</div>
+<a href="#" data-toggle="tooltip" title="Example tooltip" id='mytooltip'>请悬停在我的上面</a>
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" id="ajaxResult">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+      </div>
+      <div class="modal-body" id="ajaxResultContent">
+        处理中，请稍后...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" id="loading">
+  <div class="modal-dialog modal-sm" role="document" style="margin-top:40vh;">
+    <div class="modal-content" style="background:rgba(0,0,0,0);border:none;box-shadow:none;text-align:center;">
+	  <img src="./images/loading.svg">
+      <!--<div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body" id="ajaxResultContent">
+        处理中，请稍后...
+      </div>
+	  -->
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel" id="processUpload">
+	<div class="modal-dialog modal-sm" role="document" style="margin-top:40vh;">
+		<div class="modal-content">
+			<div class="progress progress-striped active">
+				<div class="progress-bar progress-bar-success" role="progressbar"
+         aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+         style="width: 100%;">
+				</div>
+			</div>
+	    </div>
+	</div>
+</div>
+
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel" id="remoteDeploy" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="gridSystemModalLabel">应用部署</h4>
+      </div>
+      <div class="modal-body">
+	  {% if hostgroups %}
+		{% for group in hostgroups%}
+			<div id='group_title'>{{group.group_name}}</div>
+			
+			{%if hostlist %}
+				{% for host in hostlist%}
+					{% if host.groupname == group.group_name %}
+					<!--	{{host.ipaddr}} <input type="checkbox" id="{{host.ipaddr}}" value="{{host.ipaddr}}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
+						<span id="hostname_span" data-toggle='tooltip' title="IP:{{host.ipaddr}} 描述:{{host.host_desc}}" data-placement="right">{{host.hostname}}</span>
+						<input type="checkbox" id="{{host.hostname}}" value="{{host.ipaddr}}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					{%endif%}
+				{%endfor%}
+			{%endif%}
+			<hr/>
+		{%endfor%}
+	  {%endif%}
+      
+      </div>
+	  <hr/>
+	  <div><input type='button' value='全选' id='select_all'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='button' id='select_invert' value='反选'></div>
+	 <!-- 处理版本等信息  -->
+	 <div id='extra'>
+	 <input type="hidden" class="form-control" id="package_path"  value="">
+	 <input type="hidden" class="form-control" id="unzippath" value="">
+	 <input type="hidden" class="form-control" id="runCommand" value="">
+	 </div>
+      <div class="modal-footer">
+        
+        <button type="button" class="btn btn-primary" id="startDeploy">开始部署</button>
+		<button type="button" class="btn btn-default" data-dismiss="modal" id="close_change_password">关闭</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div>
+</div>
+
+<!--展示部署进度-->
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel" id="deployProcess" aria-hidden="true">
+  <div class="modal-dialog" role="document" style="height:800px;width:800px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="gridSystemModalLabel">正在部署......</h4>
+      </div>
+      <div class="modal-body">
+		  <div class="form-group">
+			<label for="productName">所属产品</label><input type="text" class="form-control" id="productName" placeholder="请输入名称"  value="" readonly  style="background-color:gray">
+			<label for="apptName">应用名称</label>
+			<input type="text" class="form-control" id="appName" placeholder="请输入名称"  value="" readonly  style="background-color:gray">
+			<label for="apptVersion">应用版本</label>
+			<input type="text" class="form-control" id="appVersion" placeholder="请输入名称"  value="" readonly  style="background-color:gray">
+			
+		  </div>
+		  <div class="form-group">
+			<label>部署进度：</label>
+			<div class="progress">
+				<div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="border:1px solid white;width: 25%">
+                    同步软件包
+				</div>
+				<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="border:1px solid white;width: 25%">
+                    解压软件包
+				</div>
+				<div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="border:1px solid white;width: 50%">
+                    应用部署
+				</div>
+			</div>
+			<div class="progress progress-striped  active">
+				<div id="progressMain" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="1" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+				0%
+				</div>
+			</div>
+		  </div>
+      </div>
+
+	  
+</div>
+    </div><!-- /.modal-content -->
+	</br>
+	</br>
+  </div>
+</div>
+
+
+
+		<script type="text/javascript">
+		
+			jQuery(function($) {
+				$('.easy-pie-chart.percentage').each(function(){
+					var $box = $(this).closest('.infobox');
+					var barColor = $(this).data('color') || (!$box.hasClass('infobox-dark') ? $box.css('color') : 'rgba(255,255,255,0.95)');
+					var trackColor = barColor == 'rgba(255,255,255,0.95)' ? 'rgba(255,255,255,0.25)' : '#E2E2E2';
+					var size = parseInt($(this).data('size')) || 50;
+					$(this).easyPieChart({
+						barColor: barColor,
+						trackColor: trackColor,
+						scaleColor: false,
+						lineCap: 'butt',
+						lineWidth: parseInt(size/10),
+						animate: /msie\s*(8|7|6)/.test(navigator.userAgent.toLowerCase()) ? false : 1000,
+						size: size
+					});
+				})
+			
+				$('.sparkline').each(function(){
+					var $box = $(this).closest('.infobox');
+					var barColor = !$box.hasClass('infobox-dark') ? $box.css('color') : '#FFF';
+					$(this).sparkline('html', {tagValuesAttribute:'data-values', type: 'bar', barColor: barColor , chartRangeMin:$(this).data('min') || 0} );
+				});
+			
+			
+			
+			
+			  var placeholder = $('#piechart-placeholder').css({'width':'90%' , 'min-height':'150px'});
+			  var data = [
+				{ label: "social networks",  data: 38.7, color: "#68BC31"},
+				{ label: "search engines",  data: 24.5, color: "#2091CF"},
+				{ label: "ad campaigns",  data: 8.2, color: "#AF4E96"},
+				{ label: "direct traffic",  data: 18.6, color: "#DA5430"},
+				{ label: "other",  data: 10, color: "#FEE074"}
+			  ]
+			  function drawPieChart(placeholder, data, position) {
+			 	  $.plot(placeholder, data, {
+					series: {
+						pie: {
+							show: true,
+							tilt:0.8,
+							highlight: {
+								opacity: 0.25
+							},
+							stroke: {
+								color: '#fff',
+								width: 2
+							},
+							startAngle: 2
+						}
+					},
+					legend: {
+						show: true,
+						position: position || "ne", 
+						labelBoxBorderColor: null,
+						margin:[-30,15]
+					}
+					,
+					grid: {
+						hoverable: true,
+						clickable: true
+					}
+				 })
+			 }
+			 drawPieChart(placeholder, data);
+			
+			 /**
+			 we saved the drawing function and the data to redraw with different position later when switching to RTL mode dynamically
+			 so that's not needed actually.
+			 */
+			 placeholder.data('chart', data);
+			 placeholder.data('draw', drawPieChart);
+			
+			
+			
+			  var $tooltip = $("<div class='tooltip top in'><div class='tooltip-inner'></div></div>").hide().appendTo('body');
+			  var previousPoint = null;
+			
+			  placeholder.on('plothover', function (event, pos, item) {
+				if(item) {
+					if (previousPoint != item.seriesIndex) {
+						previousPoint = item.seriesIndex;
+						var tip = item.series['label'] + " : " + item.series['percent']+'%';
+						$tooltip.show().children(0).text(tip);
+					}
+					$tooltip.css({top:pos.pageY + 10, left:pos.pageX + 10});
+				} else {
+					$tooltip.hide();
+					previousPoint = null;
+				}
+				
+			 });
+			
+			
+			
+			
+			
+			
+				var d1 = [];
+				for (var i = 0; i < Math.PI * 2; i += 0.5) {
+					d1.push([i, Math.sin(i)]);
+				}
+			
+				var d2 = [];
+				for (var i = 0; i < Math.PI * 2; i += 0.5) {
+					d2.push([i, Math.cos(i)]);
+				}
+			
+				var d3 = [];
+				for (var i = 0; i < Math.PI * 2; i += 0.2) {
+					d3.push([i, Math.tan(i)]);
+				}
+				
+			
+				var sales_charts = $('#sales-charts').css({'width':'100%' , 'height':'220px'});
+				$.plot("#sales-charts", [
+					{ label: "Domains", data: d1 },
+					{ label: "Hosting", data: d2 },
+					{ label: "Services", data: d3 }
+				], {
+					hoverable: true,
+					shadowSize: 0,
+					series: {
+						lines: { show: true },
+						points: { show: true }
+					},
+					xaxis: {
+						tickLength: 0
+					},
+					yaxis: {
+						ticks: 10,
+						min: -2,
+						max: 2,
+						tickDecimals: 3
+					},
+					grid: {
+						backgroundColor: { colors: [ "#fff", "#fff" ] },
+						borderWidth: 1,
+						borderColor:'#555'
+					}
+				});
+			
+			
+				$('#recent-box [data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+				function tooltip_placement(context, source) {
+					var $source = $(source);
+					var $parent = $source.closest('.tab-content')
+					var off1 = $parent.offset();
+					var w1 = $parent.width();
+			
+					var off2 = $source.offset();
+					var w2 = $source.width();
+			
+					if( parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2) ) return 'right';
+					return 'left';
+				}
+			
+			
+				$('.dialogs,.comments').slimScroll({
+					height: '300px'
+			    });
+				
+				
+				//Android's default browser somehow is confused when tapping on label which will lead to dragging the task
+				//so disable dragging when clicking on label
+				var agent = navigator.userAgent.toLowerCase();
+				if("ontouchstart" in document && /applewebkit/.test(agent) && /android/.test(agent))
+				  $('#tasks').on('touchstart', function(e){
+					var li = $(e.target).closest('#tasks li');
+					if(li.length == 0)return;
+					var label = li.find('label.inline').get(0);
+					if(label == e.target || $.contains(label, e.target)) e.stopImmediatePropagation() ;
+				});
+			
+				$('#tasks').sortable({
+					opacity:0.8,
+					revert:true,
+					forceHelperSize:true,
+					placeholder: 'draggable-placeholder',
+					forcePlaceholderSize:true,
+					tolerance:'pointer',
+					stop: function( event, ui ) {//just for Chrome!!!! so that dropdowns on items don't appear below other items after being moved
+						$(ui.item).css('z-index', 'auto');
+					}
+					}
+				);
+				$('#tasks').disableSelection();
+				$('#tasks input:checkbox').removeAttr('checked').on('click', function(){
+					if(this.checked) $(this).closest('li').addClass('selected');
+					else $(this).closest('li').removeClass('selected');
+				});
+				
+				
+			
+			})
+		</script>
+	<div style="display:none"><script src='http://v7.cnzz.com/stat.php?id=155540&web_id=155540' language='JavaScript' charset='gb2312'></script></div>
+</body>
+</html>
+
