@@ -12,15 +12,21 @@ from remote_user_command import CmdManager
 from monitor_reporting import *
 from password_modify import *
 from app_deploy import *
+#from tasks import *
 from Product import *
 from config.settings import *
+from celery import Celery
 import sys
 import json
 app=Flask(__name__,static_folder='templates', static_url_path='')
 app.config['SECRET_KEY']='automatic system'
 app.config['SQLALCHEMY_DATABASE_URI']='mysql://automatic:automatic@localhost:3306/automatic'
+app.config['CELERY_BROKER_URL']='redis://localhost:6379/5'
+app.config['CELERY_RESULT_BACKEND']='redis://localhost:6379/6'
+celery=Celery(app.name,broker=app.config['CELERY_BROKER_URL'])
 #app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN']=True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=True
+celery.conf.update(app.config)
 db=SQLAlchemy(app)
 #def UserList():
 #	userlist=Users.query.order_by(Users.create_time).all()
@@ -898,6 +904,7 @@ def syncPacket():
                         print("Error:%s" %result)
 
                 except Exception,e:
+			print "vvv "*10
 			print("Has an Error:%s" % e) 
                         errorlist.append(ip)
 			result={'result':0,'errorlist':errorlist}
@@ -981,4 +988,4 @@ def testConnect():
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 
 if __name__=='__main__':
-	app.run(host='0.0.0.0',port=6699,debug=True)
+	app.run(host='0.0.0.0',port=6699,debug=True,threaded=True)

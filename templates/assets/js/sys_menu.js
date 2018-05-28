@@ -211,7 +211,10 @@ $(document).ready(function(){
 			var ipArray=new Array();
 			var $iplist='';
 			if($("#progressMain").hasClass("progress-bar-success")){
-					$("#progressMain").hasClass("progress-bar-success")
+					$("#progressMain").removeClass("progress-bar-success")
+			}
+			if($("#progressMain").hasClass("progress-bar-danger")){
+					$("#progressMain").removeClass("progress-bar-danger")
 			}
 			$("#progressMain").css({"width":"0%"}).text("0%").removeClass("progress-bar-success").addClass("progress-bar-info active");
 			$(".modal-footer #processMessage").html("<span id='processMessage'></span>");

@@ -127,11 +127,11 @@ class AppDeploy():
 			params='src="%s" dest="%s" force=yes mode=644' %(source,dest)
 			msg=ansibletask.ansiblePlay('copy',params)
                 	msg=msg.replace(',','</br>')
-                	msg=msg.replace('\\n','</br>')
+                	msg=msg.replace('\n','</br>')
 			result={'result':1,'message':msg}
 		except Exception,e:
 			print "xxxx:%s" % e
-			result={'result':0,message:e}
+			result={'result':0,'message':e}
 		return result
 
 	def unzipPacket(self,**kwargs):
@@ -145,11 +145,11 @@ class AppDeploy():
 			params='src="%s" dest="%s" copy=no mode=0755' %(source,dest)
 			msg=ansibletask.ansiblePlay('unarchive',params)
                 	msg=msg.replace(',','</br>')
-                	msg=msg.replace('\\n','</br>')
+                	msg=msg.replace('\n','</br>')
 			result={'result':1,'message':msg}
 		except Exception,e:
 			print "xxxx:%s" % e
-			result={'result':0,message:e}
+			result={'result':0,'message':e}
 		return result
 
 
@@ -159,13 +159,28 @@ class AppDeploy():
 		if 'cmd' in kwargs:
 			cmd=kwargs['cmd']
 		params='%s' %(cmd)
+		"""
 		try:
 			msg=ansibletask.ansiblePlay('shell',params)
                 	msg=msg.replace(',','</br>')
-                	msg=msg.replace('\\n','</br>')
+                	msg=msg.replace('\n','</br>')
 			result={'result':1,'message':msg}
 		except Exception,e:
-			print "xxxx:%s" % e
-                        result={'result':0,message:e}
+			print "xxxx:%s dir:%s" % (msg,dir(e))
+                        result={'result':0,'message':'aa'}
+		"""
+		try:
+			msg=ansibletask.ansiblePlay('shell',params)
+                	msg=msg.replace(',','</br>')
+                	msg=msg.replace('\n','</br>')
+			if msg.encode('unicode-escape').decode('string_escape').startswith('changed'):
+				result={'result':1,'message':msg}
+			else:
+				result={'result':0,'message':msg}
+			print "MESSAGE:%s" % msg.encode('unicode-escape').decode('string_escape')
+		except Exception,e:
+			print "xxxx:%s" % (e)
+                        result={'result':0,'message':e.message}
+		
 		return result
 

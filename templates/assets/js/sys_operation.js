@@ -1362,7 +1362,7 @@ $(document).ready(function(){
 										alert("主机信息添加成功!");
 										$(".top").hide();
 										$("#Layer_host").hide();
-										$("#hostarea").append("<tr border='1'><td width='6%' align='center'></td><td width='6%' align='center'>"+$ipaddr+"</td><td width='6%' align='center'>"+$hostname+"</td><td width='14%' align='center' >"+$sshport+"</td><td width='21%' align='center' >"+$remote_user+"</td><td width='53%' align='center' >"+$host_desc+"</td></tr>")
+										$("#hostarea").append("<tr border='1'><td width='6%' align='center'></td><td width='6%' align='center'>"+$hostname+"</td><td width='6%' align='center'>"+$ipaddr+"</td><td width='14%' align='center' >"+$sshport+"</td><td width='21%' align='center' >"+$remote_user+"</td><td width='53%' align='center' >"+$host_desc+"</td></tr>")
 									}else if (data.result==2){
 										alert("主机信息已经存在，添加失败");
 										$("#Layer_host #ipaddr").val('');

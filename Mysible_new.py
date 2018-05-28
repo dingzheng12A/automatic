@@ -51,7 +51,6 @@ class AnsibleTask(object):
         	self.hostsFile.write(host+'\n')
         self.hostsFile.close()
         self.inventory = Inventory(loader=self.loader, variable_manager=self.variable_manager, host_list=self.hostsFile.name)
-	print "self.inventory:%s dir:%s" % (self.inventory,dir(self.inventory))
         self.variable_manager.set_inventory(self.inventory)
 
     def ansiblePlay(self, action,args):
@@ -75,7 +74,7 @@ class AnsibleTask(object):
 	else:
 		tasks = [
                         dict(action=dict(module='shell', args=args), register='shell_out'),
-                        dict(action=dict(module='debug', args=dict(msg='{{shell_out.stdout}}')))
+                        #dict(action=dict(module='debug', args=dict(msg='{{shell_out.stdout}}')))
                 ]
         play_source =  dict(
                 name = "Ansible Play",
@@ -96,11 +95,15 @@ class AnsibleTask(object):
                       passwords=self.passwords,
                       stdout_callback=self.callback,
                   )
-            result = self.tqm.run(play)
-	    #print("dir tqm:",dir(self.tqm))
-	    #print("send callback:  ",self.callback.xxx)
+	    print "Info:%s" % self.tqm
+	    try:
+            	result = self.tqm.run(play)
+		print "inventory:%s" % self.inventory.get_hosts()
+	    except Exception,e:
+		print "Has an Error:%s" % e
             print("Msg: ",self.callback.Msg)
-	    return self.calback.Msg
+	    return self.callback.Msg
+	    print '*- '*10
         finally:
             #print result
             if tqm is not None:
@@ -108,7 +111,8 @@ class AnsibleTask(object):
                 os.remove(self.hostsFile.name)
                 self.inventory.clear_pattern_cache()
 	    if result==0:
-		return self.callback.Msg
+		print 'CCC '*10
+		#return self.callback.Msg
 
 #c=AnsibleTask('localhost')
 #c.ansiblePlay('user','name=xyz')
