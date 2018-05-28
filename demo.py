@@ -36,7 +36,7 @@ def index_page():
 	return render_template('login.html')
 
 @app.route('/logincheck',methods=['POST','GET'])
-def logi_check():
+def login_check():
 	if request.method == 'POST':
 		user=request.form['username']
 		password=request.form['pwd']

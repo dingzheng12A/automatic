@@ -2,13 +2,12 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>Star-River 运维自动化平台</title>
+		<title>控制台 - Bootstrap后台管理系统模版Ace下载</title>
 		<meta name="keywords" content="Bootstrap模版,Bootstrap模版下载,Bootstrap教程,Bootstrap中文" />
 		<meta name="description" content="站长素材提供Bootstrap模版,Bootstrap教程,Bootstrap中文翻译等相关Bootstrap插件下载" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<!-- basic styles -->
 		<link href="assets/css/bootstrap.min.css" rel="stylesheet" />
-		<link rel="stylesheet" type="text/css" media="all" href="assets/css/daterangepicker.css" /> 
 		<link rel="stylesheet" href="assets/css/font-awesome.min.css" />
 
 		<!--[if IE 7]>
@@ -26,14 +25,8 @@
 		<link rel="stylesheet" href="assets/css/ace.min.css" />
 		<link rel="stylesheet" href="assets/css/ace-rtl.min.css" />
 		<link rel="stylesheet" href="assets/css/ace-skins.min.css" />
-		<!--  新增时间控件 -->
-		
-
-		
 		<link rel="stylesheet" href="assets/css/user-role.css" />
 		<link rel="stylesheet" href="assets/css/sys-menu.css" />
-		
-		
 		<!--[if lte IE 8]>
 		  <link rel="stylesheet" href="assets/css/ace-ie.min.css" />
 		<![endif]-->
@@ -41,25 +34,10 @@
 		<!-- inline styles related to this page -->
 
 		<!-- ace settings handler -->
-		
-		
+
 		<script src="assets/js/ace-extra.min.js"></script>
-		<script src="assets/js/jquery-2.0.3.min.js" ></script>
-		<script type="text/javascript" src="assets/js/bootstrap.min.js" ></script>  
-		<script type="text/javascript" src="assets/js/date-time/moment.min.js" ></script>  
-		<script type="text/javascript" src="assets/js/date-time/daterangepicker.min.js" ></script>  
-		
-		
-		<!--  新增时间控件 -->
-		<!-- <script type="text/javascript" src="assets/js/date-time/moment.min.js"></script> -->
-		 
-		<!-- <script type="text/javascript" src="assets/js/date-time/bootstrap-datepicker.min.js"></script> --> 
+		<script src="assets/js/jquery-3.2.1.min.js"></script>
 		<script src="assets/js/sys_operation.js"></script>
-		<script src="assets/js/ansible_operator.js"></script>
-		<script src="assets/js/sys_menu.js"></script>
-		
-		
-		
 		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 
 		<!--[if lt IE 9]>
@@ -75,7 +53,7 @@
 	</div>
 <!-- 分配权限 -->
 <div  id='authlist'>
-<table border='1' id='autharea' style="height:600px;overflow:scroll;">
+<table border='1' id='autharea'>
 {%for menu in menulist%}
 <tr>
 <td colspan="2"><li><span id='li_parent_menu'>{{menu.name}}<input type="checkbox" id="p_menu_{{menu.id}}" value="{{menu.id}}"></span><hr /><ul>{%for menu1 in menulist1%}{%if menu1.parent_id==menu.id%}<li>{{menu1.name}}<input type="checkbox" id="sub_menu_{{menu1.id}}" value="{{menu1.id}}"></span></li>{%endif%}{%endfor%}</ul></li></td>
@@ -86,37 +64,6 @@
   <td width="277"><input name="Cancle" type="button" id="Cancle" value="取消" /></td>
 </tr>
 </table>
-</div>
-<!-- 重置密码 -->
-	<div  class="resetpass">
-  <table width="23%" border="1" align="center" cellspacing="0" cellpadding="0"  >
-    <tr>
-      <td width="41%">用户名：</td>
-      <td width="59%"><label>
-        <input name="username" type="text" id="username" size="15" value="{{username}}" readonly>
-      </label></td>
-    </tr>
-    <tr>
-      <td>原始密码：</td>
-      <td><label>
-        <input name="oldpass" type="password" id="oldpass" size="15">
-      </label></td>
-    </tr>
-    <tr>
-      <td>新密码:</td>
-      <td><label>
-        <input name="newpass" type="password" id="newpass" size="15">
-      </label></td>
-    </tr>
-    <tr>
-      <td>重复输入密码</td>
-      <td><input name="reptpass" type="password" id="reptpass" size="15"></td>
-    </tr>
-    <tr>
-      <td><input name="modify" type="submit" id="modify" value="修改" disabled></td>
-      <td><input name="cancle" type="button" id="cancle" value="取消"></td>
-    </tr>
-  </table>
 </div>
 
 <!-- 添加主机表单 -->
@@ -150,12 +97,6 @@
         </label></td>
       </tr>
 	  <tr>
-        <td>远端用户密码：</td>
-        <td><label>
-          <input name="remote_userPassword" type="password" id="remote_userPassword" />
-        </label></td>
-      </tr>
-	  <tr>
         <td>所属区域:</td>
         <td><label>
           <select>
@@ -173,9 +114,6 @@
         </label></td>
       </tr>
       <tr>
-		<td align="center"><label>
-          <input name="testConnect" type="button" id="testConnect" value="测试连接" />
-        </label></td>
         <td><label>
           <input name="add" type="button" id="add" value="添加" disabled/>
         </label></td>
@@ -280,8 +218,37 @@
   </tr>
 </table>
 </div> 
-
-<!--  添加用户表单 -->
+<!-- 重置密码 -->
+	<div  class="resetpass">
+  <table width="23%" border="1" align="center" cellspacing="0" cellpadding="0"  >
+    <tr>
+      <td width="41%">用户名：</td>
+      <td width="59%"><label>
+        <input name="username" type="text" id="username" size="15" value="{{username}}" readonly>
+      </label></td>
+    </tr>
+    <tr>
+      <td>原始密码：</td>
+      <td><label>
+        <input name="oldpass" type="password" id="oldpass" size="15">
+      </label></td>
+    </tr>
+    <tr>
+      <td>新密码:</td>
+      <td><label>
+        <input name="newpass" type="password" id="newpass" size="15">
+      </label></td>
+    </tr>
+    <tr>
+      <td>重复输入密码</td>
+      <td><input name="reptpass" type="password" id="reptpass" size="15"></td>
+    </tr>
+    <tr>
+      <td><input name="modify" type="submit" id="modify" value="修改" disabled></td>
+      <td><input name="cancle" type="button" id="cancle" value="取消"></td>
+    </tr>
+  </table>
+</div>
 	 <div id="Layer2">
     <table  width="50%" border="1" align="center">
       <tr>
@@ -327,7 +294,7 @@
       </tr>
     </table>
   </div>
-  <!--  添加角色表单 -->
+  
   <div id="Layer_role">
     <table  width="50%" border="1" align="center">
       <tr>
@@ -355,7 +322,7 @@
       </tr>
     </table>
   </div>
-<!-- 关联用户到角色 -->
+
   <div id="Layer_assign">
   <table width="17%" border="1" id="userassign">
   <tr>
@@ -388,51 +355,6 @@
 </table>
   </div>  
   
-  
-<div id="Layer2_monitor_source">
-    <table  width="75%" border="1" align="center">
-      <tr>
-        <td colspan="2"><span class="STYLE5">监控服务器设置</span></td>
-      </tr>
-	  <tr>
-        <td width="27%">服务器标识:</td>
-        <td width="73%"><label>
-          <input name="server_identifier" type="text" id="server_identifier" placeholder="服务器标识"/>
-        </label></td>
-      </tr>
-      <tr>
-        <td width="27%">服务器IP:</td>
-        <td width="73%"><label>
-          <input name="server_name" type="text" id="server_name" placeholder="13.228.136.199:3306/zabbix"/>
-        </label></td>
-      </tr>
-      <tr>
-        <td>账号：</td>
-        <td><label>
-          <input name="nicename" type="text" id="nicename" />
-        </label></td>
-      </tr>
-      <tr>
-        <td>密码：</td>
-        <td><label>
-          <input name="passwd" type="password" id="passwd" />
-        </label></td>
-      </tr>
-      <tr>
-        <td><label>
-          <input name="add" type="button" id="add" value="添加" disabled/>
-        </label></td>
-        <td align="center"><label>
-          <input name="cancle" type="button" id="cancle" value="取消" />
-        </label></td><td align="center"><label>
-          <input name="Test_connect" type="button" id="Test_connect" value="测试连接" />
-        </label></td>
-      </tr>
-    </table>
-  </div> 
-
- 
-<!-- 取消用户和角色的关联关系 -->  
 <div id="Layer_remove">
   <table width="17%" border="1" id="userassign">
   <tr>
@@ -714,61 +636,91 @@
 							<span class="btn btn-warning"></span>
 
 							<span class="btn btn-danger"></span>						</div>
-					</div><!-- #sidebar-shortcuts -->
-
+					</div>
+		
 					<ul class="nav nav-list">
+					
 						<li class="active">
 							<a href="#">
 								<i class="icon-dashboard"></i>
 								<span class="menu-text"> 控制台 </span>							</a>						</li>
-					
-						<li>
 						<!--
-							<a href="#" class="dropdown-toggle">
+						{%for ids in idslist%}
+						<li>
+							{%if ids|int==2%}<a href="#" class="dropdown-toggle">
 								<i class="icon-text-width"></i>
-							<span class="menu-text">用户管理</span></a>						
+							<span class="menu-text">用户管理</span></a>	{%endif%}					
 							<ul class="submenu">
-								<li>
+								{%if ids|int==21%}<li>
 									<a href="#">
 										<i class="icon-double-angle-right"></i>
-										<span id="adduser">添加用户</span>									</a>								</li>
+										<span id="adduser">添加用户</span>									</a>								</li>{%endif%}
 
-								<li>
+								{%if ids|int==22%}<li>
 									<a href="#">
 										<i class="icon-double-angle-right"></i>
-										<span id="deluser">删除用户	</span>								</a>								</li>
+										<span id="deluser">删除用户	</span>								</a>								</li>{%endif%}
+								{%if ids|int==23%}<li>
+									<a href="#">
+										<i class="icon-double-angle-right"></i>
+										<span id="associate">关联到角色</span>									</a>								</li>{%endif%}
 
 								<li>
 							</ul></li>
 
+						
 						<li>
-							<a href="#" class="dropdown-toggle">
+							{%if ids|int==3%}<a href="#" class="dropdown-toggle">
 								<i class="icon-desktop"></i>
 								<span class="menu-text"> 角色管理 </span>
 
-								<b class="arrow icon-angle-down"></b>							</a>
+								<b class="arrow icon-angle-down"></b>							</a>{%endif%}
 
 							<ul class="submenu">
-								<li>
+								{%if ids|int==31%}<li>
 									<a href="#">
 										<i class="icon-double-angle-right"></i>
-										<span id="addrole">添加角色</span>								</a>								</li>
+										<span id="addrole">添加角色</span>								</a>								</li>{%endif%}
+
+								{%if ids|int==32%}<li>
+									<a href="#">
+										<i class="icon-double-angle-right"></i>
+										<span id="delrole">删除角色</span>									</a>								</li>{%endif%}
 
 								<li>
 									<a href="#">
 										<i class="icon-double-angle-right"></i>
-										<span id="delrole">删除角色</span>									</a>								</li>
+										关联到用户									</a>								</li>
 
-									<li>
+								{%if ids|int==33%}<li>
 									<a href="#">
 										<i class="icon-double-angle-right"></i>
-										<span id="alloc_auth">分配权限</span>									</a>								</li> 
+										<span id="alloc_auth">分配权限</span>									</a>								</li>{%endif%} 
 
 						
 						
 							</ul>
 						</li>
 
+						<li>
+							{%if ids|int==4%}<a href="#" class="dropdown-toggle">
+								<i class="icon-list"></i>
+								<span class="menu-text"> 权限管理 </span>
+
+								<b class="arrow icon-angle-down"></b>							</a>{%endif%} 
+
+							<ul class="submenu">
+								{%if ids|int==41%}<li>
+									<a href="#">
+										<i class="icon-double-angle-right"></i>
+										添加权限									</a>								</li>{%endif%} 
+
+								{%if ids|int==42%}<li>
+									<a href="#">
+										<i class="icon-double-angle-right"></i>
+										删除权限									</a>								</li>{%endif%} 
+							</ul>
+						</li>
 						<li>
 							<a href="#" class="dropdown-toggle">
 								<i class="icon-list"></i>
@@ -791,7 +743,10 @@
 										<i class="icon-double-angle-right"></i>
 										编辑菜单								</a>								</li>
 							</ul>
-						</li> -->
+						</li>
+						{%endfor%}
+						-->
+						
 						{% for menu in menulist %}
 							
 					
@@ -837,6 +792,68 @@
 
 						<li></li>
 
+					<!--	<li>
+						  <ul class="submenu">
+								<li>
+									<a href="profile.html">
+										<i class="icon-double-angle-right"></i>
+										用户信息									</a>								</li>
+
+								<li>
+									<a href="inbox.html">
+										<i class="icon-double-angle-right"></i>
+										收件箱									</a>								</li>
+
+								<li>
+									<a href="pricing.html">
+										<i class="icon-double-angle-right"></i>
+										售价单									</a>								</li>
+
+								<li>
+									<a href="invoice.html">
+										<i class="icon-double-angle-right"></i>
+										购物车									</a>								</li>
+
+								<li>
+									<a href="timeline.html">
+										<i class="icon-double-angle-right"></i>
+										时间轴									</a>								</li>
+
+								<li>
+									<a href="login.html">
+										<i class="icon-double-angle-right"></i>
+										登录 &amp; 注册									</a>								</li>
+							</ul>
+						</li> 
+
+						<li>
+						  <ul class="submenu">
+								<li>
+									<a href="faq.html">
+										<i class="icon-double-angle-right"></i>
+										帮助									</a>								</li>
+
+								<li>
+									<a href="error-404.html">
+										<i class="icon-double-angle-right"></i>
+										404错误页面									</a>								</li>
+
+								<li>
+									<a href="error-500.html">
+										<i class="icon-double-angle-right"></i>
+										500错误页面									</a>								</li>
+
+								<li>
+									<a href="grid.html">
+										<i class="icon-double-angle-right"></i>
+										网格									</a>								</li>
+
+								<li>
+									<a href="blank.html">
+										<i class="icon-double-angle-right"></i>
+										空白页面									</a>								</li>
+							</ul>
+						</li>  -->
 					</ul>
 					<!-- /.nav-list -->
 
@@ -938,7 +955,7 @@
       <td colspan="5"><div align="center">添加菜单</div></td>
     </tr>
     <tr>
-      <td width="10%">上级菜单</td>
+      <td width="10%">上级菜单aaa</td>
       <td colspan="4"><select name="add_parent_menu" id="add_parent_menu">
 	   <option value=1>/root</option>
 	  {%for menu in menulist%}
@@ -981,8 +998,8 @@
 							<!-- 删除用户 -->
 							<div id='deluser' class="deluser">
 								<div id='add'><input name='del_btn' type='button' id='del_btn' value='批量删除用户' disabled/></div>
-								<table  id='userlist' width='1661' border='1' class="table table-bordered table-striped">
-								<tr  class="info"><td width='6%' align='center' bgcolor='#66b3ff'>id</td><td width='6%' align='center' bgcolor='#66b3ff'>用户名</td><td width='14%' align='center' bgcolor='#66b3ff'>邮箱地址</td><td width='21%' align='center' bgcolor='#66b3ff'>用户状态</td><td width='53%' align='center' bgcolor='#66b3ff'>修改</td></tr>
+								<table  id='userlist' width='1661' border='1'>
+								<tr><td width='6%' align='center' bgcolor='#66b3ff'>id</td><td width='6%' align='center' bgcolor='#66b3ff'>用户名</td><td width='14%' align='center' bgcolor='#66b3ff'>邮箱地址</td><td width='21%' align='center' bgcolor='#66b3ff'>用户状态</td><td width='53%' align='center' bgcolor='#66b3ff'>修改</td></tr>
 								{%if userlist %}
 								{% for user in userlist%}
 								<tr border='1'><td width='6%' align='center'><input type='checkbox' id='id' value='{{user.id}}'></td><td width='6%' align='center'>{{user.username}}</td><td width='14%' align='center' >{{user.email}}</td><td width='21%' align='center' >{% if user.status == 1%}启用{%else%}禁用{% endif %}</td><td width='53%' align='center' ><input type='button' id='del_single' name='del_single' value='删除' disabled></td></tr>
@@ -990,11 +1007,26 @@
 								{%endif%}
 								</table>
 								</div>
+							
+							<!-- 设置页面 -->
 							<!-- 添加主机 -->
+							<!--
+							<div id='addhost' class="host">
+								<div id='add'><input name='add_btn' type='button' id='add_btn' value='添加用户' /></div>
+								<table  id='userarea' width='1661' border='1'>
+								<tr><td width='6%' align='center' bgcolor='#66b3ff'>id</td><td width='6%' align='center' bgcolor='#66b3ff'>用户名</td><td width='14%' align='center' bgcolor='#66b3ff'>描述信息</td><td width='21%' align='center' bgcolor='#66b3ff'>用户管理</td><td width='53%' align='center' bgcolor='#66b3ff'>修改用户信息</td></tr>
+								{%if userlist %}
+								{% for user in userlist%}
+								<tr border='1'><td width='6%' align='center'>{{user.id}}</td><td width='6%' align='center'>{{user.username}}</td><td width='14%' align='center' >{{user.email}}</td><td width='21%' align='center' >{% if user.status == 1%}启用{%else%}禁用{% endif %}</td><td width='53%' align='center' >修改密码:<input type='password' id='resetpass' name='resetpass' placeholder='重置密码'/>启用/禁用:<input type='checkbox' {% if user.status==1%}checked{%endif%} id='enable'>&nbsp;&nbsp;&nbsp;&nbsp;<input type='button' id='commit' name='commit' value='修改' disabled></td></tr>
+								{% endfor %}
+								{%endif%}
+								</table>
+								</div>
+							-->
 							<div id='addhost' class="addhost">
 								<div id='add'><input name='add_host_btn' type='button' id='add_host_btn' value='添加主机' /></div>
-								<table  id='hostarea' width='1661' border='1' class="table table-bordered table-striped">
-								<tr class="danger"><td width='6%' align='center' bgcolor='#66b3ff'>id</td><td width='6%' align='center' bgcolor='#66b3ff'>HostName</td><td width='6%' align='center' bgcolor='#66b3ff'>ip地址</td><td width='14%' align='center' bgcolor='#66b3ff'>ssh端口</td><td width='21%' align='center' bgcolor='#66b3ff'>远端用户</td><td width='53%' align='center' bgcolor='#66b3ff'>主机描述信息</td></tr>
+								<table  id='hostarea' width='1661' border='1'>
+								<tr><td width='6%' align='center' bgcolor='#66b3ff'>id</td><td width='6%' align='center' bgcolor='#66b3ff'>HostName</td><td width='6%' align='center' bgcolor='#66b3ff'>ip地址</td><td width='14%' align='center' bgcolor='#66b3ff'>ssh端口</td><td width='21%' align='center' bgcolor='#66b3ff'>远端用户</td><td width='53%' align='center' bgcolor='#66b3ff'>主机描述信息</td></tr>
 								{%if hostlist %}
 								{% for host in hostlist%}
 								<tr border='1'><td width='6%' align='center'>{{host.id}}</td><td width='6%' align='center'>{{host.hostname}}</td><td width='6%' align='center'>{{host.ipaddr}}</td><td width='14%' align='center' >{{host.sshport}}</td><td width='21%' align='center' >{{host.remote_user}}</td><td width='53%' align='center' >{{host.host_desc}}</td></tr>
@@ -1006,8 +1038,8 @@
 							<!-- 删除主机 -->
 							<div id='delhost' class="delhost">
 								<div id='add'><input name='del_host_btn' type='button' id='del_host_btn' value='批量删除主机' disabled/></div>
-								<table  id='hostlist' width='1661' border='1' class="table table-bordered table-striped">
-								<tr class="danger"><td width='6%' align='center' bgcolor='#66b3ff'>主机ID</td><td width='6%' align='center' bgcolor='#66b3ff'>HostName</td><td width='6%' align='center' bgcolor='#66b3ff'>主机IP<</td><td width='14%' align='center' bgcolor='#66b3ff'>SSH端口</td><td width='21%' align='center' bgcolor='#66b3ff'>远端用户</td><td width='53%' align='center' bgcolor='#66b3ff'>删除操作</td></tr>
+								<table  id='hostlist' width='1661' border='1'>
+								<tr><td width='6%' align='center' bgcolor='#66b3ff'>主机ID</td><td width='6%' align='center' bgcolor='#66b3ff'>HostName</td><td width='6%' align='center' bgcolor='#66b3ff'>主机IP<</td><td width='14%' align='center' bgcolor='#66b3ff'>SSH端口</td><td width='21%' align='center' bgcolor='#66b3ff'>远端用户</td><td width='53%' align='center' bgcolor='#66b3ff'>删除操作</td></tr>
 								{%if hostlist %}
 								{% for host in hostlist%}
 								<tr border='1'><td width='6%' align='center'><input type='checkbox' id='id' value='{{host.id}}'></td><td width='6%' align='center'>{{host.hostname}}</td><td width='6%' align='center'>{{host.ipaddr}}</td><td width='14%' align='center' >{{host.sshport}}</td><td width='21%' align='center' >{{host.remote_user}}</td><td width='53%' align='center' ><input type='button' id='del_single' name='del_single' value='删除' disabled></td></tr>
@@ -1015,38 +1047,11 @@
 								{%endif%}
 								</table>
 								</div>
-								
-								
-							<!-- 添加主机组界面 -->
-							<div id='addhostgroup' class="addhostgroup">
-								<div id='add'><input name='addhostgroup_btn' type='button' id='addhostgroup_btn' value='添加主机组' /></div>
-								<table  id='grouparea' width='1661' border='1' class="table table-bordered table-striped">
-								<tr class="danger"><td width='6%' align='center' bgcolor='#66b3ff'>GroupId</td><td width='6%' align='center' bgcolor='#66b3ff'>主机组</td><td width='14%' align='center' bgcolor='#66b3ff'>主机组描述信息</td><td width='21%' align='center' bgcolor='#66b3ff'>主机组中的主机</td><td width='53%' align='center' bgcolor='#66b3ff'>关联主机</td></tr>
-								{%if hostgroups %}
-								{% for group in hostgroups%}
-								<tr border='1'><td width='6%' align='center'>{{group.id}}</td><td width='6%' align='center'>{{group.group_name}}</td><td width='14%' align='center' >{{group.group_desc}}</td><td width='21%' align='center' >{% if group.hostlist %}{{group.hostlist}}{%endif%}</td><td width='53%' align='center' ><img  src='/images/add_btn.jpg' id='assign' name='assign' height='20' width='20'>&nbsp;&nbsp;&nbsp;<img src='/images/remove.jpg' id='remove' name='remove' height='20' width='20'></td></td></tr>
-								{% endfor %}
-								{%endif%}
-								</table>
-								</div>
-							<!-- 设置页面 -->
-							<!-- 添加主机表单 
-							<div id='Layer_addhost' class="addhost">
-								<div id='add'><input name='add_host_btn' type='button' id='add_host_btn' value='添加主机' /></div>
-								<table  id='userarea' width='1661' border='1'>
-								<tr><td width='6%' align='center' bgcolor='#66b3ff'>主机ID</td><td width='6%' align='center' bgcolor='#66b3ff'>主机IP</td><td width='14%' align='center' bgcolor='#66b3ff'>SSH 端口</td><td width='21%' align='center' bgcolor='#66b3ff'>远程用户</td><td width='53%' align='center' bgcolor='#66b3ff'>描述信息</td></tr>
-								{%if hostslist %}
-								{% for host in hostlist%}
-								<tr border='1'><td width='6%' align='center'>{{host.id}}</td><td width='6%' align='center'>{{host.ipaddr}}</td><td width='14%' align='center' >{{host.sshport}}</td><td width='21%' align='center' >{{host.remote_user}}</td><td width='53%' align='center' >{{host.host_desc}}</td></tr>
-								{% endfor %}
-								{%endif%}
-								</table>
-								</div> -->
 							<!-- 添加用户界面 -->
 							<div id='adduser' class="adduser">
 								<div id='add'><input name='add_btn' type='button' id='add_btn' value='添加用户' /></div>
-								<table  id='userarea' width='1661' border='1' class="table table-bordered table-striped">
-								<tr class="danger"><td width='6%' align='center' bgcolor='#66b3ff'>id</td><td width='6%' align='center' bgcolor='#66b3ff'>用户名</td><td width='14%' align='center' bgcolor='#66b3ff'>描述信息</td><td width='21%' align='center' bgcolor='#66b3ff'>用户管理</td><td width='53%' align='center' bgcolor='#66b3ff'>修改用户信息</td></tr>
+								<table  id='userarea' width='1661' border='1'>
+								<tr><td width='6%' align='center' bgcolor='#66b3ff'>id</td><td width='6%' align='center' bgcolor='#66b3ff'>用户名</td><td width='14%' align='center' bgcolor='#66b3ff'>描述信息</td><td width='21%' align='center' bgcolor='#66b3ff'>用户管理</td><td width='53%' align='center' bgcolor='#66b3ff'>修改用户信息</td></tr>
 								{%if userlist %}
 								{% for user in userlist%}
 								<tr border='1'><td width='6%' align='center'>{{user.id}}</td><td width='6%' align='center'>{{user.username}}</td><td width='14%' align='center' >{{user.email}}</td><td width='21%' align='center' >{% if user.status == 1%}启用{%else%}禁用{% endif %}</td><td width='53%' align='center' >修改密码:<input type='password' id='resetpass' name='resetpass' placeholder='重置密码'/>启用/禁用:<input type='checkbox' {% if user.status==1%}checked{%endif%} id='enable'>&nbsp;&nbsp;&nbsp;&nbsp;<input type='button' id='commit' name='commit' value='修改' disabled></td></tr>
@@ -1058,23 +1063,23 @@
 							<!-- 添加角色界面 -->
 							<div id='addrole' class="addrole">
 								<div id='add'><input name='addrole_btn' type='button' id='addrole_btn' value='添加角色' /></div>
-								<table  id='rolearea' width='1661' border='1' class="table table-bordered table-striped">
-								<tr class="danger"><td width='6%' align='center' bgcolor='#66b3ff'>id</td><td width='6%' align='center' bgcolor='#66b3ff'>组名</td><td width='14%' align='center' bgcolor='#66b3ff'>描述信息</td><td width='21%' align='center' bgcolor='#66b3ff'>所有用户</td><td width='53%' align='center' bgcolor='#66b3ff'>关联用户</td></tr>
+								<table  id='rolearea' width='1661' border='1'>
+								<tr><td width='6%' align='center' bgcolor='#66b3ff'>id</td><td width='6%' align='center' bgcolor='#66b3ff'>组名</td><td width='14%' align='center' bgcolor='#66b3ff'>描述信息</td><td width='21%' align='center' bgcolor='#66b3ff'>所有用户</td><td width='53%' align='center' bgcolor='#66b3ff'>关联用户</td></tr>
 								{%if rolelist %}
 								{% for role in rolelist%}
 								<tr border='1'><td width='6%' align='center'>{{role.id}}</td><td width='6%' align='center'>{{role.name}}</td><td width='14%' align='center' >{{role.desc}}</td><td width='21%' align='center' >{% if role.userlist %}{{role.userlist}}{%endif%}</td><td width='53%' align='center' ><img  src='/images/add_btn.jpg' id='assign' name='assign' height='20' width='20'>&nbsp;&nbsp;&nbsp;<img src='/images/remove.jpg' id='remove' name='remove' height='20' width='20'></td></td></tr>
 								{% endfor %}
 								{%endif%}
 								</table>
-							</div>
+								</div>
 								
 								
 								
 							<!-- 删除角色界面 -->
 							<div id='delrole' class="delrole">
 								<div id='add'><input name='del_btn' type='button' id='del_btn' value='批量删除角色' disabled/></div>
-								<table  id='rolelist' width='1661' border='1' class='table table-bordered table-striped'>
-								<tr class="danger"><td width='6%' align='center' bgcolor='#66b3ff'>id</td><td width='6%' align='center' bgcolor='#66b3ff'>角色</td><td width='14%' align='center' bgcolor='#66b3ff'>描述信息</td><td width='21%' align='center' bgcolor='#66b3ff'>所有用户</td><td width='53%' align='center' bgcolor='#66b3ff'>删除</td></tr>
+								<table  id='rolelist' width='1661' border='1'>
+								<tr><td width='6%' align='center' bgcolor='#66b3ff'>id</td><td width='6%' align='center' bgcolor='#66b3ff'>角色</td><td width='14%' align='center' bgcolor='#66b3ff'>描述信息</td><td width='21%' align='center' bgcolor='#66b3ff'>所有用户</td><td width='53%' align='center' bgcolor='#66b3ff'>删除</td></tr>
 								{%if rolelist %}
 								{% for role in rolelist%}
 								<tr border='1'><td width='6%' align='center'><input type='checkbox' id='role_id' value='{{role.id}}' {%if role.userlist %}disabled{%endif%}></td><td width='6%' align='center'>{{role.name}}</td><td width='14%' align='center' >{{role.desc}}</td><td width='21%' align='center' >{% if role.userlist %}{{role.userlist}}{%endif%}</td><td width='53%' align='center' >&nbsp;&nbsp;&nbsp;&nbsp;<input type='button' id='delrole_commit' name='delrole_commit' value='删除' disabled></td></td></tr>
@@ -1082,151 +1087,211 @@
 								{%endif%}
 								</table>
 								</div>
-								
-								<!-- 删除主机组界面 -->
-							<div id='delhostgroup' class="delhostgroup">
-								<div id='add'><input name='delhostgroup_btn' type='button' id='delhostgroup_btn' value='批量删除主机组' disabled/></div>
-								<table  id='rolelist' width='1661' border='1' class="table table-bordered table-striped">
-								<tr class="danger"><td width='6%' align='center' bgcolor='#66b3ff'>主机组Id</td><td width='6%' align='center' bgcolor='#66b3ff'>主机组</td><td width='14%' align='center' bgcolor='#66b3ff'>描述信息</td><td width='21%' align='center' bgcolor='#66b3ff'>组内含有的主机</td><td width='53%' align='center' bgcolor='#66b3ff'>删除</td></tr>
-								{%if hostgroups %}
-								{% for group in hostgroups%}
-								<tr border='1'><td width='6%' align='center'><input type='checkbox' id='group_id' value='{{group.id}}'></td><td width='6%' align='center'>{{group.group_name}}</td><td width='14%' align='center' >{{group.group_desc}}</td><td width='21%' align='center' >{% if group.hostlist %}{{group.hostlist}}{%endif%}</td><td width='53%' align='center' >&nbsp;&nbsp;&nbsp;&nbsp;<input type='button' id='delhostgroup_commit' name='delhostgroup_commit' value='删除' disabled></td></td></tr>
-								{% endfor %}
-								{%endif%}
-								</table>
-								</div>
-								
-							<!-- 批量用户添加 -->
-<div id="remote_user_add">
-  <table width="92%" height="175" border="1">
-    <tr>
-      <td colspan="5"><div align="center">批量添加用户</div></td>
-    </tr>
-    <tr>
-      <td width="10%">远端主机</td>
-      <td colspan="4"><select name="remote_hosts" id="remote_hosts">
-	   <option value=1></option>
-	  {%for host in hostlist%}
-	  <option value='{{host.ipaddr}}'>{{host.ipaddr}}</option>
-	  {%endfor%}
-      </select>      </td>
-    </tr>
-    <tr>
-      <td>用户名：</td>
-      <td colspan="4"><input name="username" type="text" id="username" /></td>
-    </tr>
-	<tr>
-      <td>密码：</td>
-      <td colspan="4"><input name="passwd" type="password" id="passwd" /></td>
-    </tr>
-    <tr>
-      <td>&nbsp;</td>
-      <td><input name="confirm" type="button" id="confirm" value="确定" disabled /></td>
-      <td><input name="cancle" type="button" id="cancle" value="取消" /></td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-    </tr>
-	<tr>
-	</tr>
-	<tr><div></div></tr>
-	
-  </table>
-  <hr />
-  <div id='return_msg'></div>
-</div>
-<div id="remote_user_del">
-  <table width="92%" height="175" border="1">
-    <tr>
-      <td colspan="5"><div align="center">删除远端用户</div></td>
-    </tr>
-    <tr>
-      <td width="10%">远端主机</td>
-      <td colspan="4"><select name="remote_hosts" id="remote_hosts">
-	   <option value=1></option>
-	  {%for host in hostlist%}
-	  <option value='{{host.ipaddr}}'>{{host.ipaddr}}</option>
-	  {%endfor%}
-      </select>      </td>
-    </tr>
-    <tr>
-      <td>用户名：</td>
-      <td colspan="4"><select name="remote_user" id="remote_user">
-      </select></td>
-    </tr>
-    <tr>
-      <td>&nbsp;</td>
-      <td><input name="confirm" type="button" id="confirm" value="确定" disabled /></td>
-      <td><input name="cancle" type="button" id="cancle" value="取消" /></td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-    </tr>
-	<tr>
-	</tr>
-	<tr><div></div></tr>
-	
-  </table>
-  <hr />
-  <div id='return_msg'></div>
-</div>
+							<div class="col-xs-12" id="col-xs-12">
+								<!-- PAGE CONTENT BEGINS -->
 
+								<div class="alert alert-block alert-success">
+									<button type="button" class="close" data-dismiss="alert">
+										<i class="icon-remove"></i>									</button>
 
-							<!-- 添加监控源 -->
-							<div id='add_monitor_source' class="adduser">
-								<div id='add'><input name='add_btn' type='button' id='add_btn' value='添加监控源' /></div>
-								<table  id='monitor_area' width='1661' border='1' class="table table-bordered table-striped">
-								<tr><td width='6%' align='center' bgcolor='#66b3ff'>id</td><td width='6%' align='center' bgcolor='#66b3ff'>服务器地址</td><td width='14%' align='center' bgcolor='#66b3ff'>访问端口</td><td width='21%' align='center' bgcolor='#66b3ff'>访问账号</td><td width='53%' align='center' bgcolor='#66b3ff'>修改账号信息</td></tr>
-								</table>
-								</div>
-								
-								<!--  生成监控报表 -->
-							<div id='monitor_reporting' class="adduser">
-								<div id='monitor_title'>监控报表</div>
-								<!-- <table  id='monitor_area' width='1661' border='1'>
-								<tr><td width='6%' align='center' bgcolor='#66b3ff'></td><td width='6%' align='center' bgcolor='#66b3ff'>服务器地址</td><td width='14%' align='center' bgcolor='#66b3ff'>访问端口</td><td width='21%' align='center' bgcolor='#66b3ff'>访问账号</td><td width='53%' align='center' bgcolor='#66b3ff'>修改账号信息</td></tr>
-								</table> -->
-								
-								<!-- <form class="form-inline">  -->
-								<div id='selectarea'>
-								<div id="divDateId" class="pull-left dateRange">  
-								起始时间-结束时间:<input class="form-control" id="searchDate"></input>  
-								<!-- <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>   -->
-								</div>  
-								<!-- </form> -->
-								<hr />
-								选择监控源:<select id='monitor_source'><option value='vnnox'>监控源1</option><option value='care'>监控源2</option></select>所属产品:<select id='products'><option value='c5-'>vnnox 产品</option><option value='care'>care 产品</option><option value='publish'>publish cloud</option></select>所属国家:<select id='as_country'><option value='all'>所有</option><option value='cn'>中国</option><option value='jp'>日本</option><option value='us'>美国</option><option value='au'>澳洲</option><option value='eu'>欧洲</option><<option value='sg'>新加坡</option></select><input type='button' value='确定' id='confirm_select'  style='background-color: #0080ff;width:50px;color:white;' name='confirm_select'></input>&nbsp;&nbsp;&nbsp;<input type='button' value='导出' id='export_report'  style='background-color: #00802f;width:50px;color:white;' name='export_report'></input></div>
-								
-								
-								<hr  style=" height:2px;border:1px solid;border-top:2px #185598;" />
-								<ul id="myTab" class="nav nav-tabs" style="height:40px;">
-								<li class="active"><a href="#home" data-toggle="tab">
-								故障总数统计</a>
-								</li>
-								<li><a href="#class_analyzer" data-toggle="tab">故障分类统计</a></li>
-								<li><a href="#avg_total" data-toggle="tab">平均系统资源情况</a></li>
-								</ul>
-								<div id="myTabContent"  style='top:2px;'class="tab-content">
-								<div class="tab-pane fade in active"  id="home">
-								<p> <table id='故障总数统计' class="table table-bordered table-striped"><tr bgcolor="#66b3ff" align="center"><td>id	</td><td>所属产品</td><td>所在国家</td>	<td>服务器名称</td><td>故障次数
-</td></tr></table></p>
-								</div>
-								<div class="tab-pane fade" id="class_analyzer">
-								<p><table id='故障分类统计' class="table table-bordered table-striped"><tr bgcolor="#66b3ff" align="center"><td>id</td>	<td>所属产品</td><td>所在国家</td><td>服务器名称</td><td>故障等级</td><td>故障次数
-</td></tr></table></p>
-								</div>
-								<div class="tab-pane fade" id="avg_total">
-								<p><table id='平均系统资源情况' class="table table-bordered table-striped"><tr bgcolor="#66b3ff" align="center"><td>id</td>	<td>所属产品</td><td>所在国家</td><td>服务器名称</td><td>平均CPU空限量（%）</td><td>平均内存空闲量（MB）
-</td><td>平均硬盘空闲量（MB）</td><td>服务器健康指数</td></tr></table></p>
-								</div>
-								
+									<i class="icon-ok green"></i>
 
-								
-									</div> <!-- /span 
-								</div><!-- /row 
-						
+									欢迎使用
+									<strong class="green">
+										Ace后台管理系统
+										<small>(v1.2)</small>									</strong>
+									,轻量级好用的后台管理系统模版.								</div>
+
+								<div class="row">
+									<div class="space-6"></div>
+
+									<div class="col-sm-7 infobox-container">
+										<div class="infobox infobox-green  ">
+											<div class="infobox-icon">
+												<i class="icon-comments"></i>											</div>
+
+											<div class="infobox-data">
+												<span class="infobox-data-number">32</span>
+												<div class="infobox-content">2个评论</div>
+											</div>
+											<div class="stat stat-success">8%</div>
+										</div>
+
+										<div class="infobox infobox-blue  ">
+											<div class="infobox-icon">
+												<i class="icon-twitter"></i>											</div>
+
+											<div class="infobox-data">
+												<span class="infobox-data-number">11</span>
+												<div class="infobox-content">新粉丝</div>
+											</div>
+
+											<div class="badge badge-success">
+												+32%
+												<i class="icon-arrow-up"></i>											</div>
+										</div>
+
+										<div class="infobox infobox-pink  ">
+											<div class="infobox-icon">
+												<i class="icon-shopping-cart"></i>											</div>
+
+											<div class="infobox-data">
+												<span class="infobox-data-number">8</span>
+												<div class="infobox-content">新订单</div>
+											</div>
+											<div class="stat stat-important">4%</div>
+										</div>
+
+										<div class="infobox infobox-red  ">
+											<div class="infobox-icon">
+												<i class="icon-beaker"></i>											</div>
+
+											<div class="infobox-data">
+												<span class="infobox-data-number">7</span>
+												<div class="infobox-content">调查</div>
+											</div>
+										</div>
+
+										<div class="infobox infobox-orange2  ">
+											<div class="infobox-chart">
+												<span class="sparkline" data-values="196,128,202,177,154,94,100,170,224"></span>											</div>
+
+											<div class="infobox-data">
+												<span class="infobox-data-number">6,251</span>
+												<div class="infobox-content">页面查看次数</div>
+											</div>
+
+											<div class="badge badge-success">
+												7.2%
+												<i class="icon-arrow-up"></i>											</div>
+										</div>
+
+										<div class="infobox infobox-blue2  ">
+											<div class="infobox-progress">
+												<div class="easy-pie-chart percentage" data-percent="42" data-size="46">
+													<span class="percent">42</span>%												</div>
+											</div>
+
+											<div class="infobox-data">
+												<span class="infobox-text">交易使用</span>
+
+												<div class="infobox-content">
+													<span class="bigger-110">~</span>
+													剩余58GB												</div>
+											</div>
+										</div>
+
+										<div class="space-6"></div>
+
+										<div class="infobox infobox-green infobox-small infobox-dark">
+											<div class="infobox-progress">
+												<div class="easy-pie-chart percentage" data-percent="61" data-size="39">
+													<span class="percent">61</span>%												</div>
+											</div>
+
+											<div class="infobox-data">
+												<div class="infobox-content">任务</div>
+												<div class="infobox-content">完成</div>
+											</div>
+										</div>
+
+										<div class="infobox infobox-blue infobox-small infobox-dark">
+											<div class="infobox-chart">
+												<span class="sparkline" data-values="3,4,2,3,4,4,2,2"></span>											</div>
+
+											<div class="infobox-data">
+												<div class="infobox-content">获得</div>
+												<div class="infobox-content">$32,000</div>
+											</div>
+										</div>
+
+										<div class="infobox infobox-grey infobox-small infobox-dark">
+											<div class="infobox-icon">
+												<i class="icon-download-alt"></i>											</div>
+
+											<div class="infobox-data">
+												<div class="infobox-content">下载次数</div>
+												<div class="infobox-content">1,205</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="vspace-sm"></div>
+
+									<div class="col-sm-5">
+										<div class="widget-box">
+											<div class="widget-header widget-header-flat widget-header-small">
+												<h5>
+													<i class="icon-signal"></i>
+													访问来源												</h5>
+
+												<div class="widget-toolbar no-border">
+													<button class="btn btn-minier btn-primary dropdown-toggle" data-toggle="dropdown">
+														本周
+														<i class="icon-angle-down icon-on-right bigger-110"></i>													</button>
+
+													<ul class="dropdown-menu pull-right dropdown-125 dropdown-lighter dropdown-caret">
+														<li class="active">
+															<a href="#" class="blue">
+																<i class="icon-caret-right bigger-110">&nbsp;</i>
+																本周															</a>														</li>
+
+														<li>
+															<a href="#">
+																<i class="icon-caret-right bigger-110 invisible">&nbsp;</i>
+																上周															</a>														</li>
+
+														<li>
+															<a href="#">
+																<i class="icon-caret-right bigger-110 invisible">&nbsp;</i>
+																本月															</a>														</li>
+
+														<li>
+															<a href="#">
+																<i class="icon-caret-right bigger-110 invisible">&nbsp;</i>
+																上月															</a>														</li>
+													</ul>
+												</div>
+											</div>
+
+											<div class="widget-body">
+												<div class="widget-main">
+													<div id="piechart-placeholder"></div>
+
+													<div class="hr hr8 hr-double"></div>
+
+													<div class="clearfix">
+														<div class="grid3">
+															<span class="grey">
+																<i class="icon-facebook-sign icon-2x blue"></i>
+																&nbsp; likes															</span>
+															<h4 class="bigger pull-right">1,255</h4>
+														</div>
+
+														<div class="grid3">
+															<span class="grey">
+																<i class="icon-twitter-sign icon-2x purple"></i>
+																&nbsp; tweets															</span>
+															<h4 class="bigger pull-right">941</h4>
+														</div>
+
+														<div class="grid3">
+															<span class="grey">
+																<i class="icon-pinterest-sign icon-2x red"></i>
+																&nbsp; pins															</span>
+															<h4 class="bigger pull-right">1,050</h4>
+														</div>
+													</div>
+												</div><!-- /widget-main -->
+											</div><!-- /widget-body -->
+										</div><!-- /widget-box -->
+									</div><!-- /span -->
+								</div><!-- /row -->
+
 								<div class="hr hr32 hr-dotted"></div>
 
 								<div class="row">
-									<div class="col-sm-5"> 
+									<div class="col-sm-5">
 										<div class="widget-box transparent">
 											<div class="widget-header widget-header-flat">
 												<h4 class="lighter">
@@ -1322,69 +1387,10 @@
 													</table>
 												</div><!-- /widget-main -->
 											</div><!-- /widget-body -->
-											
-								<!-- 应用部署   -->
-								<div id="application_deploy" class="adduser">
-								<ul id="myAppTab" class="nav nav-tabs" style="height:40px;">
-								<li class="active"><a href="#product_manage" data-toggle="tab">
-								产品管理</a>
-								</li>
-								<li><a href="#app_manage" data-toggle="tab">
-								应用管理</a>
-								</li>
-								<li><a href="#app_deploy" data-toggle="tab">应用部署</a></li>
-								</ul>
-								<div id="myAppContent"  style='top:2px;'class="tab-content">
-								<div class="tab-pane fade in active"  id="product_manage">
-								<div id='add_product' class="addproduct">
-								<div id='add'> <button class="btn btn-small btn-primary" type="button" name='addproduct_btn' type='button' id='addproduct_btn'>添加产品</button></div>
-								<table  id='productarea' width='1221' border='1' class="table table-bordered table-striped">
-								<tr><td align='center' bgcolor='#66b3f0'>id</td><td align='center' bgcolor='#66b3ff'>产品名称</td></tr>
-								{%if productlist %}
-								{% for product in productlist%}
-								<tr border='1'><td  align='center'>{{product.id}}</td><td  align='center'>{{product.name}}</td><td width='20%' align='center' ><img  src='/images/add_btn.jpg' id='assign' name='assign' height='20' width='20'>&nbsp;&nbsp;&nbsp;<img src='/images/remove.jpg' id='remove' name='remove' height='20' width='20'></td></tr>
-								{% endfor %}
-								{%endif%}
-								</table>
-							</div>
-								</div>
-								<div class="tab-pane fade"  id="app_manage">
-								<p> 	<table id='application_list' class="table table-bordered table-striped" style="border:none"><tr align="center"><td>	</td><td></td><td></td>	<td></td></tr><tr align="center"><td>所属产品</td><td>应用名称</td><td>版本号</td><td>软件包下载</td></tr></p></table>
-								<p> 	<table id='application_manager' class="table table-bordered table-striped" style="border:none"><tr align="center"><td>	</td><td></td><td></td>	<td></td><td></td><td></td><td></td></tr>
-								
-								
-								<hr />
-								<tr  align="center"><td>	</td><td></td><td></td>	<td></td><td></td><td></td><td></td></tr><tr  align="center"><td>	</td><td></td><td>所属产品</td><td align="left"><select id="Belonged_products" width="28px;"><option><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">vnnox</font></font></option></select></td><td></td><td></td><td></td></tr>
-								<tr  align="center"><td>	</td><td></td><td></td>	<td></td><td></td><td></td><td></td></tr><tr align="center"><td>	</td><td></td><td>软件名称</td><td align="left"><input type='text' id='appName'></td><td></td><td></td><td></td></tr><tr align="center"><td>	</td><td></td><td>版本定义</td><td align="left"><input id='appVersion' placeholder='定义软件版本，如v1.0.0'></td><td></td><td></td><td></td></tr>
-								
-								<tr  align="center"><td>	</td><td></td><td></td>	<td></td><td></td><td></td><td></td></tr><tr align="center"><td>	</td><td></td><td>解压路径</td><td align="left"><input id="unzip_path" type="text" placeholder="/usr/local/src"></td><td></td><td></td><td></td></tr>
-								
-								
-								<tr  align="center"><td>	</td><td></td><td></td>	<td></td><td></td><td></td><td></td></tr><tr  align="center"><td>	</td><td></td><td>安装命令</td><td align="left"><textarea  id="runCommand" style="padding:5px 8px;" placeholder="安装执行命令，长度不能超过100个字符，包含空格"></textarea></td><td></td><td></td><td></td></tr>
-								
-								
-								<tr  align="center"><td>	</td><td></td><td></td>	<td></td><td></td><td></td><td></td></tr><tr  align="center"><td>	</td><td></td><td>上传软件包</td><td align="left"><input type="file" id="packetFile"  multiple></td><td><button class="btn btn-large btn-primary" type="button" id="upload_package">上传</button></td><td></td><td></td></tr>
-								
-								</table></p>
-								</div>
-								<div class="tab-pane fade" id="app_deploy">
-								<p><table id='applicationDeploy' class="table table-bordered table-striped" style="border:none"><tr align="center"><td>	</td><td></td><td></td>	<td></td><td></td><td></td><td></td></tr>
-								
-								
-								<hr />
-								<tr  align="center"><td>	</td><td></td><td></td>	<td></td><td></td><td></td><td></td></tr><tr  align="center"><td>	</td><td></td><td>所属产品</td><td align="left"><select id="Belonged_products" width="28px;"><option><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">vnnox</font></font></option></select></td><td></td><td></td><td></td></tr>
-								<tr align="center"><td>	</td><td></td><td>应用程序</td><td align="left"><select id="selectApp" width="28px;"><option><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"></font></font></option></select></td><td></td><td><button class="btn btn-large btn-primary" type="button" id="Deploy" disabled>部署</button></td><td></td></tr>
-								<tr  align="center"><td>	</td><td></td><td></td>	<td></td><td></td><td></td><td></td></tr>
-								</table></p>
-								</div>
-								</div> 
-								</div>
-								</div>
-								
-			
-								
+										</div><!-- /widget-box -->
+									</div>
 
-								<!--  class="col-sm-7">
+									<div class="col-sm-7">
 										<div class="widget-box transparent">
 											<div class="widget-header widget-header-flat">
 												<h4 class="lighter">
@@ -1399,9 +1405,9 @@
 											<div class="widget-body">
 												<div class="widget-main padding-4">
 													<div id="sales-charts"></div>
-												</div><!-- /widget-main 
-											</div><!-- /widget-body 
-										</div><!-- /widget-box 
+												</div><!-- /widget-main -->
+											</div><!-- /widget-body -->
+										</div><!-- /widget-box -->
 									</div>
 								</div>
 
@@ -1733,7 +1739,7 @@
 																	<i class="icon-arrow-right"></i>																</a>															</div>
 
 															<div class="hr hr-double hr8"></div>
-														</div><!-- member-tab 
+														</div><!-- member-tab -->
 
 														<div id="comment-tab" class="tab-pane">
 															<div class="comments">
@@ -1874,10 +1880,10 @@
 															<div class="hr hr-double hr8"></div>
 														</div>
 													</div>
-												</div><!-- /widget-main 
-											</div><!-- /widget-body 
-										</div><!-- /widget-box 
-									</div><!-- /span 
+												</div><!-- /widget-main -->
+											</div><!-- /widget-body -->
+										</div><!-- /widget-box -->
+									</div><!-- /span -->
 
 									<div class="col-sm-6">
 										<div class="widget-box ">
@@ -1998,17 +2004,17 @@
 																</span>															</div>
 														</div>
 													</form>
-												</div><!-- /widget-main 
-											</div><!-- /widget-body 
-										</div><!-- /widget-box 
-									</div><!-- /span 
+												</div><!-- /widget-main -->
+											</div><!-- /widget-body -->
+										</div><!-- /widget-box -->
+									</div><!-- /span -->
 								</div><!-- /row -->
 
-								<!-- PAGE CONTENT ENDS 
-							</div><!-- /.col 
-						</div><!-- /.row 
-					</div><!-- /.page-content 
-				</div><!-- /.main-content 
+								<!-- PAGE CONTENT ENDS -->
+							</div><!-- /.col -->
+						</div><!-- /.row -->
+					</div><!-- /.page-content -->
+				</div><!-- /.main-content -->
 
 				<div class="ace-settings-container" id="ace-settings-container">
 					<div class="btn btn-app btn-xs btn-warning ace-settings-btn" id="ace-settings-btn">
@@ -2053,8 +2059,8 @@
 								<b></b>							</label>
 						</div>
 					</div>
-				</div><!-- /#ace-settings-container 
-			</div><!-- /.main-container-inner 
+				</div><!-- /#ace-settings-container -->
+			</div><!-- /.main-container-inner -->
 
 			<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
 				<i class="icon-double-angle-up icon-only bigger-110"></i>			</a>		</div><!-- /.main-container -->
@@ -2063,7 +2069,7 @@
 
 		<!--[if !IE]> -->
 
-		<!-- <script src="/assets/js/jquery-2.0.3.min.js"></script> -->
+		<script src="/assets/js/jquery-2.0.3.min.js"></script>
 
 		<!-- <![endif]-->
 
@@ -2114,21 +2120,7 @@
 		<script src="assets/js/ace.min.js"></script>
 
 		<!-- inline scripts related to this page -->
-
-<!-- 新增产品 -->
-
-  <div class="modal-dialog" role="document" style="top:50%;">
-<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel" id="productModal" style="width:600px;left:50%">
-    <div class="modal-content" style="left:20%;">
-	<table id='product_manager' class="table table-bordered table-striped" style="display:block;border:none;">
-	<tr align="center"><td>	</td><td></td><td></td>	<td></td><td></td><td></td><td></td></tr>
-	<tr align="center"><td>	</td><td></td><td>新增产品</td><td align="left"><input type="text" placeholder="产品名称" id="product"></td><td></td><td><input type='button' id="add_product" value="新增产品"></td><td><input type='button' id="cancle" value="取消"></td></tr>
-	</table>
-    </div><!-- /.modal-content -->
-  </div>
-</div>		
-		
-<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel" id="myModal">
+		<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel" id="myModal">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -2145,7 +2137,7 @@
 					{% if host.groupname == group.group_name %}
 					<!--	{{host.ipaddr}} <input type="checkbox" id="{{host.ipaddr}}" value="{{host.ipaddr}}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
 						<span id="hostname_span" data-toggle='tooltip' title="IP:{{host.ipaddr}} 描述:{{host.host_desc}}" data-placement="right">{{host.hostname}}</span>
-						<input type="checkbox" id="{{host.hostname}}" value="{{host.ipaddr}}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="checkbox" id="{{host.host_desc}}" value="{{host.ipaddr}}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					{%endif%}
 				{%endfor%}
 			{%endif%}
@@ -2161,8 +2153,8 @@
         <button type="button" class="btn btn-primary" id="change_password">修改密码</button>
       </div>
     </div><!-- /.modal-content -->
-  </div>
-</div>
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <a href="#" data-toggle="tooltip" title="Example tooltip" id='mytooltip'>请悬停在我的上面</a>
 <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" id="ajaxResult">
   <div class="modal-dialog modal-sm" role="document">
@@ -2183,136 +2175,7 @@
 </div>
 
 
-
-<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" id="loading">
-  <div class="modal-dialog modal-sm" role="document" style="margin-top:40vh;">
-    <div class="modal-content" style="background:rgba(0,0,0,0);border:none;box-shadow:none;text-align:center;">
-	  <img src="./images/loading.svg">
-      <!--<div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-      </div>
-      <div class="modal-body" id="ajaxResultContent">
-        处理中，请稍后...
-      </div>
-	  -->
-    </div>
-  </div>
-</div>
-
-
-<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel" id="processUpload">
-	<div class="modal-dialog modal-sm" role="document" style="margin-top:40vh;">
-		<div class="modal-content">
-			<div class="modal-body">
-				<div class="progress progress-striped active">
-					<div class="progress-bar progress-bar-success" role="progressbar"
-         aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
-         style="width: 100%;">
-					</div>
-				</div>
-			</div>
-	    </div>
-	</div>
-</div>
-
-
-<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel" id="remoteDeploy" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="gridSystemModalLabel">应用部署</h4>
-      </div>
-      <div class="modal-body">
-	  {% if hostgroups %}
-		{% for group in hostgroups%}
-			<div id='group_title'>{{group.group_name}}</div>
-			
-			{%if hostlist %}
-				{% for host in hostlist%}
-					{% if host.groupname == group.group_name %}
-					<!--	{{host.ipaddr}} <input type="checkbox" id="{{host.ipaddr}}" value="{{host.ipaddr}}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
-						<span id="hostname_span" data-toggle='tooltip' title="IP:{{host.ipaddr}} 描述:{{host.host_desc}}" data-placement="right">{{host.hostname}}</span>
-						<input type="checkbox" id="{{host.hostname}}" value="{{host.ipaddr}}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					{%endif%}
-				{%endfor%}
-			{%endif%}
-			<hr/>
-		{%endfor%}
-	  {%endif%}
-      
-      </div>
-	  <hr/>
-	  <div><input type='button' value='全选' id='select_all'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='button' id='select_invert' value='反选'></div>
-	 <!-- 处理版本等信息  -->
-	 <div id='extra'>
-	 <input type="hidden" class="form-control" id="package_path"  value="">
-	 <input type="hidden" class="form-control" id="unzippath" value="">
-	 <input type="hidden" class="form-control" id="runCommand" value="">
-	 </div>
-      <div class="modal-footer">
-        
-        <button type="button" class="btn btn-primary" id="startDeploy">开始部署</button>
-		<button type="button" class="btn btn-default" data-dismiss="modal" id="close_change_password">关闭</button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div>
-</div>
-
-<!--展示部署进度-->
-<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel" id="deployProcess" aria-hidden="true">
-  <div class="modal-dialog" role="document" style="height:800px;width:800px">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="gridSystemModalLabel">正在部署......</h4>
-      </div>
-      <div class="modal-body">
-		  <div class="form-group">
-			<label for="productName">所属产品</label><input type="text" class="form-control" id="productName" placeholder="请输入名称"  value="" readonly  style="background-color:gray">
-			<label for="apptName">应用名称</label>
-			<input type="text" class="form-control" id="appName" placeholder="请输入名称"  value="" readonly  style="background-color:gray">
-			<label for="apptVersion">应用版本</label>
-			<input type="text" class="form-control" id="appVersion" placeholder="请输入名称"  value="" readonly  style="background-color:gray">
-			
-		  </div>
-		  <div class="form-group">
-			<label>部署进度：</label>
-			<div class="progress">
-				<div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="border:1px solid white;width: 25%">
-                    同步软件包
-				</div>
-				<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="border:1px solid white;width: 25%">
-                    解压软件包
-				</div>
-				<div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="border:1px solid white;width: 50%">
-                    应用部署
-				</div>
-			</div>
-			<div class="progress progress-striped  active">
-				<div id="progressMain" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="1" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
-				0%
-				</div>
-			</div>
-		  </div>
-      </div>
-	  
-	   <div class="modal-footer" style="text-align:left;overflow:scroll;height:200px;">
-	   <span id='processMessage'></span>
-	   </div>
-
-	  
-</div>
-    </div><!-- /.modal-content -->
-	</br>
-	</br>
-  </div>
-</div>
-
-
-
 		<script type="text/javascript">
-		
 			jQuery(function($) {
 				$('.easy-pie-chart.percentage').each(function(){
 					var $box = $(this).closest('.infobox');
@@ -2503,7 +2366,6 @@
 					if(this.checked) $(this).closest('li').addClass('selected');
 					else $(this).closest('li').removeClass('selected');
 				});
-				
 				
 			
 			})

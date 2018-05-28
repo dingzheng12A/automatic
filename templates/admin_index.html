@@ -75,7 +75,7 @@
 	</div>
 <!-- 分配权限 -->
 <div  id='authlist'>
-<table border='1' id='autharea'>
+<table border='1' id='autharea' style="height:600px;overflow:scroll;">
 {%for menu in menulist%}
 <tr>
 <td colspan="2"><li><span id='li_parent_menu'>{{menu.name}}<input type="checkbox" id="p_menu_{{menu.id}}" value="{{menu.id}}"></span><hr /><ul>{%for menu1 in menulist1%}{%if menu1.parent_id==menu.id%}<li>{{menu1.name}}<input type="checkbox" id="sub_menu_{{menu1.id}}" value="{{menu1.id}}"></span></li>{%endif%}{%endfor%}</ul></li></td>
@@ -959,6 +959,86 @@
 						</div><!-- /.page-header -->
 
 						<div class="row">
+						<div id="dashBoard">
+							<div class="widget span4" style="width:600px;display:inline-block;">
+							<div class="widget-header">
+							<i class="icon-bar-chart"></i>
+							<h5>CPU 使用率</h5>
+							<div class="widget-buttons">
+								<a href="javascript:void(0)" class="collapse" data-collapsed="false"><i data-title="Collapse" class="icon-chevron-up"></i></a>
+							</div>
+							</div>  
+							<div class="widget-body clearfix" style="width:600px;">
+							<div class="widget-analytics-small">
+								<ul>
+								<li>
+									<span class="inlinesparkline"><canvas width="100" height="30" style="display: inline-block; width: 100px; height: 30px; vertical-align: top;"></canvas></span>
+									100%
+								</li>
+								</ul>
+							</div>
+							</div> <!-- /widget body -->
+							</div>
+							<div class="widget span4" style="display:inline-block;width:600px;position:relative;">
+							<div class="widget-header" >
+							<i class="icon-bar-chart"></i>
+							<h5>内存 使用率</h5>
+							<div class="widget-buttons">
+								<a href="javascript:void(0)" class="collapse" data-collapsed="false"><i data-title="Collapse" class="icon-chevron-up"></i></a>
+							</div>
+							</div>  
+							<div class="widget-body clearfix" style="width:600px;">
+							<div class="widget-analytics-small">
+								<ul>
+								<li>
+									<span class="inlinesparkline"><canvas width="100" height="30" style="display: inline-block; width: 100px; height: 30px; vertical-align: top;"></canvas></span>
+									100%
+								</li>
+								</ul>
+							</div>
+							</div> <!-- /widget body -->
+							</div>
+							
+							
+							<div class="widget span4" style="width:600px;display:inline-block;">
+							<div class="widget-header">
+							<i class="icon-bar-chart"></i>
+							<h5>连接数</h5>
+							<div class="widget-buttons">
+								<a href="javascript:void(0)" class="collapse" data-collapsed="false"><i data-title="Collapse" class="icon-chevron-up"></i></a>
+							</div>
+							</div>  
+							<div class="widget-body clearfix" style="width:600px;">
+							<div class="widget-analytics-small">
+								<ul>
+								<li>
+									<span class="inlinesparkline"><canvas width="100" height="30" style="display: inline-block; width: 100px; height: 30px; vertical-align: top;"></canvas></span>
+									100%
+								</li>
+								</ul>
+							</div>
+							</div> <!-- /widget body -->
+							</div>
+							<div class="widget span4" style="display:inline-block;width:600px;position:relative;">
+							<div class="widget-header" >
+							<i class="icon-bar-chart"></i>
+							<h5>当前用户数</h5>
+							<div class="widget-buttons">
+								<a href="javascript:void(0)" class="collapse" data-collapsed="false"><i data-title="Collapse" class="icon-chevron-up"></i></a>
+							</div>
+							</div>  
+							<div class="widget-body clearfix" style="width:600px;">
+							<div class="widget-analytics-small">
+								<ul>
+								<li>
+									<span class="inlinesparkline"><canvas width="100" height="30" style="display: inline-block; width: 100px; height: 30px; vertical-align: top;"></canvas></span>
+									100%
+								</li>
+								</ul>
+							</div>
+							</div> <!-- /widget body -->
+							</div>
+						</div>
 						<!-- 分配权限 -->
 						<div id="Layer_auth">
   <table width="72%" height="261" border="1" align="center">
@@ -1402,7 +1482,7 @@
 												</div><!-- /widget-main -->
 											</div><!-- /widget-body -->
 											
-								<!--    -->
+								<!-- 应用部署   -->
 								<div id="application_deploy" class="adduser">
 								<ul id="myAppTab" class="nav nav-tabs" style="height:40px;">
 								<li class="active"><a href="#product_manage" data-toggle="tab">
